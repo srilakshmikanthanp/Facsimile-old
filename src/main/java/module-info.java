@@ -5,5 +5,12 @@
 
 module facsimile 
 {
-    exports com.github.srilakshmikanthanp.facsimile;
+    // from java
+    requires java.prefs;
+
+    // from javafx
+    requires javafx.controls;
+
+    // give access to the facsimile package
+    opens com.github.srilakshmikanthanp.facsimile to javafx.graphics;
 }
