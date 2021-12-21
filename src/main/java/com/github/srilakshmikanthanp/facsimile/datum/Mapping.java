@@ -5,7 +5,7 @@
 
 package com.github.srilakshmikanthanp.facsimile.datum;
 
-public class Datum 
+public class Mapping 
 {
 
 }
