@@ -182,6 +182,45 @@ public class Mapping extends HashMap<String, String>
         Files.write(path, json.getBytes());
     }
 
+
+    /**
+     * Loads the data from presistant storage.
+     * 
+     * @throws IOException if io error occurs
+     */
+    @SuppressWarnings("unchecked")
+    private void loadData() throws IOException
+    {
+        Gson gson = new Gson();
+        var path = baseDir.resolve(DATUM_FILE);
+        var json = Files.readString(path);
+        this.putAll(gson.fromJson(json, HashMap.class));
+    }
+
+    /**
+     * Constructor of Mapping.
+     * 
+     * @param baseDir the base directory of the datum. 
+     */
+    public Mapping(Path baseDir)
+    {
+        // save base dir
+        this.baseDir = baseDir;
+
+        // create the crypto object
+        this.crypto = new Crypto(baseDir);
+
+        // load the data
+        try 
+        {
+            this.loadData();
+        } 
+        catch (IOException e) 
+        {
+            // no file exits or first time
+        }
+    }
+
     /**
      * Checks if key file exits for crypto
      * 
@@ -226,44 +265,6 @@ public class Mapping extends HashMap<String, String>
     public void loadCryptoKey(String password) throws IOException, GeneralSecurityException
     {
         this.crypto.loadKey(password);
-    }
-
-    /**
-     * Loads the data from presistant storage.
-     * 
-     * @throws IOException if io error occurs
-     */
-    @SuppressWarnings("unchecked")
-    private void loadData() throws IOException
-    {
-        Gson gson = new Gson();
-        var path = baseDir.resolve(DATUM_FILE);
-        var json = Files.readString(path);
-        this.putAll(gson.fromJson(json, HashMap.class));
-    }
-
-    /**
-     * Constructor of Mapping.
-     * 
-     * @param baseDir the base directory of the datum. 
-     */
-    public Mapping(Path baseDir)
-    {
-        // save base dir
-        this.baseDir = baseDir;
-
-        // create the crypto object
-        this.crypto = new Crypto(baseDir);
-
-        // load the data
-        try 
-        {
-            this.loadData();
-        } 
-        catch (IOException e) 
-        {
-            // no file exits or first time
-        }
     }
 
     /**
