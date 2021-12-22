@@ -98,7 +98,7 @@ class Crypto
         KeyStore kStore = KeyStore.getInstance(KeyStore.getDefaultType());
         kStore.load(null, password.toCharArray());
 
-        var skEntry = new KeyStore.SecretKeyEntry(this.secretKey);
+        var skEntry = new KeyStore.SecretKeyEntry(secretKey);
         var prot  = new KeyStore.PasswordProtection(password.toCharArray());
         kStore.setEntry(KEY_ALIAS, skEntry, prot);
 
@@ -167,7 +167,7 @@ public class Mapping extends HashMap<String, String>
     private Path baseDir;
 
     // Crypto object
-    public Crypto crypto;
+    private Crypto crypto;
 
     /**
      * Saves the data to presistant storage.
@@ -180,6 +180,52 @@ public class Mapping extends HashMap<String, String>
         var json = gson.toJson(this);
         var path = baseDir.resolve(DATUM_FILE);
         Files.write(path, json.getBytes());
+    }
+
+    /**
+     * Checks if key file exits for crypto
+     * 
+     * @return true if exits
+     * @return false if not exits
+     */
+    public boolean isCryptoKeyFileExits()
+    {
+        return this.crypto.isKeyFileExists();
+    }
+
+    /**
+     * Checks for key empty
+     * 
+     * @return true if empty
+     * @return false if not empty
+     */
+    public boolean isCryptoKeyEmpty()
+    {
+        return this.crypto.iskeyEmpty();
+    }
+
+    /**
+     * Generates the key and saves it to the key file.
+     * 
+     * @param password The password to be used for KeyStore.
+     * @throws IOException if io fails
+     * @throws GeneralSecurityException if error in creating
+     */
+    public void createCryptoKey(String password) throws IOException, GeneralSecurityException
+    {
+        this.crypto.createKey(password);
+    }
+
+    /**
+     * Loads the key from the key file.
+     * 
+     * @param password The password to be used for KeyStore.
+     * @throws IOException if io fails
+     * @throws GeneralSecurityException if error in loading
+     */
+    public void loadCryptoKey(String password) throws IOException, GeneralSecurityException
+    {
+        this.crypto.loadKey(password);
     }
 
     /**
@@ -247,7 +293,14 @@ public class Mapping extends HashMap<String, String>
      */
     public String getSecure(String key) throws GeneralSecurityException
     {
-        return this.crypto.decrypt(super.get(key));
+        var value = super.get(key);
+
+        if(value == null)
+        {
+            return null;
+        }
+
+        return this.crypto.decrypt(value);
     }
 
     /**
@@ -262,7 +315,14 @@ public class Mapping extends HashMap<String, String>
     public String putSecure(String key, String value) throws GeneralSecurityException, IOException
     {
         var oldValue = super.put(key, this.crypto.encrypt(value));
+        
         this.saveData();
+        
+        if(oldValue == null)
+        {
+            return null;
+        }
+
         return this.crypto.decrypt(oldValue);
     }
 }
