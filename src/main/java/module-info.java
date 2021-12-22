@@ -8,6 +8,9 @@ module facsimile
     // from java
     requires java.prefs;
 
+    // from gson
+    requires com.google.gson;
+
     // from javafx
     requires javafx.controls;
 

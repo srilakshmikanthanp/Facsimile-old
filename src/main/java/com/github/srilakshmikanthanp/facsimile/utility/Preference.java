@@ -5,7 +5,8 @@
 
 package com.github.srilakshmikanthanp.facsimile.utility;
 
+
 public class Preference 
 {
-    
+        
 }
