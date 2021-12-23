@@ -15,80 +15,78 @@ import com.github.srilakshmikanthanp.facsimile.datum.*;
 public class FacsimileTest 
 {
     /**
-     * This test always must be run on new file
+     * Test function for the Datum PAckage
+     * 
+     * @throws GeneralSecurityException if error in security
+     * @throws IOException if error in io
      */
     @Test
-    public void testDatum()
+    public void testDatum() throws GeneralSecurityException, IOException
     {
-        Mapping orgMapData = new Mapping(Paths.get("target/"));
-    
-        try
+        // delete file if exits
+        if(Paths.get("./target/crypto.key").toFile().exists())
         {
-            orgMapData.createCryptoKey("12345678");
-        }
-        catch(GeneralSecurityException | IOException e)
-        {
-            Assert.assertTrue(false);   
+            Assert.assertTrue(Paths.get("./target/crypto.key").toFile().delete());
         }
 
-        try
+        // delete file if exits
+        if(Paths.get("./target/datum.json").toFile().exists())
         {
-            Assert.assertEquals(null, orgMapData.putSecure("Key1", "Value1"));
-            Assert.assertEquals(null, orgMapData.putSecure("Key2", "Value2"));
-            Assert.assertEquals(null, orgMapData.putSecure("Key3", "Value3"));
-        }
-        catch(GeneralSecurityException e)
-        {
-            Assert.assertTrue(false);
-        }
-        catch(IOException e)
-        {
-            Assert.assertTrue(false);
+            Assert.assertTrue(Paths.get("./target/datum.json").toFile().delete());
         }
 
-        try
-        {
-            String val1 = orgMapData.getSecure("Key1");
-            String val2 = orgMapData.getSecure("Key2");
-            String val3 = orgMapData.getSecure("Key3");
-            String val4 = orgMapData.getSecure("Key4");
+        // creater map
+        Mapping orgmapData = new Mapping(Paths.get("./target/"));
 
-            Assert.assertEquals("Value1", val1);
-            Assert.assertEquals("Value2", val2);
-            Assert.assertEquals("Value3", val3);
-            Assert.assertEquals(null, val4);
-        }
-        catch(GeneralSecurityException e)
-        {
-            Assert.assertTrue(false);   
-        }
+        // assert to not existitance of file and Key
+        Assert.assertTrue(
+            !orgmapData.getCrypto().isKeyFileExists() &&
+            orgmapData.getCrypto().iskeyEmpty()
+        );
 
-        Mapping dupMapData = new Mapping(Paths.get("target/"));
+        // create Key
+        orgmapData.getCrypto().createKey("12345678");
 
-        try
-        {
-            dupMapData.loadCryptoKey("12345678");
-        }
-        catch(GeneralSecurityException | IOException e)
-        {
-            Assert.assertTrue(false);   
-        }
+        // assert to existitance of file and Key
+        Assert.assertTrue(
+            orgmapData.getCrypto().isKeyFileExists() && 
+            !orgmapData.getCrypto().iskeyEmpty()
+        );
 
-        try
-        {
-            String val1 = dupMapData.getSecure("Key1");
-            String val2 = dupMapData.getSecure("Key2");
-            String val3 = dupMapData.getSecure("Key3");
-            String val4 = dupMapData.getSecure("Key4");
+        // add some initial data
+        Assert.assertEquals(null, orgmapData.putSecure("Key1", "Value1"));
+        Assert.assertEquals(null, orgmapData.putSecure("Key2", "Value2"));
+        Assert.assertEquals(null, orgmapData.putSecure("Key3", "Value3"));
 
-            Assert.assertEquals("Value1", val1);
-            Assert.assertEquals("Value2", val2);
-            Assert.assertEquals("Value3", val3);
-            Assert.assertEquals(null, val4);
-        }
-        catch(GeneralSecurityException e)
-        {
-            Assert.assertTrue(false);   
-        }
+        // get the keys
+        Assert.assertEquals("Value1", orgmapData.getSecure("Key1"));
+        Assert.assertEquals("Value2", orgmapData.getSecure("Key2"));
+        Assert.assertEquals("Value3", orgmapData.getSecure("Key3"));
+
+        // delete original map
+        orgmapData = null;
+
+        // create new map data
+        Mapping dupmapData = new Mapping(Paths.get("./target/"));
+
+        // assert to not existitance of file and Key
+        Assert.assertTrue(
+            dupmapData.getCrypto().isKeyFileExists() && 
+            dupmapData.getCrypto().iskeyEmpty()
+        );
+
+        // create Key
+        dupmapData.getCrypto().loadKey("12345678");
+
+        // assert to existitance of file and Key
+        Assert.assertTrue(
+            dupmapData.getCrypto().isKeyFileExists() && 
+            !dupmapData.getCrypto().iskeyEmpty()
+        );
+
+        // get the keys
+        Assert.assertEquals("Value1", dupmapData.getSecure("Key1"));
+        Assert.assertEquals("Value2", dupmapData.getSecure("Key2"));
+        Assert.assertEquals("Value3", dupmapData.getSecure("Key3"));
     }
 }
