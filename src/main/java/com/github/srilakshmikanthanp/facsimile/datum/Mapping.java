@@ -9,14 +9,16 @@ package com.github.srilakshmikanthanp.facsimile.datum;
 import java.io.*;
 import java.nio.file.*;
 import java.security.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import com.google.gson.Gson;
+import javafx.util.Pair;
 
 
 /**
  * Mapping of the datum key to the value objects.
  */
-public class Mapping extends HashMap<String, String>
+public class Mapping
 {
     // datum file name
     private final String DATUM_FILE = "datum.json";
@@ -27,6 +29,9 @@ public class Mapping extends HashMap<String, String>
     // Crypto object
     private Crypto crypto;
 
+    // create data map
+    private HashMap<String, String> data = new HashMap<>();
+
     /**
      * Saves the data to presistant storage.
      * 
@@ -35,7 +40,7 @@ public class Mapping extends HashMap<String, String>
     private void saveData() throws IOException
     {
         Gson gson = new Gson();
-        var json = gson.toJson(this);
+        var json = gson.toJson(this.data);
         var path = baseDir.resolve(DATUM_FILE);
         Files.write(path, json.getBytes());
     }
@@ -52,7 +57,7 @@ public class Mapping extends HashMap<String, String>
         Gson gson = new Gson();
         var path = baseDir.resolve(DATUM_FILE);
         var json = Files.readString(path);
-        this.putAll(gson.fromJson(json, HashMap.class));
+        this.data.putAll(gson.fromJson(json, HashMap.class));
     }
 
     /**
@@ -90,38 +95,15 @@ public class Mapping extends HashMap<String, String>
     }
 
     /**
-     * Get method deletion.
-     */
-    @Override
-    public String get(Object key)
-    {
-        throw new UnsupportedOperationException(
-            "Use gutSecure() instead."
-        );
-    }
-
-    /**
-     * Put method deletion.
-     */
-    @Override
-    public String put(String key, String value)
-    {
-        throw new UnsupportedOperationException(
-            "Use PutSecure() instead."
-        );
-    }
-
-    /**
      * Get the value of the key.
      * 
      * @param key the key.
      * @return the value of the key.
      * @throws GeneralSecurityException if failed to decrypt.
      */
-    public String getSecure(String key)
-    throws GeneralSecurityException
+    public String get(String key) throws GeneralSecurityException
     {
-        var value = super.get(key);
+        var value = this.data.get(key);
 
         if(value == null)
         {
@@ -140,10 +122,10 @@ public class Mapping extends HashMap<String, String>
      * @throws GeneralSecurityException if failed to encrypt or decrypt.
      * @throws IOException if io error occurs while saving
      */
-    public String putSecure(String key, String value)
-    throws GeneralSecurityException, IOException
+    public String put(String key, String value) 
+        throws GeneralSecurityException, IOException
     {
-        var oldValue = super.put(key, this.crypto.encrypt(value));
+        var oldValue = this.data.put(key, this.crypto.encrypt(value));
         
         this.saveData();
         
@@ -153,5 +135,66 @@ public class Mapping extends HashMap<String, String>
         }
 
         return this.crypto.decrypt(oldValue);
+    }
+
+    /**
+     * removes the key from map
+     * 
+     * @param key kay to remove
+     * @return old value
+     * @throws GeneralSecurityException if failed to encrypt or decrypt.
+     * @throws IOException if io error occurs while saving
+     */
+    public String remove(String key) 
+        throws GeneralSecurityException, IOException
+    {
+        var oldValue = this.data.remove(key);
+
+        this.saveData();
+        
+        if(oldValue == null)
+        {
+            return null;
+        }
+
+        return this.crypto.decrypt(oldValue);
+    }
+
+    /**
+     * replace the kay value pair
+     * 
+     * @param key Key to replace
+     * @param value new value
+     * @return oldvalue
+     * @throws GeneralSecurityException if failed to encrypt or decrypt.
+     * @throws IOException if io error occurs while saving
+     */
+    public String replace(String key, String value) 
+        throws GeneralSecurityException, IOException
+    {
+        var oldValue = this.data.replace(key, this.crypto.encrypt(value));
+        this.saveData();
+        return oldValue;
+    }
+
+    /**
+     * returns the list of key value pair
+     * 
+     * @return list key value pair
+     * @throws GeneralSecurityException if decrtption fails
+     */
+    ArrayList<Pair<String, String>> getData() 
+        throws GeneralSecurityException
+    {
+        ArrayList<Pair<String, String>> list = new ArrayList<>();
+
+        for(String key: this.data.keySet())
+        {
+            list.add(new Pair<>(
+                key, this.crypto.decrypt(this.data.get(key))
+            ));
+        }
+
+        return list;
     }
 }

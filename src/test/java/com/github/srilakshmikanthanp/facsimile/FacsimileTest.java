@@ -54,14 +54,14 @@ public class FacsimileTest
         );
 
         // add some initial data
-        Assert.assertEquals(null, orgmapData.putSecure("Key1", "Value1"));
-        Assert.assertEquals(null, orgmapData.putSecure("Key2", "Value2"));
-        Assert.assertEquals(null, orgmapData.putSecure("Key3", "Value3"));
+        Assert.assertEquals(null, orgmapData.put("Key1", "Value1"));
+        Assert.assertEquals(null, orgmapData.put("Key2", "Value2"));
+        Assert.assertEquals(null, orgmapData.put("Key3", "Value3"));
 
         // get the keys
-        Assert.assertEquals("Value1", orgmapData.getSecure("Key1"));
-        Assert.assertEquals("Value2", orgmapData.getSecure("Key2"));
-        Assert.assertEquals("Value3", orgmapData.getSecure("Key3"));
+        Assert.assertEquals("Value1", orgmapData.get("Key1"));
+        Assert.assertEquals("Value2", orgmapData.get("Key2"));
+        Assert.assertEquals("Value3", orgmapData.get("Key3"));
 
         // delete original map
         orgmapData = null;
@@ -85,8 +85,8 @@ public class FacsimileTest
         );
 
         // get the keys
-        Assert.assertEquals("Value1", dupmapData.getSecure("Key1"));
-        Assert.assertEquals("Value2", dupmapData.getSecure("Key2"));
-        Assert.assertEquals("Value3", dupmapData.getSecure("Key3"));
+        Assert.assertEquals("Value1", dupmapData.get("Key1"));
+        Assert.assertEquals("Value2", dupmapData.get("Key2"));
+        Assert.assertEquals("Value3", dupmapData.get("Key3"));
     }
 }
