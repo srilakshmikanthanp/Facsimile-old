@@ -7,7 +7,6 @@ package com.github.srilakshmikanthanp.facsimile.system;
 
 
 import org.jnativehook.keyboard.*;
-import javafx.application.Platform;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
@@ -166,7 +165,7 @@ public class ShortCut extends NativeKeyAdapter
 
         if(keys_val.equals((modifiers + "+" + key).toUpperCase()))
         {
-            Platform.runLater(runnable);
+           if(runnable != null) runnable.run();
         }
     }
 }
