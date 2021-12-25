@@ -39,12 +39,32 @@ public class ShortCut extends NativeKeyAdapter
     private Runnable runnable;
 
     /**
+     * Saves the detials to PReference
+     */
+    private void saveToPreference()
+    {
+        //TODO: save to preference
+    }
+
+    /**
+     * Loads the detials from PReference
+     */
+    private void loadFromPreference()
+    {
+        //TODO: load from preference
+    }
+
+    /**
      * Constructor
      * @param runnable Runnable object
      */
     public ShortCut(Runnable runnable)
     {
+        // save the runnable object
         this.runnable = runnable;
+
+        // load the detials from preference
+        this.loadFromPreference();
     }
 
     /**
@@ -56,7 +76,8 @@ public class ShortCut extends NativeKeyAdapter
     {
         if(mask.equals(CTRL)|| mask.equals(ALT) || mask.equals(SHIFT))
         {
-            mask_one = mask;
+            this.mask_one = mask;
+            this.saveToPreference();
         }
         else
         {
@@ -73,7 +94,8 @@ public class ShortCut extends NativeKeyAdapter
     {
         if(mask.equals(CTRL)|| mask.equals(ALT) || mask.equals(SHIFT))
         {
-            mask_two = mask;
+            this.mask_two = mask;
+            this.saveToPreference();
         }
         else
         {
@@ -89,6 +111,7 @@ public class ShortCut extends NativeKeyAdapter
     public void setKeyChar(char key_char)
     {
         this.key_str = new String(new char[]{key_char});
+        this.saveToPreference();
     }
 
     /**

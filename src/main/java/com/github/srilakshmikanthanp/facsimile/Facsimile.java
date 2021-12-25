@@ -6,12 +6,10 @@
 package com.github.srilakshmikanthanp.facsimile;
 
 import javafx.application.*;
-//import javafx.scene.*;
+import javafx.scene.*;
 import javafx.stage.*;
-//import javafx.scene.layout.*;
-//import javafx.scene.control.*;
-
-//import com.github.srilakshmikanthanp.facsimile.system.ShortCut;
+import javafx.scene.layout.*;
+import javafx.scene.control.*;
 
 public class Facsimile extends Application 
 {
