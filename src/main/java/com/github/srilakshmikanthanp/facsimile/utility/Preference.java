@@ -7,6 +7,7 @@ package com.github.srilakshmikanthanp.facsimile.utility;
 
 
 import java.util.prefs.*;
+import com.github.srilakshmikanthanp.facsimile.system.ShortCut;
 
 
 /**
@@ -21,7 +22,7 @@ public class Preference
 
     // Preference Mask one
     public static String MASK_ONE_KEY = "MASK_ONE";
-    public static String MASK_ONE_DEFAULT = "CTRL";
+    public static String MASK_ONE_DEFAULT = ShortCut.CTRL;
 
     /**
      * Get the mask one.
@@ -41,5 +42,53 @@ public class Preference
     public static void setMaskOne(String maskOne)
     {
         prefs.put(MASK_ONE_KEY, maskOne);
+    }
+
+    // Preference Mask Two
+    public static String MASK_TWO_KEY = "MASK_TWO";
+    public static String MASK_TWO_DEFAULT = ShortCut.SHIFT;
+
+    /**
+     * Get the mask one.
+     * 
+     * @return the mask one.
+     */
+    public static String getMaskTwo()
+    {
+        return prefs.get(MASK_TWO_KEY, MASK_TWO_DEFAULT);
+    }
+
+    /**
+     * Set the mask one.
+     * 
+     * @param maskTwo the mask one.
+     */
+    public static void setMaskTwo(String maskTwo)
+    {
+        prefs.put(MASK_TWO_KEY, maskTwo);
+    }
+
+    // Preference Key value
+    public static String KEY_VALUE_KEY = "KEY_VALUE";
+    public static String KEY_VALUE_DEFAULT = "F";
+
+    /**
+     * Get the key value.
+     * 
+     * @return the key value.
+     */
+    public static String getKeyValue()
+    {
+        return prefs.get(KEY_VALUE_KEY, KEY_VALUE_DEFAULT);
+    }
+
+    /**
+     * Set the key value.
+     * 
+     * @param keyValue the key value.
+     */
+    public static void setKeyValue(String keyValue)
+    {
+        prefs.put(KEY_VALUE_KEY, keyValue);
     }
 }
