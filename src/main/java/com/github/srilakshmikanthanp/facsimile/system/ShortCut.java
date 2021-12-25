@@ -5,11 +5,10 @@
 
 package com.github.srilakshmikanthanp.facsimile.system;
 
-
 import org.jnativehook.keyboard.*;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
-
+import com.github.srilakshmikanthanp.facsimile.utility.Preference;
 
 /**
  * Class which handles the Global Key Event
@@ -42,7 +41,9 @@ public class ShortCut extends NativeKeyAdapter
      */
     private void saveToPreference()
     {
-        //TODO: save to preference
+        Preference.setMaskOne(mask_one);
+        Preference.setMaskTwo(mask_two);
+        Preference.setKeyValue(key_str);
     }
 
     /**
@@ -50,7 +51,9 @@ public class ShortCut extends NativeKeyAdapter
      */
     private void loadFromPreference()
     {
-        //TODO: load from preference
+        this.mask_one = Preference.getMaskOne();
+        this.mask_two = Preference.getMaskTwo();
+        this.key_str = Preference.getKeyValue();
     }
 
     /**

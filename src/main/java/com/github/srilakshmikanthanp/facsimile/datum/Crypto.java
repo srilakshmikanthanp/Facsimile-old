@@ -13,6 +13,7 @@ import java.security.*;
 import java.util.Base64;
 import java.security.KeyStore;
 
+
 /**
  * Class That handles the encrypion and decryption of the data.
  */
@@ -64,20 +65,9 @@ public class Crypto
     * @return true if the key file exists.
     * @return false if the key file does not exist.
     */
-   public boolean isKeyFileExists()
+   public boolean isKeyExists()
    {
        return Files.exists(this.baseDir.resolve(KEY_FILE_NAME));
-   }
-
-   /**
-    * Checks if the key is empty.
-    * 
-    * @return true if the key is empty.
-    * @return false if the key is not empty.
-    */
-   public boolean iskeyEmpty()
-   {
-       return this.secretKey == null;
    }
 
    /**
@@ -87,7 +77,7 @@ public class Crypto
     * @throws IOException if io fails
     * @throws GeneralSecurityException if error in creating
     */
-   public void createKey(String password) throws IOException, GeneralSecurityException
+   public void createNewKey(String password) throws IOException, GeneralSecurityException
    {
        KeyGenerator keyGen = KeyGenerator.getInstance(ALGORITHM);
        var secretKey = keyGen.generateKey();
@@ -100,7 +90,12 @@ public class Crypto
        kStore.setEntry(KEY_ALIAS, skEntry, prot);
 
        var fileos = new FileOutputStream(baseDir.resolve(KEY_FILE_NAME).toFile());
-       kStore.store (fileos, password.toCharArray());
+       
+       try {
+            kStore.store (fileos, password.toCharArray());
+       } finally {
+            fileos.close();
+       }
 
        this.secretKey = secretKey;
    }
@@ -112,15 +107,57 @@ public class Crypto
     * @throws IOException if io fails
     * @throws GeneralSecurityException if error in loading
     */
-   public void loadKey(String password) throws IOException, GeneralSecurityException
+   public void loadExtistingKey(String password) throws IOException, GeneralSecurityException
    {
-       var fis = new FileInputStream(baseDir.resolve(KEY_FILE_NAME).toFile());
-       var kStore = KeyStore.getInstance(KeyStore.getDefaultType());
-       kStore.load(fis, password.toCharArray());
+        var fileis = new FileInputStream(baseDir.resolve(KEY_FILE_NAME).toFile());
+        var kStore = KeyStore.getInstance(KeyStore.getDefaultType());
+       
+        try {
+            kStore.load(fileis, password.toCharArray());
+        } finally {
+            fileis.close();
+        }
 
-       var prot  = new KeyStore.PasswordProtection(password.toCharArray());        
-       var skEntry = (KeyStore.SecretKeyEntry) kStore.getEntry(KEY_ALIAS, prot);
-       this.secretKey = skEntry.getSecretKey();
+        var prot  = new KeyStore.PasswordProtection(password.toCharArray());        
+        var skEntry = (KeyStore.SecretKeyEntry) kStore.getEntry(KEY_ALIAS, prot);
+        this.secretKey = skEntry.getSecretKey();
+   }
+
+   /**
+    * Changes the password for the key file.
+    *
+    * @param newPassword new password
+    * @throws IOException if io fails
+    * @throws GeneralSecurityException if error in loading
+    */
+   public void changeKeyPassword(String oldPassword, String newPassword) 
+        throws IOException, GeneralSecurityException
+   {
+        var fileis = new FileInputStream(baseDir.resolve(KEY_FILE_NAME).toFile());
+        var kStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        
+        try {
+            kStore.load(fileis, oldPassword.toCharArray());
+        } finally {
+            fileis.close();
+        }
+
+        var prot  = new KeyStore.PasswordProtection(oldPassword.toCharArray());
+        var skEntry = (KeyStore.SecretKeyEntry) kStore.getEntry(KEY_ALIAS, prot);
+
+        KeyStore newKStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        newKStore.load(null, newPassword.toCharArray());
+
+        var newProt  = new KeyStore.PasswordProtection(newPassword.toCharArray());
+        newKStore.setEntry(KEY_ALIAS, skEntry, newProt);
+
+        var fileos = new FileOutputStream(baseDir.resolve(KEY_FILE_NAME).toFile());
+
+        try {
+            newKStore.store (fileos, newPassword.toCharArray());
+        } finally {
+            fileos.close();
+        }
    }
 
    /**

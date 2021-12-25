@@ -101,7 +101,8 @@ public class Mapping
      * @return the value of the key.
      * @throws GeneralSecurityException if failed to decrypt.
      */
-    public String get(String key) throws GeneralSecurityException
+    public String get(String key) 
+        throws GeneralSecurityException
     {
         var value = this.data.get(key);
 
