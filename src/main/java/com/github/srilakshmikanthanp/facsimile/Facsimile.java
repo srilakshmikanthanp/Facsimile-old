@@ -11,6 +11,8 @@ import javafx.stage.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 
+import com.github.srilakshmikanthanp.facsimile.panes.*;
+
 public class Facsimile extends Application 
 {
     @Override
