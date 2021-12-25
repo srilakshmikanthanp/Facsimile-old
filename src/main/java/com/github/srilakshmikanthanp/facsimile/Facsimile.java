@@ -8,7 +8,10 @@ package com.github.srilakshmikanthanp.facsimile;
 import javafx.application.*;
 //import javafx.scene.*;
 import javafx.stage.*;
+//import javafx.scene.layout.*;
 //import javafx.scene.control.*;
+
+//import com.github.srilakshmikanthanp.facsimile.system.ShortCut;
 
 public class Facsimile extends Application 
 {
@@ -20,6 +23,6 @@ public class Facsimile extends Application
 
     public static void main(String[] args) 
     {
-
+        launch(args);
     }
 }

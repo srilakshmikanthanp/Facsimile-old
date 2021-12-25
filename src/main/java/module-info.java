@@ -3,6 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+@SuppressWarnings("module")
 module facsimile 
 {
     // from java
@@ -10,6 +11,9 @@ module facsimile
 
     // from gson
     requires com.google.gson;
+
+    // from jnative hook
+    requires jnativehook;
 
     // from javafx
     requires javafx.controls;
