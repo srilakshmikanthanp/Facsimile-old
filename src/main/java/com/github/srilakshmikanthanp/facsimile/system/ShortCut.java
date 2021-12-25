@@ -5,11 +5,9 @@
 
 package com.github.srilakshmikanthanp.facsimile.system;
 
-
 import org.jnativehook.keyboard.*;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
-
 import com.github.srilakshmikanthanp.facsimile.utility.Preference;
 
 /**

@@ -18,7 +18,8 @@ public class Preference
     /**
      * PReference node for the application.
      */
-    public static Preferences prefs = Preferences.userNodeForPackage(Preference.class);
+    private static Preferences prefs = Preferences.userNodeForPackage(Preference.class);
+
 
     // Preference Mask one
     public static String MASK_ONE_KEY = "MASK_ONE";
@@ -90,5 +91,39 @@ public class Preference
     public static void setKeyValue(String keyValue)
     {
         prefs.put(KEY_VALUE_KEY, keyValue);
+    }
+
+    // preference for dark mode
+    public static String DARK_MODE_KEY = "DARK_MODE";
+    public static boolean DARK_MODE_DEFAULT = false;
+
+    /**
+     * Get the dark mode.
+     * 
+     * @return the dark mode.
+     */
+    public static boolean getDarkMode()
+    {
+        return prefs.getBoolean(DARK_MODE_KEY, DARK_MODE_DEFAULT);
+    }
+
+    /**
+     * Set the dark mode.
+     * 
+     * @param darkMode the dark mode.
+     */
+    public static void setDarkMode(boolean darkMode)
+    {
+        prefs.putBoolean(DARK_MODE_KEY, darkMode);
+    }
+
+    /**
+     * Add the preference change listener to the preference.
+     * 
+     * @param listener the preference change listener.
+     */
+    public static void addPreferenceChangeListener(PreferenceChangeListener listener)
+    {
+        prefs.addPreferenceChangeListener(listener);
     }
 }

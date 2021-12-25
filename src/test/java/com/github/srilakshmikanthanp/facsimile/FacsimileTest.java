@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.nio.file.Paths;
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 
+
 public class FacsimileTest 
 {
     /**
@@ -40,17 +41,15 @@ public class FacsimileTest
 
         // assert to not existitance of file and Key
         Assert.assertTrue(
-            !orgmapData.getCrypto().isKeyFileExists() &&
-            orgmapData.getCrypto().iskeyEmpty()
+            !orgmapData.getCrypto().isKeyExists()
         );
 
         // create Key
-        orgmapData.getCrypto().createKey("12345678");
+        orgmapData.getCrypto().createNewKey("12345678");
 
         // assert to existitance of file and Key
         Assert.assertTrue(
-            orgmapData.getCrypto().isKeyFileExists() && 
-            !orgmapData.getCrypto().iskeyEmpty()
+            orgmapData.getCrypto().isKeyExists()
         );
 
         // add some initial data
@@ -63,6 +62,11 @@ public class FacsimileTest
         Assert.assertEquals("Value2", orgmapData.get("Key2"));
         Assert.assertEquals("Value3", orgmapData.get("Key3"));
 
+        orgmapData.getCrypto().changeKeyPassword(
+            "12345678", 
+            "ABCDEF"
+        );
+
         // delete original map
         orgmapData = null;
 
@@ -71,17 +75,15 @@ public class FacsimileTest
 
         // assert to not existitance of file and Key
         Assert.assertTrue(
-            dupmapData.getCrypto().isKeyFileExists() && 
-            dupmapData.getCrypto().iskeyEmpty()
+            dupmapData.getCrypto().isKeyExists()
         );
 
         // create Key
-        dupmapData.getCrypto().loadKey("12345678");
+        dupmapData.getCrypto().loadExtistingKey("ABCDEF");
 
         // assert to existitance of file and Key
         Assert.assertTrue(
-            dupmapData.getCrypto().isKeyFileExists() && 
-            !dupmapData.getCrypto().iskeyEmpty()
+            dupmapData.getCrypto().isKeyExists()
         );
 
         // get the keys
