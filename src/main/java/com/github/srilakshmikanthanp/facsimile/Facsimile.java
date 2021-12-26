@@ -16,6 +16,8 @@ import com.github.srilakshmikanthanp.facsimile.stages.*;
 import com.github.srilakshmikanthanp.facsimile.system.*;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
 
+import org.jnativehook.NativeHookException;
+
 /**
  * Main Panel for the Facsimile.
  */
@@ -48,16 +50,6 @@ public class Facsimile extends Application
         pStage.setWidth(0.0);
         pStage.setOpacity(0.0);
         pStage.show();
-        var MainStage = new MainStage(pStage);
-        var shorcut = new ShortCut(() -> {
-            Platform.runLater(() -> {
-                if(!MainStage.isShowing()) {
-                    MainStage.show();
-                } else {
-                    MainStage.hide();
-                }
-            });
-        });
     }
 
     public static void main(String[] args) 
