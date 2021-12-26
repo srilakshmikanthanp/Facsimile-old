@@ -71,6 +71,16 @@ public class Crypto
    }
 
    /**
+    * true if key file exits  else false
+    *
+    * @return status
+    */
+   public boolean isKeyFileExits()
+   {
+        return Files.exists(this.baseDir.resolve(KEY_FILE_NAME));
+   }
+
+   /**
     * Generates the key and saves it to the key file.
     * 
     * @param password The password to be used for KeyStore.
