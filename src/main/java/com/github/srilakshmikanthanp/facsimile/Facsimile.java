@@ -17,6 +17,25 @@ import com.github.srilakshmikanthanp.facsimile.system.*;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
 
 /**
+ * Main Panel for the Facsimile.
+ */
+class MainPane extends BorderPane
+{
+
+}
+
+/**
+ * Main Stage for the Facsimile.
+ */
+class MainStage extends Stage
+{
+    public MainStage(Stage pStage)
+    {
+
+    }
+}
+
+/**
  * Main Application class
  */
 public class Facsimile extends Application 
@@ -24,7 +43,21 @@ public class Facsimile extends Application
     @Override
     public void start(Stage pStage) 
     {
-
+        pStage.initStyle(StageStyle.UTILITY);
+        pStage.setHeight(0.0);
+        pStage.setWidth(0.0);
+        pStage.setOpacity(0.0);
+        pStage.show();
+        var MainStage = new MainStage(pStage);
+        var shorcut = new ShortCut(() -> {
+            Platform.runLater(() -> {
+                if(!MainStage.isShowing()) {
+                    MainStage.show();
+                } else {
+                    MainStage.hide();
+                }
+            });
+        });
     }
 
     public static void main(String[] args) 

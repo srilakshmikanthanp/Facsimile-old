@@ -111,6 +111,8 @@ public class GpassStage extends Stage
         this.initStyle(StageStyle.TRANSPARENT);
         this.initOwner(parent);
 
+        // TODO style the Stage
+
         // add error color
         if(!errorFree)
         {
