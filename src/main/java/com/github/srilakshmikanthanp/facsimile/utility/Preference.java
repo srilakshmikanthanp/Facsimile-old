@@ -71,7 +71,7 @@ public class Preference
 
     // Preference Key value
     public static String KEY_VALUE_KEY = "KEY_VALUE";
-    public static String KEY_VALUE_DEFAULT = "F";
+    public static String KEY_VALUE_DEFAULT = ";";
 
     /**
      * Get the key value.

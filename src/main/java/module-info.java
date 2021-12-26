@@ -8,6 +8,8 @@ module facsimile
 {
     // from java
     requires java.prefs;
+    requires java.logging;
+    requires java.desktop;
 
     // from gson
     requires com.google.gson;

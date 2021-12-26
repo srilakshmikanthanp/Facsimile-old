@@ -5,7 +5,9 @@
 
 package com.github.srilakshmikanthanp.facsimile.system;
 
+import java.util.logging.*;
 import org.jnativehook.keyboard.*;
+import javafx.scene.input.KeyCode;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import com.github.srilakshmikanthanp.facsimile.utility.Preference;
@@ -67,6 +69,14 @@ public class ShortCut extends NativeKeyAdapter
 
         // load the detials from preference
         this.loadFromPreference();
+
+        // reset
+        LogManager.getLogManager().reset();
+
+        // disable loging
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
+        logger.setUseParentHandlers(false);
     }
 
     /**
@@ -162,14 +172,27 @@ public class ShortCut extends NativeKeyAdapter
     @Override
     public void nativeKeyPressed(NativeKeyEvent e)
     {
-        String keys_val = mask_one + "+" + mask_two + "+" + key_str;
-        String modifiers = NativeKeyEvent.getModifiersText(e.getModifiers());
-        String key = NativeKeyEvent.getKeyText(e.getKeyCode());
+        var modifiers = NativeKeyEvent.getModifiersText(e.getModifiers());
+        var key = NativeKeyEvent.getKeyText(e.getKeyCode());
+        
+        modifiers = modifiers.toUpperCase();
 
-        if(keys_val.equals((modifiers + "+" + key).toUpperCase()))
+        if(!(modifiers.contains(mask_one) && modifiers.contains(mask_two)))
         {
-           if(runnable != null) runnable.run();
+            return;
         }
+
+        if(!key_str.equals(KeyCode.getKeyCode(key).getChar()))
+        {
+            return;
+        }
+
+        if(runnable == null)
+        {
+            return;
+        }
+
+        runnable.run();
     }
 
     /**
