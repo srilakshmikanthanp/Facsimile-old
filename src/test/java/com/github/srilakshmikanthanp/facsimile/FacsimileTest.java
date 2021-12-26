@@ -12,8 +12,7 @@ import org.junit.Test;
 import java.nio.file.Paths;
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 
-
-public class FacsimileTest 
+public class FacsimileTest
 {
     /**
      * Test function for the Datum PAckage
@@ -40,17 +39,13 @@ public class FacsimileTest
         Mapping orgmapData = new Mapping(Paths.get("./target/"));
 
         // assert to not existitance of file and Key
-        Assert.assertTrue(
-            !orgmapData.getCrypto().isKeyExists()
-        );
+        Assert.assertTrue(!orgmapData.getCryptoEn().isKeyExists());
 
         // create Key
-        orgmapData.getCrypto().createNewKey("12345678");
+        orgmapData.getCryptoEn().createNewKey("12345678");
 
         // assert to existitance of file and Key
-        Assert.assertTrue(
-            orgmapData.getCrypto().isKeyExists()
-        );
+        Assert.assertTrue(orgmapData.getCryptoEn().isKeyExists());
 
         // add some initial data
         Assert.assertEquals(null, orgmapData.put("Key1", "Value1"));
@@ -62,9 +57,8 @@ public class FacsimileTest
         Assert.assertEquals("Value2", orgmapData.get("Key2"));
         Assert.assertEquals("Value3", orgmapData.get("Key3"));
 
-        orgmapData.getCrypto().changeKeyPassword(
-            "12345678", 
-            "ABCDEF"
+        orgmapData.getCryptoEn().changeKeyPassword(
+            "12345678", "ABCDEF"
         );
 
         // delete original map
@@ -74,17 +68,13 @@ public class FacsimileTest
         Mapping dupmapData = new Mapping(Paths.get("./target/"));
 
         // assert to not existitance of file and Key
-        Assert.assertTrue(
-            dupmapData.getCrypto().isKeyExists()
-        );
+        Assert.assertTrue(dupmapData.getCryptoEn().isKeyExists());
 
         // create Key
-        dupmapData.getCrypto().loadExtistingKey("ABCDEF");
+        dupmapData.getCryptoEn().loadExtistingKey("ABCDEF");
 
         // assert to existitance of file and Key
-        Assert.assertTrue(
-            dupmapData.getCrypto().isKeyExists()
-        );
+        Assert.assertTrue(dupmapData.getCryptoEn().isKeyExists());
 
         // get the keys
         Assert.assertEquals("Value1", dupmapData.get("Key1"));

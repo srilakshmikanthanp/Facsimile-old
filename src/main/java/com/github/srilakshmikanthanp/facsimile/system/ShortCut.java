@@ -171,4 +171,14 @@ public class ShortCut extends NativeKeyAdapter
            if(runnable != null) runnable.run();
         }
     }
+
+    /**
+     * Shortcut Keys available
+     * 
+     * @return String[] keys
+     */
+    public static String[] getKeys()
+    {
+        return new String[]{CTRL, ALT, SHIFT};
+    }
 }

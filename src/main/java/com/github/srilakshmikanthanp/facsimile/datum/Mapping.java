@@ -27,7 +27,7 @@ public class Mapping
     private Path baseDir;
 
     // Crypto object
-    private Crypto crypto;
+    private CryptoEn cryptoEn;
 
     // create data map
     private HashMap<String, String> data = new HashMap<>();
@@ -71,7 +71,7 @@ public class Mapping
         this.baseDir = baseDir;
 
         // create the crypto object
-        this.crypto = new Crypto(baseDir);
+        this.cryptoEn = new CryptoEn(baseDir);
 
         // load the data
         try 
@@ -89,9 +89,9 @@ public class Mapping
      * 
      * @return Crypto
      */
-    public Crypto getCrypto()
+    public CryptoEn getCryptoEn()
     {
-        return this.crypto;
+        return this.cryptoEn;
     }
 
     /**
@@ -111,7 +111,7 @@ public class Mapping
             return null;
         }
 
-        return this.crypto.decrypt(value);
+        return this.cryptoEn.decrypt(value);
     }
 
     /**
@@ -126,7 +126,7 @@ public class Mapping
     public String put(String key, String value) 
         throws GeneralSecurityException, IOException
     {
-        var oldValue = this.data.put(key, this.crypto.encrypt(value));
+        var oldValue = this.data.put(key, this.cryptoEn.encrypt(value));
         
         this.saveData();
         
@@ -135,7 +135,7 @@ public class Mapping
             return null;
         }
 
-        return this.crypto.decrypt(oldValue);
+        return this.cryptoEn.decrypt(oldValue);
     }
 
     /**
@@ -158,7 +158,7 @@ public class Mapping
             return null;
         }
 
-        return this.crypto.decrypt(oldValue);
+        return this.cryptoEn.decrypt(oldValue);
     }
 
     /**
@@ -173,7 +173,7 @@ public class Mapping
     public String replace(String key, String value) 
         throws GeneralSecurityException, IOException
     {
-        var oldValue = this.data.replace(key, this.crypto.encrypt(value));
+        var oldValue = this.data.replace(key, this.cryptoEn.encrypt(value));
         this.saveData();
         return oldValue;
     }
@@ -192,7 +192,7 @@ public class Mapping
         for(String key: this.data.keySet())
         {
             list.add(new Pair<>(
-                key, this.crypto.decrypt(this.data.get(key))
+                key, this.cryptoEn.decrypt(this.data.get(key))
             ));
         }
 

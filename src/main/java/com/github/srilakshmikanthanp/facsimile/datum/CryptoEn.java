@@ -17,7 +17,7 @@ import java.security.KeyStore;
 /**
  * Class That handles the encrypion and decryption of the data.
  */
-public class Crypto
+public class CryptoEn
 {
    // The Key File Name
    private static final String KEY_FILE_NAME = "crypto.key";
@@ -43,7 +43,7 @@ public class Crypto
     * @param baseDir The base directory for the data.
     * @throws RuntimeException if construction fails
     */
-   public Crypto(Path baseDir)
+   public CryptoEn(Path baseDir)
    {
        // store the base dir
        this.baseDir = baseDir;
@@ -68,6 +68,16 @@ public class Crypto
    public boolean isKeyExists()
    {
        return Files.exists(this.baseDir.resolve(KEY_FILE_NAME));
+   }
+
+   /**
+    * true if key file exits  else false
+    *
+    * @return status
+    */
+   public boolean isKeyFileExits()
+   {
+        return Files.exists(this.baseDir.resolve(KEY_FILE_NAME));
    }
 
    /**
