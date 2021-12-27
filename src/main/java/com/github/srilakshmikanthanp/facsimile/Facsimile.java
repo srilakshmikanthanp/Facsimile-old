@@ -147,7 +147,7 @@ public class Facsimile extends Application
         }
 
         // add to system tray
-        sysTray = SysTray.addToSystemTray(runnable);
+        sysTray = SysTray.addToTray(runnable);
     }
 
     /**
@@ -167,7 +167,7 @@ public class Facsimile extends Application
         }
 
         // remove from tray
-        sysTray.removeFromSystemTray();
+        sysTray.removeFromTray();
     }
 
     public static void main(String[] args) 

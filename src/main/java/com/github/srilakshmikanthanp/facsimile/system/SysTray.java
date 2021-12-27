@@ -90,17 +90,9 @@ public class SysTray
     }
 
     /**
-     * Removes the icon from system tray
-     */
-    public void removeFromSystemTray()
-    {
-        tray.remove(icon);
-    }
-
-    /**
      * Adds Icon to tray
      */
-    public static SysTray addToSystemTray(Runnable runnable)
+    public static SysTray addToTray(Runnable runnable)
     {
         if(instance == null)
         {
@@ -108,5 +100,13 @@ public class SysTray
         }
 
         return instance;
+    }
+
+    /**
+     * Removes the icon from system tray
+     */
+    public void removeFromTray()
+    {
+        tray.remove(icon);
     }
 }
