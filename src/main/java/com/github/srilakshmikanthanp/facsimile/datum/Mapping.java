@@ -20,6 +20,12 @@ import javafx.util.Pair;
  */
 public class Mapping
 {
+    // Mappint change Event Listener
+    public interface ChangeListener
+    {
+        void onChange();
+    }
+
     // datum file name
     private final String DATUM_FILE = "datum.json";
 
@@ -32,6 +38,20 @@ public class Mapping
     // create data map
     private HashMap<String, String> data = new HashMap<>();
 
+    // change listener
+    private ArrayList<ChangeListener> changeLis = new ArrayList<>();
+
+    /**
+     * Notifies the change listeners.
+     */
+    private void notifyChange()
+    {
+        for (var lis : this.changeLis)
+        {
+            lis.onChange();
+        }
+    }
+
     /**
      * Saves the data to presistant storage.
      * 
@@ -43,8 +63,8 @@ public class Mapping
         var json = gson.toJson(this.data);
         var path = baseDir.resolve(DATUM_FILE);
         Files.write(path, json.getBytes());
+        this.notifyChange();
     }
-
 
     /**
      * Loads the data from presistant storage.
@@ -197,5 +217,25 @@ public class Mapping
         }
 
         return list;
+    }
+
+    /**
+     * Add change listener
+     * 
+     * @param listener listener to add
+     */
+    public void addChangeListener(ChangeListener listener)
+    {
+        this.changeLis.add(listener);
+    }
+
+    /**
+     * Remove change listener
+     * 
+     * @param listener listener to remove
+     */
+    public void removeChangeListener(ChangeListener listener)
+    {
+        this.changeLis.remove(listener);
     }
 }

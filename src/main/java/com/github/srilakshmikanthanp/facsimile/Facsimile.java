@@ -5,27 +5,35 @@
 
 package com.github.srilakshmikanthanp.facsimile;
 
+import java.nio.file.Paths;
+
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 
+import org.jnativehook.NativeHookException;
+
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.stages.*;
 import com.github.srilakshmikanthanp.facsimile.system.*;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
-
-import org.jnativehook.NativeHookException;
-
+ 
 /**
  * Main Panel for the Facsimile.
  */
 class MainPane extends BorderPane
 {
-    public MainPane(Stage pStage)
-    {
+    // mappind data to app
+    private Mapping mapping;
 
+    /**
+     * Constructor.
+     */
+    public MainPane(Mapping mapping)
+    {
+        this.mapping = mapping;
     }
 }
 
@@ -34,16 +42,62 @@ class MainPane extends BorderPane
  */
 class MainStage extends Stage
 {
+    // location to store data on production
+    private static final String PRD_LOC = System.getProperty(
+        "user.home"
+    );
+
+    // location to store data on development
+    private static final String DEV_LOC = "target";
+
+    // dimension of application
+    private static final int Width = 800, Height = 600;
+
+    // mapping data for app
+    private Mapping mapping;
+
+    // main pane of the application
+    private MainPane mainPane;
+
     /**
      * Constructor
      * 
-     * @param pStage PRimary Stage
+     * @param pStage Primary Stage
      */
     public MainStage(Stage pStage)
     {
         // init stage
         this.initOwner(pStage);
         this.initStyle(StageStyle.UNDECORATED);
+
+        // create mapping
+        this.mapping = new Mapping(
+            Paths.get(DEV_LOC, ".facsimile")
+        );
+    }
+
+    /**
+     * Sets visible or hide
+     * 
+     * @param visible true for Visible or false for hide
+     */
+    public void setVisible(boolean visible)
+    {
+        // if main pane is null it is first time
+        if(mainPane == null)
+        {
+            
+        }
+
+        // set visible or not
+        if(visible)
+        {
+            this.show();
+        }
+        else
+        {
+            this.hide();
+        }
     }
 }
 
@@ -76,23 +130,24 @@ public class Facsimile extends Application
 
         // Runnable instance to start
         Runnable runnable = () -> Platform.runLater(() -> {
-            if(!mainStage.isShowing()) {
-                mainStage.show();
-            }
+            mainStage.setVisible(!mainStage.isShowing());
         });
-
-        // add to system tray
-        sysTray = SysTray.addToSystemTray(runnable);
 
         // initilize
         shortCut.setRunnable(runnable);
 
         // register the shortcut
-        try {
+        try 
+        {
             shortCut.register();
-        } catch (NativeHookException e) {
+        } 
+        catch (NativeHookException e) 
+        {
             // TODO show error
         }
+
+        // add to system tray
+        sysTray = SysTray.addToSystemTray(runnable);
     }
 
     /**
@@ -102,9 +157,12 @@ public class Facsimile extends Application
     public void stop()
     {
         // unregister the shortcut
-        try {
+        try 
+        {
             shortCut.unregister();
-        } catch (NativeHookException e) {
+        } 
+        catch (NativeHookException e) 
+        {
             // TODO show error
         }
 

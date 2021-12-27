@@ -98,26 +98,6 @@ public class Preference
     public static boolean DARK_MODE_DEFAULT = false;
 
     /**
-     * Get the dark mode.
-     * 
-     * @return the dark mode.
-     */
-    public static boolean getDarkMode()
-    {
-        return prefs.getBoolean(DARK_MODE_KEY, DARK_MODE_DEFAULT);
-    }
-
-    /**
-     * Set the dark mode.
-     * 
-     * @param darkMode the dark mode.
-     */
-    public static void setDarkMode(boolean darkMode)
-    {
-        prefs.putBoolean(DARK_MODE_KEY, darkMode);
-    }
-
-    /**
      * Add the preference change listener to the preference.
      * 
      * @param listener the preference change listener.

@@ -10,6 +10,11 @@ import javafx.application.Platform;
  */
 public class SysTray 
 {
+    // application Link
+    private static final String APP_LINK = (
+        "https://github.com/srilakshmikanthanp/Facsimile"
+    );
+
     // is tray added
     private static SysTray instance = null;
 
@@ -21,9 +26,6 @@ public class SysTray
         new ImageIcon(getClass().getResource("/images/logo.png")).getImage(),
         "FacSimile"
     );
-
-    // runnable
-    private Runnable runnable = null;
 
     /**
      * Open the url in browser
@@ -47,9 +49,6 @@ public class SysTray
      */
     private SysTray(Runnable runnable)
     {
-        // save runnable
-        this.runnable = runnable;
-
         // define vars
         var menu = new PopupMenu();
         var app = new MenuItem("FacSimile");
@@ -68,7 +67,7 @@ public class SysTray
         });
 
         about.addActionListener((evt) -> {
-            this.openWebPage("https://github.com/srilakshmikanthanp/Facsimile");
+            this.openWebPage(APP_LINK);
         });
 
         exit.addActionListener((evt) -> {
