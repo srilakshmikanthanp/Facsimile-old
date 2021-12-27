@@ -12,7 +12,7 @@ import javafx.scene.control.*;
 public class CpassStage extends Stage
 {
     // button status
-    public final int OK_BUTTON = 1, CALCEL_BUTTON = 2;
+    public static final int OK_BUTTON = 1, CALCEL_BUTTON = 2;
 
     // Password lable
     private Label oldlabel = new Label("Old Password");

@@ -67,7 +67,7 @@ public class CryptoEn
     */
    public boolean isKeyExists()
    {
-       return Files.exists(this.baseDir.resolve(KEY_FILE_NAME));
+       return secretKey != null;
    }
 
    /**

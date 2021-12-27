@@ -19,7 +19,7 @@ import javafx.scene.control.*;
 public class NpassStage extends Stage
 {
     // button status
-    public final int OK_BUTTON = 1, CALCEL_BUTTON = 2;
+    public static final int OK_BUTTON = 1, CALCEL_BUTTON = 2;
 
     // Password lable
     private Label newlabel = new Label("Enter Password");
@@ -153,7 +153,7 @@ public class NpassStage extends Stage
      * 
      * @return old password
      */
-    public String getOldPassword()
+    public String getNewPassword()
     {
         return newPass.getText();
     }
@@ -163,7 +163,7 @@ public class NpassStage extends Stage
      * 
      * @return new password
      */
-    public String getNewPassword()
+    public String getConPassword()
     {
         return conPass.getText();
     }

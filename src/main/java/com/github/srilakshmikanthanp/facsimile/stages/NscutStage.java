@@ -17,7 +17,7 @@ import com.github.srilakshmikanthanp.facsimile.system.ShortCut;
 public class NscutStage extends Stage 
 {
     // button status
-    public final int OK_BUTTON = 1, CALCEL_BUTTON = 2;
+    public static final int OK_BUTTON = 1, CALCEL_BUTTON = 2;
 
     // ShortCut Key lable
     private Label nscutLabel = new Label("Shortcut Key");
