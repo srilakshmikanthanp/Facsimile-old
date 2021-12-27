@@ -1,47 +1,47 @@
-package com.github.srilakshmikanthanp.facsimile.stages;
+// Copyright (c) 2021 Sri Lakshmi Kanthan P
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
+package com.github.srilakshmikanthanp.facsimile.dialog;
 
 import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.scene.*;
+import javafx.collections.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 import javafx.scene.control.*;
-import javafx.collections.FXCollections;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 
-import com.github.srilakshmikanthanp.facsimile.system.ShortCut;
+import com.github.srilakshmikanthanp.facsimile.system.*;
+import com.github.srilakshmikanthanp.facsimile.utility.*;
 
 /**
  * This class is used to Change ShortCut Key..
  */
-public class NscutStage extends Stage 
+public class AlterShortCutDialog extends Stage 
 {
     // button status
     public static final int OK_BUTTON = 1, CALCEL_BUTTON = 2;
 
-    // Title
-    private Label facsimile = new Label("Facsimile");
-
-    // ShortCut Key lable
-    private Label nscutLabel = new Label("Shortcut Key");
-
     // mask one box
-    private ChoiceBox<String> maskOneBox = new ChoiceBox<>(
+    private ChoiceBox<String> maskOneBox = new ChoiceBox<> (
         FXCollections.observableArrayList(
             ShortCut.getKeys()
         )
     );
 
     // mask two box
-    private ChoiceBox<String> maskTwoBox = new ChoiceBox<>(
+    private ChoiceBox<String> maskTwoBox = new ChoiceBox<> (
         FXCollections.observableArrayList(
             ShortCut.getKeys()
         )
     );
 
+    // ShortCut Key lable
+    private Label nscutLabel = new Label("Shortcut Key");
+
     // TextField
-    private TextField textField = new TextField();
+    private TextField keyField = new TextField();
 
     // cut label
     private Label cutLabel = new Label("❌");
@@ -75,8 +75,9 @@ public class NscutStage extends Stage
         });
 
         cutButton.setOpacity(0);
-        spane.getChildren().addAll(cutLabel, cutButton);
-        mpane.setLeft(facsimile);
+        spane.getChildren().addAll(
+            cutLabel, cutButton
+        );
         mpane.setRight(spane);
 
         return mpane;
@@ -89,9 +90,9 @@ public class NscutStage extends Stage
      */
     private Pane getCenterPane()
     {
-        var hsctbox = new HBox(maskOneBox, maskTwoBox, textField);
-        var hbtnbox = new HBox(okButton, cancelButton);
-        var vbox = new VBox(nscutLabel, hsctbox, hbtnbox);
+        var cbox = new HBox(maskOneBox, maskTwoBox, keyField);
+        var bbox = new HBox(okButton, cancelButton);
+        var vbox = new VBox(nscutLabel, cbox, bbox);
 
         // add event listeners
         okButton.setOnAction((evt) -> {
@@ -104,8 +105,15 @@ public class NscutStage extends Stage
             this.hide();
         });
 
+        // intialize
+        cbox.setSpacing(10);
+        bbox.setSpacing(10);
+        vbox.setSpacing(10);
+        cbox.setAlignment(Pos.CENTER);
+        bbox.setAlignment(Pos.CENTER);
         vbox.setAlignment(Pos.CENTER);
 
+        // done
         return vbox;
     }
 
@@ -115,27 +123,25 @@ public class NscutStage extends Stage
      * @param parent Parent Stage.
      * @param errorFree Flag to indicate if the stage is in error free mode.
      */
-    public NscutStage(Stage parent, boolean errorFree) 
+    public AlterShortCutDialog(Window parent, boolean errorFree) 
     {
         // init modality, style and parent
         this.initModality(Modality.APPLICATION_MODAL);
         this.initStyle(StageStyle.TRANSPARENT);
         this.initOwner(parent);
 
-        // Limit the Length of Text Field to one
-        this.textField.lengthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> obs, Number oldVal, Number newVal) 
-            {
-                if(oldVal.intValue() > newVal.intValue() && textField.getText().length() > 1) 
-                {
-                    textField.setText(textField.getText().substring(0, 1));
-                }
-            }
-        });
+        // select default
+        this.maskOneBox.getSelectionModel().select(
+            Preference.getMaskOne()
+        );
+        this.maskTwoBox.getSelectionModel().select(
+            Preference.getMaskTwo()
+        );
+        this.keyField.setText(
+            Preference.getKeyValue()
+        );
 
         // TODO style the Stage
-        this.facsimile.setFont(new Font(15));
 
         // add error color
         if(!errorFree)
@@ -156,6 +162,15 @@ public class NscutStage extends Stage
 
         // set scene
         this.setScene(scene);
+
+        // Limit the Length of Text Field to one
+        this.keyField.textProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if(newValue.length() > 1) {
+                    this.keyField.setText(newValue.substring(0, 1));
+                }
+            }
+        );
     }
 
     /**
@@ -185,7 +200,7 @@ public class NscutStage extends Stage
      */
     public String getText()
     {
-        return this.textField.getText();
+        return this.keyField.getText();
     }
 
     /**

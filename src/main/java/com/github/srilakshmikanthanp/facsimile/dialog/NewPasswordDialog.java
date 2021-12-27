@@ -1,28 +1,25 @@
-package com.github.srilakshmikanthanp.facsimile.stages;
+// Copyright (c) 2021 Sri Lakshmi Kanthan P
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
+package com.github.srilakshmikanthanp.facsimile.dialog;
+
 
 import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 import javafx.scene.control.*;
 
+
 /**
- * User Preference Stage
+ * New password dialog to Create password
  */
-public class CpassStage extends Stage
+public class NewPasswordDialog extends Stage
 {
     // button status
     public static final int OK_BUTTON = 1, CALCEL_BUTTON = 2;
-
-    // Title
-    private Label facsimile = new Label("Facsimile");
-
-    // Password lable
-    private Label oldlabel = new Label("Old Password");
-
-    // Password text field
-    private PasswordField oldPass = new PasswordField();
 
     // Password lable
     private Label newlabel = new Label("Enter Password");
@@ -69,7 +66,7 @@ public class CpassStage extends Stage
 
         cutButton.setOpacity(0);
         spane.getChildren().addAll(cutLabel, cutButton);
-        mpane.setLeft(facsimile);
+        mpane.setPadding(new Insets(5));
         mpane.setRight(spane);
 
         return mpane;
@@ -84,7 +81,7 @@ public class CpassStage extends Stage
     {
         // add it to pane
         var hbox = new HBox(okButton, cancelButton);
-        var pane = new GridPane();
+        var pane = new VBox();
 
         // add event listeners
         okButton.setOnAction((evt) -> {
@@ -99,31 +96,31 @@ public class CpassStage extends Stage
 
         // inti pane
         hbox.setSpacing(10);
-        pane.setHgap(10);
-        pane.setVgap(10);
-        pane.setAlignment(Pos.CENTER);
+        hbox.setAlignment(Pos.CENTER);
 
         // add controls
-        pane.add(oldlabel, 0, 0);
-        pane.add(oldPass, 1, 0);
-        pane.add(newlabel, 0, 1);
-        pane.add(newPass, 1, 1);
-        pane.add(conlabel, 0, 2);
-        pane.add(conPass, 1, 2);
-        pane.add(hbox, 1, 3);
+        pane.setSpacing(15);
+        pane.setAlignment(Pos.CENTER);
         pane.setPadding(new Insets(10));
+        pane.getChildren().addAll(
+            newlabel,
+            newPass,
+            conlabel,
+            conPass,
+            hbox
+        );
 
         // done
         return pane;
     }
 
     /**
-     * Constructor for Change Password
+     * Constructor
      * 
      * @param pStage primary stage
      * @param errorFree is error free
      */
-    public CpassStage(Stage parent, boolean errorFree)
+    public NewPasswordDialog(Window parent, boolean errorFree)
     {
         // init modality, style and parent
         this.initModality(Modality.APPLICATION_MODAL);
@@ -131,7 +128,6 @@ public class CpassStage extends Stage
         this.initOwner(parent);
 
         // TODO style the Stage
-        this.facsimile.setFont(new Font(15));
 
         // add error color
         if(!errorFree)
@@ -148,7 +144,7 @@ public class CpassStage extends Stage
         pane.setPadding(new Insets(5, 10, 10, 5));
 
         // scene
-        var scene = new Scene(pane);
+        var scene = new Scene(pane, 300, 300);
 
         // set scene
         this.setScene(scene);
@@ -158,16 +154,6 @@ public class CpassStage extends Stage
      * Get old password
      * 
      * @return old password
-     */
-    public String getOldPassword()
-    {
-        return oldPass.getText();
-    }
-
-    /**
-     * Get new password
-     * 
-     * @return new password
      */
     public String getNewPassword()
     {

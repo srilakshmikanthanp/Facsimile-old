@@ -6,6 +6,7 @@
 package com.github.srilakshmikanthanp.facsimile.utility;
 
 
+import java.util.Arrays;
 import java.util.prefs.*;
 import com.github.srilakshmikanthanp.facsimile.system.ShortCut;
 
@@ -42,7 +43,14 @@ public class Preference
      */
     public static void setMaskOne(String maskOne)
     {
-        prefs.put(MASK_ONE_KEY, maskOne);
+        if(Arrays.asList(ShortCut.getKeys()).contains(maskOne))
+        {
+            prefs.put(MASK_ONE_KEY, maskOne);
+        }
+        else
+        {
+            throw new IllegalArgumentException("Invalid mask");
+        }
     }
 
     // Preference Mask Two
@@ -66,7 +74,14 @@ public class Preference
      */
     public static void setMaskTwo(String maskTwo)
     {
-        prefs.put(MASK_TWO_KEY, maskTwo);
+        if(Arrays.asList(ShortCut.getKeys()).contains(maskTwo))
+        {
+            prefs.put(MASK_ONE_KEY, maskTwo);
+        }
+        else
+        {
+            throw new IllegalArgumentException("Invalid mask");
+        }
     }
 
     // Preference Key value

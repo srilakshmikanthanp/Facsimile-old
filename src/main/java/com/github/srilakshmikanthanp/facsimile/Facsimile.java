@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 
 import javafx.application.*;
+import javafx.geometry.Insets;
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.layout.*;
@@ -18,7 +19,7 @@ import javafx.scene.control.*;
 import org.jnativehook.NativeHookException;
 
 import com.github.srilakshmikanthanp.facsimile.datum.*;
-import com.github.srilakshmikanthanp.facsimile.stages.*;
+import com.github.srilakshmikanthanp.facsimile.dialog.*;
 import com.github.srilakshmikanthanp.facsimile.system.*;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
 
@@ -28,13 +29,58 @@ import com.github.srilakshmikanthanp.facsimile.utility.*;
  */
 class TopPane extends BorderPane 
 {
+    // map data for app to be used
+    private Mapping mapping;
+
+    /**
+     * Changes the shortcut
+     */
+    private void changeShortCut()
+    {
+        // create dialog
+        var dialog = new AlterShortCutDialog(
+            this.getScene().getWindow(),
+            true
+        );
+
+        // show
+        dialog.showAndWait();
+    }
+
+    /**
+     * Changes the password
+     */
+    private void changePassword()
+    {
+
+    }
+
     /**
      * Constructor.
      * 
      * @param mapping map data
      */
-    public TopPane(Mapping mapping) 
+    public TopPane(Mapping mapping)
     {
+        // save map data
+        this.mapping = mapping;
+
+        // create buttons
+        var shortCut = new Button("Shortcut");
+        var password = new Button("Password");
+        
+        // add buttons
+        this.setLeft(shortCut);
+        this.setRight(password);
+
+        // add listeners
+        shortCut.setOnAction((evt) -> {
+            this.changeShortCut();
+        });
+
+        password.setOnAction((evt) -> {
+            this.changePassword();
+        });
     }
 }
 
@@ -60,6 +106,17 @@ class MidPane extends BorderPane
  */
 class BotPane extends BorderPane 
 {
+    // map data for app to be used
+    private Mapping mapping;
+
+    /**
+     * Adds the key value pair
+     */
+    private void addKeyValue()
+    {
+
+    }
+
     /**
      * Constructor.
      * 
@@ -67,6 +124,23 @@ class BotPane extends BorderPane
      */
     public BotPane(Mapping mapping) 
     {
+        // save map data
+        this.mapping = mapping;
+
+        // create buttons
+        var plus = new Button("+");
+
+        // set size
+        plus.setMaxWidth(Double.MAX_VALUE);
+        plus.setMaxHeight(Double.MAX_VALUE);
+
+        // add buttons
+        this.setCenter(plus);
+
+        // add listeners
+        plus.setOnAction((evt) -> {
+            this.addKeyValue();
+        });
     }
 }
 
@@ -85,7 +159,7 @@ class MainStage extends Stage
     private static final String DEV_LOC = "./target";
 
     // dimension of application
-    private static final int Width = 400, Height = 500;
+    private static final int Width = 350, Height = 400;
 
     // mapping data for app
     private Mapping mapping;
@@ -103,7 +177,7 @@ class MainStage extends Stage
         while(!cryptoEn.isKeyExists())
         {
             // create dialog
-            var dialog = new GpassStage(
+            var dialog = new GetPasswordDialog(
                 StageUtility.getEmptyStage(), 
                 invalidInput
             );
@@ -120,7 +194,7 @@ class MainStage extends Stage
             dialog.showAndWait();
 
             // check if uer cancels
-            if(dialog.getButtonPressed() == GpassStage.CALCEL_BUTTON)
+            if(dialog.getButtonPressed() == GetPasswordDialog.CALCEL_BUTTON)
             {
                 return false;
             }
@@ -158,7 +232,7 @@ class MainStage extends Stage
         while(!cryptoEn.isKeyExists())
         {
             // create dialog
-            var dialog = new NpassStage(
+            var dialog = new NewPasswordDialog(
                 StageUtility.getEmptyStage(), 
                 invalidInput
             );
@@ -175,7 +249,7 @@ class MainStage extends Stage
             dialog.showAndWait();
 
             // check if user cancels
-            if(dialog.getButtonPressed() == CpassStage.CALCEL_BUTTON)
+            if(dialog.getButtonPressed() == AlterPasswordDialog.CALCEL_BUTTON)
             {
                 return false;
             }
@@ -257,6 +331,9 @@ class MainStage extends Stage
         mainPane.setTop(new TopPane(mapping));
         mainPane.setCenter(new MidPane(mapping));
         mainPane.setBottom(new BotPane(mapping));
+
+        // set insets
+        mainPane.setPadding(new Insets(10));
 
         // set scene
         this.setScene(

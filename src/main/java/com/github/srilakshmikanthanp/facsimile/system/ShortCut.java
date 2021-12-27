@@ -39,16 +39,6 @@ public class ShortCut extends NativeKeyAdapter
     private Runnable runnable;
 
     /**
-     * Saves the detials to PReference
-     */
-    private void saveToPreference()
-    {
-        Preference.setMaskOne(mask_one);
-        Preference.setMaskTwo(mask_two);
-        Preference.setKeyValue(key_str);
-    }
-
-    /**
      * Loads the detials from PReference
      */
     private void loadFromPreference()
@@ -70,60 +60,20 @@ public class ShortCut extends NativeKeyAdapter
         // load the detials from preference
         this.loadFromPreference();
 
+        // register the preference event
+        Preference.addPreferenceChangeListener((e) -> {
+            this.loadFromPreference();
+        });
+
         // reset
         LogManager.getLogManager().reset();
 
         // disable loging
-        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        Logger logger = Logger.getLogger(
+            GlobalScreen.class.getPackage().getName()
+        );
         logger.setLevel(Level.OFF);
         logger.setUseParentHandlers(false);
-    }
-
-    /**
-     * Sets the First mask
-     * 
-     * @param mask CTRL, ALT, SHIFT
-     */
-    public void setMaskOne(String mask)
-    {
-        if(mask.equals(CTRL)|| mask.equals(ALT) || mask.equals(SHIFT))
-        {
-            this.mask_one = mask;
-            this.saveToPreference();
-        }
-        else
-        {
-            throw new IllegalArgumentException("Invalid mask");
-        }
-    }
-
-    /**
-     * Sets the Second mask
-     * 
-     * @param mask CTRL, ALT, SHIFT
-     */
-    public void setMaskTwo(String mask)
-    {
-        if(mask.equals(CTRL)|| mask.equals(ALT) || mask.equals(SHIFT))
-        {
-            this.mask_two = mask;
-            this.saveToPreference();
-        }
-        else
-        {
-            throw new IllegalArgumentException("Invalid mask");
-        }
-    }
-
-    /**
-     * Sets the key code
-     * 
-     * @param key_char
-     */
-    public void setKeyChar(char key_char)
-    {
-        this.key_str = new String(new char[]{key_char});
-        this.saveToPreference();
     }
 
     /**
@@ -172,21 +122,42 @@ public class ShortCut extends NativeKeyAdapter
     @Override
     public void nativeKeyPressed(NativeKeyEvent e)
     {
-        var modifiers = NativeKeyEvent.getModifiersText(e.getModifiers());
-        var key = NativeKeyEvent.getKeyText(e.getKeyCode());
+        // define vars
+        var modifiers = NativeKeyEvent.getModifiersText(
+            e.getModifiers()
+        );
+        var key = NativeKeyEvent.getKeyText(
+            e.getKeyCode()
+        );
+        var key_code = KeyCode.getKeyCode(key);
         
+        // to upper case
         modifiers = modifiers.toUpperCase();
 
-        if(!(modifiers.contains(mask_one) && modifiers.contains(mask_two)))
+        // check mask one contains
+        if(!(modifiers.contains(mask_one)))
         {
             return;
         }
 
-        if(!key_str.equals(KeyCode.getKeyCode(key).getChar()))
+        // check mask two contains
+        if(!(modifiers.contains(mask_two)))
         {
             return;
         }
 
+        // check key contains
+        if(key_code == null)
+        {
+            return;
+        }
+
+        if(!key_str.equals(key_code.getChar()))
+        {
+            return;
+        }
+
+        // run the runnable object
         if(runnable == null)
         {
             return;

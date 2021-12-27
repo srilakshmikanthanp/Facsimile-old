@@ -3,39 +3,29 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-package com.github.srilakshmikanthanp.facsimile.stages;
+package com.github.srilakshmikanthanp.facsimile.dialog;
 
 
 import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 import javafx.scene.control.*;
 
 
 /**
- * New password dialog to Create password
+ * Get password dialog to get password
  */
-public class NpassStage extends Stage
+public class GetPasswordDialog extends Stage
 {
     // button status
     public static final int OK_BUTTON = 1, CALCEL_BUTTON = 2;
 
-    // Title
-    private Label facsimile = new Label("Facsimile");
-
     // Password lable
-    private Label newlabel = new Label("Enter Password");
+    private Label passLabel = new Label("Password for Facsimlie");
 
     // Password text field
-    private PasswordField newPass = new PasswordField();
-
-    // Password lable
-    private Label conlabel = new Label("Confirm Password");
-
-    // Password text field
-    private PasswordField conPass = new PasswordField();
+    private PasswordField passField = new PasswordField();
 
     // cut label
     private Label cutLabel = new Label("❌");
@@ -70,8 +60,6 @@ public class NpassStage extends Stage
 
         cutButton.setOpacity(0);
         spane.getChildren().addAll(cutLabel, cutButton);
-        mpane.setPadding(new Insets(5));
-        mpane.setLeft(facsimile);
         mpane.setRight(spane);
 
         return mpane;
@@ -85,36 +73,31 @@ public class NpassStage extends Stage
     private Pane getCenterPane()
     {
         // add it to pane
-        var hbox = new HBox(okButton, cancelButton);
-        var pane = new GridPane();
+        var pbox = new VBox(passLabel, passField);
+        var bbox = new HBox(okButton, cancelButton);
+        var vbox = new VBox(pbox, bbox);
 
         // add event listeners
         okButton.setOnAction((evt) -> {
             this.buttonPressed = OK_BUTTON;
             this.hide();
         });
-
+  
         cancelButton.setOnAction((evt) -> {
             this.buttonPressed = CALCEL_BUTTON;
             this.hide();
         });
 
-        // inti pane
-        hbox.setSpacing(10);
-        pane.setHgap(10);
-        pane.setVgap(10);
-        pane.setAlignment(Pos.CENTER);
-
-        // add controls
-        pane.add(newlabel, 0, 0);
-        pane.add(newPass, 1, 0);
-        pane.add(conlabel, 0, 1);
-        pane.add(conPass, 1, 1);
-        pane.add(hbox, 1, 2);
-        pane.setPadding(new Insets(10));
+        pbox.setSpacing(15);
+        bbox.setSpacing(15);
+        vbox.setSpacing(15);
+        pbox.setAlignment(Pos.CENTER);
+        bbox.setAlignment(Pos.CENTER);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(20));
 
         // done
-        return pane;
+        return vbox;
     }
 
     /**
@@ -123,7 +106,7 @@ public class NpassStage extends Stage
      * @param pStage primary stage
      * @param errorFree is error free
      */
-    public NpassStage(Stage parent, boolean errorFree)
+    public GetPasswordDialog(Window parent, boolean errorFree)
     {
         // init modality, style and parent
         this.initModality(Modality.APPLICATION_MODAL);
@@ -131,7 +114,6 @@ public class NpassStage extends Stage
         this.initOwner(parent);
 
         // TODO style the Stage
-        this.facsimile.setFont(new Font(15));
 
         // add error color
         if(!errorFree)
@@ -155,23 +137,11 @@ public class NpassStage extends Stage
     }
 
     /**
-     * Get old password
-     * 
-     * @return old password
+     * Get Password
      */
-    public String getNewPassword()
+    public String getPassword()
     {
-        return newPass.getText();
-    }
-
-    /**
-     * Get new password
-     * 
-     * @return new password
-     */
-    public String getConPassword()
-    {
-        return conPass.getText();
+        return this.passField.getText();
     }
 
     /**

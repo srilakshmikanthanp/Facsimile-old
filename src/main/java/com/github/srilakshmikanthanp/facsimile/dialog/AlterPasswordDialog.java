@@ -3,33 +3,39 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-package com.github.srilakshmikanthanp.facsimile.stages;
-
+package com.github.srilakshmikanthanp.facsimile.dialog;
 
 import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 import javafx.scene.control.*;
 
-
 /**
- * Get password dialog to get password
+ * User Preference Stage
  */
-public class GpassStage extends Stage
+public class AlterPasswordDialog extends Stage
 {
     // button status
     public static final int OK_BUTTON = 1, CALCEL_BUTTON = 2;
 
-    // Title
-    private Label facsimile = new Label("Facsimile");
-
     // Password lable
-    private Label passLabel = new Label("Password");
+    private Label oldlabel = new Label("Old Password");
 
     // Password text field
-    private PasswordField passField = new PasswordField();
+    private PasswordField oldPass = new PasswordField();
+
+    // Password lable
+    private Label newlabel = new Label("Enter Password");
+
+    // Password text field
+    private PasswordField newPass = new PasswordField();
+
+    // Password lable
+    private Label conlabel = new Label("Confirm Password");
+
+    // Password text field
+    private PasswordField conPass = new PasswordField();
 
     // cut label
     private Label cutLabel = new Label("❌");
@@ -64,7 +70,6 @@ public class GpassStage extends Stage
 
         cutButton.setOpacity(0);
         spane.getChildren().addAll(cutLabel, cutButton);
-        mpane.setLeft(facsimile);
         mpane.setRight(spane);
 
         return mpane;
@@ -78,48 +83,52 @@ public class GpassStage extends Stage
     private Pane getCenterPane()
     {
         // add it to pane
-        var hbox = new HBox(passLabel, passField);
-        var bbox = new HBox(okButton, cancelButton);
-        var vbox = new VBox(hbox, bbox);
+        var hbox = new HBox(okButton, cancelButton);
+        var pane = new GridPane();
 
         // add event listeners
         okButton.setOnAction((evt) -> {
             this.buttonPressed = OK_BUTTON;
             this.hide();
         });
-  
+
         cancelButton.setOnAction((evt) -> {
             this.buttonPressed = CALCEL_BUTTON;
             this.hide();
         });
 
+        // inti pane
         hbox.setSpacing(10);
-        bbox.setSpacing(10);
-        vbox.setSpacing(10);
-        hbox.setAlignment(Pos.CENTER);
-        bbox.setAlignment(Pos.CENTER);
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(10));
+        pane.setHgap(10);
+        pane.setVgap(10);
+        pane.setAlignment(Pos.CENTER);
+
+        // add controls
+        pane.add(oldlabel, 0, 0);
+        pane.add(oldPass, 1, 1);
+        pane.add(newlabel, 0, 2);
+        pane.add(newPass, 1, 3);
+        pane.add(conlabel, 0, 4);
+        pane.add(conPass, 1, 4);
+        pane.add(hbox, 1, 5);
+        pane.setPadding(new Insets(10));
 
         // done
-        return vbox;
+        return pane;
     }
 
     /**
-     * Constructor
+     * Constructor for Change Password
      * 
      * @param pStage primary stage
      * @param errorFree is error free
      */
-    public GpassStage(Stage parent, boolean errorFree)
+    public AlterPasswordDialog(Window parent, boolean errorFree)
     {
         // init modality, style and parent
         this.initModality(Modality.APPLICATION_MODAL);
         this.initStyle(StageStyle.TRANSPARENT);
         this.initOwner(parent);
-
-        // TODO style the Stage
-        this.facsimile.setFont(new Font(15));
 
         // add error color
         if(!errorFree)
@@ -143,11 +152,33 @@ public class GpassStage extends Stage
     }
 
     /**
-     * Get Password
+     * Get old password
+     * 
+     * @return old password
      */
-    public String getPassword()
+    public String getOldPassword()
     {
-        return this.passField.getText();
+        return oldPass.getText();
+    }
+
+    /**
+     * Get new password
+     * 
+     * @return new password
+     */
+    public String getNewPassword()
+    {
+        return newPass.getText();
+    }
+
+    /**
+     * Get new password
+     * 
+     * @return new password
+     */
+    public String getConPassword()
+    {
+        return conPass.getText();
     }
 
     /**
