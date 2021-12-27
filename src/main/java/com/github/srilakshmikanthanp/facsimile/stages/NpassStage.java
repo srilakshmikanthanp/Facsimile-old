@@ -10,6 +10,7 @@ import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.scene.control.*;
 
 
@@ -20,6 +21,9 @@ public class NpassStage extends Stage
 {
     // button status
     public static final int OK_BUTTON = 1, CALCEL_BUTTON = 2;
+
+    // Title
+    private Label facsimile = new Label("Facsimile");
 
     // Password lable
     private Label newlabel = new Label("Enter Password");
@@ -56,7 +60,7 @@ public class NpassStage extends Stage
     private Pane getTopPane()
     {
         var spane = new StackPane();
-        var mpane = new HBox();
+        var mpane = new BorderPane();
 
         // add listeners
         cutButton.setOnAction((evt) ->{
@@ -66,8 +70,9 @@ public class NpassStage extends Stage
 
         cutButton.setOpacity(0);
         spane.getChildren().addAll(cutLabel, cutButton);
-        mpane.setAlignment(Pos.CENTER_RIGHT);
-        mpane.getChildren().add(spane);
+        mpane.setPadding(new Insets(5));
+        mpane.setLeft(facsimile);
+        mpane.setRight(spane);
 
         return mpane;
     }
@@ -126,6 +131,7 @@ public class NpassStage extends Stage
         this.initOwner(parent);
 
         // TODO style the Stage
+        this.facsimile.setFont(new Font(15));
 
         // add error color
         if(!errorFree)

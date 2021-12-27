@@ -21,23 +21,55 @@ import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.stages.*;
 import com.github.srilakshmikanthanp.facsimile.system.*;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
- 
-/**
- * Main Panel for the Facsimile.
- */
-class MainPane extends BorderPane
-{
-    // mappind data to app
-    private Mapping mapping;
 
+
+/**
+ * Top Bar of the application.
+ */
+class TopPane extends BorderPane 
+{
     /**
      * Constructor.
+     * 
+     * @param mapping map data
      */
-    public MainPane(Mapping mapping)
+    public TopPane(Mapping mapping) 
     {
-        this.mapping = mapping;
     }
 }
+
+
+/**
+ * Mib Part of the application.
+ */
+class MidPane extends BorderPane 
+{
+    /**
+     * Constructor.
+     * 
+     * @param mapping map data
+     */
+    public MidPane(Mapping mapping) 
+    {
+    }
+}
+
+
+/**
+ * Bottom Part of the application.
+ */
+class BotPane extends BorderPane 
+{
+    /**
+     * Constructor.
+     * 
+     * @param mapping map data
+     */
+    public BotPane(Mapping mapping) 
+    {
+    }
+}
+
 
 /**
  * Main Stage for the Facsimile.
@@ -53,13 +85,10 @@ class MainStage extends Stage
     private static final String DEV_LOC = "./target";
 
     // dimension of application
-    private static final int Width = 800, Height = 600;
+    private static final int Width = 400, Height = 500;
 
     // mapping data for app
     private Mapping mapping;
-
-    // main pane of the application
-    private MainPane mainPane;
 
     /**
      * Loads the password to crypto
@@ -75,8 +104,17 @@ class MainStage extends Stage
         {
             // create dialog
             var dialog = new GpassStage(
-                null, invalidInput
+                StageUtility.getEmptyStage(), 
+                invalidInput
             );
+
+            // center the stage on shown
+            dialog.addEventHandler(WindowEvent.WINDOW_SHOWN, (evt) -> {
+                StageUtility.centerStageOnScreen(dialog);
+            });
+
+            // set on top
+            dialog.setAlwaysOnTop(true);
 
             // show ans wait
             dialog.showAndWait();
@@ -121,8 +159,17 @@ class MainStage extends Stage
         {
             // create dialog
             var dialog = new NpassStage(
-                null, invalidInput
+                StageUtility.getEmptyStage(), 
+                invalidInput
             );
+
+            // center the stage on shown
+            dialog.addEventHandler(WindowEvent.WINDOW_SHOWN, (evt) -> {
+                StageUtility.centerStageOnScreen(dialog);
+            });
+
+            // set on top
+            dialog.setAlwaysOnTop(true);
 
             // show and wait
             dialog.showAndWait();
@@ -151,16 +198,12 @@ class MainStage extends Stage
             } 
             catch (IOException e) 
             {
-                System.out.println("IOError");
                 // TODO show error on user Side
             } 
             catch (GeneralSecurityException e) 
             {
-                System.out.println("Sec");
                 // TODO show error
             }
-
-            System.out.println("Next");
         }
 
         return true;
@@ -206,6 +249,22 @@ class MainStage extends Stage
         this.mapping = new Mapping(
             Paths.get(DEV_LOC, ".facsimile")
         );
+
+        // create main pane
+        var mainPane = new BorderPane();
+
+        // init main pane
+        mainPane.setTop(new TopPane(mapping));
+        mainPane.setCenter(new MidPane(mapping));
+        mainPane.setBottom(new BotPane(mapping));
+
+        // set scene
+        this.setScene(
+            new Scene(mainPane, Width, Height)
+        );
+
+        // set top
+        this.setAlwaysOnTop(true);
     }
 
     /**
@@ -220,16 +279,6 @@ class MainStage extends Stage
 
         // create dir
         dPath.toFile().mkdirs();
-
-        // if main pane is null it is first time
-        if(mainPane == null)
-        {
-            // create map
-            this.mapping = new Mapping(dPath);
-
-            // create pane
-            this.mainPane = new MainPane(mapping);
-        }
 
         // check the mapping
         if(!this.CheckCrypto())
@@ -246,6 +295,9 @@ class MainStage extends Stage
         {
             this.hide();
         }
+
+        // center the stage
+        StageUtility.centerStageOnScreen(this);
     }
 }
 
