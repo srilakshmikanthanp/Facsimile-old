@@ -23,7 +23,7 @@ public class Mapping
     // Mappint change Event Listener
     public interface ChangeListener
     {
-        void onChange();
+        void onChange(); // called on change
     }
 
     // datum file name
@@ -39,14 +39,14 @@ public class Mapping
     private HashMap<String, String> data = new HashMap<>();
 
     // change listener
-    private ArrayList<ChangeListener> changeLis = new ArrayList<>();
+    private ArrayList<ChangeListener> cngLis = new ArrayList<>();
 
     /**
      * Notifies the change listeners.
      */
     private void notifyChange()
     {
-        for (var lis : this.changeLis)
+        for (var lis : this.cngLis)
         {
             lis.onChange();
         }
@@ -226,7 +226,7 @@ public class Mapping
      */
     public void addChangeListener(ChangeListener listener)
     {
-        this.changeLis.add(listener);
+        this.cngLis.add(listener);
     }
 
     /**
@@ -236,6 +236,6 @@ public class Mapping
      */
     public void removeChangeListener(ChangeListener listener)
     {
-        this.changeLis.remove(listener);
+        this.cngLis.remove(listener);
     }
 }
