@@ -15,6 +15,7 @@ import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 
 import org.jnativehook.NativeHookException;
 
@@ -37,14 +38,7 @@ class TopPane extends BorderPane
      */
     private void changeShortCut()
     {
-        // create dialog
-        var dialog = new AlterShortCutDialog(
-            this.getScene().getWindow(),
-            true
-        );
 
-        // show
-        dialog.showAndWait();
     }
 
     /**
@@ -165,6 +159,56 @@ class MainStage extends Stage
     private Mapping mapping;
 
     /**
+     * Gets the password from user
+     * 
+     * @param title title
+     * @return password
+     */
+    private String getPassword(String title)
+    {
+        // create dialog
+        var dialog = new PasswordDialog(title);
+
+        // show dialog
+        var res = dialog.showAndWait();
+
+        // if not valid
+        if(!res.isPresent())
+        {
+            return null;
+        }
+
+        // return password
+        return res.get();
+    }
+
+    /**
+     * Shows the alert.
+     */
+    private boolean showAlert(AlertType type, String title, String header, String content)
+    {
+        // create alert
+        var alert = new Alert(type);
+
+        // init the alert
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+
+        // show alert
+        var res =alert.showAndWait();
+
+        // if not valid
+        if(!res.isPresent())
+        {
+            return false;
+        }
+
+        // return result
+        return res.get() == ButtonType.OK;
+    }
+
+    /**
      * Loads the password to crypto
      * 
      * @param cryptoEn crypto Engine
@@ -172,51 +216,59 @@ class MainStage extends Stage
      */
     private boolean loadPassword(CryptoEn cryptoEn)
     {
-        boolean invalidInput = false;
-
-        while(!cryptoEn.isKeyExists())
+        // loop until password is correct
+        while(true)
         {
-            // create dialog
-            var dialog = new GetPasswordDialog(
-                StageUtility.getEmptyStage(), 
-                invalidInput
-            );
+            // get password
+            String password = this.getPassword("Enter Password");
 
-            // center the stage on shown
-            dialog.addEventHandler(WindowEvent.WINDOW_SHOWN, (evt) -> {
-                StageUtility.centerStageOnScreen(dialog);
-            });
-
-            // set on top
-            dialog.setAlwaysOnTop(true);
-
-            // show ans wait
-            dialog.showAndWait();
-
-            // check if uer cancels
-            if(dialog.getButtonPressed() == GetPasswordDialog.CALCEL_BUTTON)
+            // check if valid
+            if(password == null)
             {
                 return false;
             }
 
-            // try to load password
+            // load password
             try
             {
-                cryptoEn.loadExtistingKey(
-                    dialog.getPassword()
-                );
+                cryptoEn.loadExtistingKey(password);
             }
             catch(IOException e)
             {
-                invalidInput = true;    
-            } 
-            catch (GeneralSecurityException e) 
-            {
-                // TODO show error
-            }
-        }
+                // create allert
+                var res = this.showAlert(
+                    AlertType.INFORMATION,
+                    "Invalid Password",
+                    "Password is not correct",
+                    "Are you want to try again ?"
+                );
 
-        return true;
+                // if try again
+                if(res == true)
+                {
+                    continue;
+                }
+
+                // return
+                return false;
+            }
+            catch(GeneralSecurityException e)
+            {
+                // create allert
+                this.showAlert(
+                    AlertType.ERROR,
+                    "Internal Error",
+                    "Exception occured",
+                    e.getMessage()
+                );
+
+                // return
+                return false;
+            }
+
+            // return
+            return true;
+        }
     }
 
     /**
@@ -227,60 +279,63 @@ class MainStage extends Stage
      */
     private boolean makePassword(CryptoEn cryptoEn)
     {
-        boolean invalidInput = false;
-
-        while(!cryptoEn.isKeyExists())
+        while(true)
         {
-            // create dialog
-            var dialog = new NewPasswordDialog(
-                StageUtility.getEmptyStage(), 
-                invalidInput
-            );
+            // get new password
+            var newPassword = this.getPassword("Enter New Password");
 
-            // center the stage on shown
-            dialog.addEventHandler(WindowEvent.WINDOW_SHOWN, (evt) -> {
-                StageUtility.centerStageOnScreen(dialog);
-            });
+            // get confirm password
+            var conPassword = this.getPassword("Confirm Password");
 
-            // set on top
-            dialog.setAlwaysOnTop(true);
-
-            // show and wait
-            dialog.showAndWait();
-
-            // check if user cancels
-            if(dialog.getButtonPressed() == AlterPasswordDialog.CALCEL_BUTTON)
+            // check if valid
+            if(newPassword == null || conPassword == null)
             {
                 return false;
             }
 
-            // get passwords
-            var newPass = dialog.getNewPassword();
-            var conPass = dialog.getConPassword();
-
-            // validate passwords
-            if(!newPass.equals(conPass))
+            // check if passwords match 
+            if(!newPassword.equals(conPassword))
             {
-                invalidInput = true;
-                continue;
+                // create allert
+                var res = this.showAlert(
+                    AlertType.INFORMATION,
+                    "Passwords do not match",
+                    "Passwords do not match",
+                    "Are you want to try again ?"
+                );
+
+                // if try again
+                if(res == true)
+                {
+                    continue;
+                }
+
+                // return
+                return false;
             }
 
-            // try to create key
-            try 
+            // load password
+            try
             {
-                cryptoEn.createNewKey(newPass);
-            } 
-            catch (IOException e) 
-            {
-                // TODO show error on user Side
-            } 
-            catch (GeneralSecurityException e) 
-            {
-                // TODO show error
+                cryptoEn.createNewKey(newPassword);
             }
+            catch(IOException | GeneralSecurityException e)
+            {
+                // create allert
+                this.showAlert(
+                    AlertType.ERROR,
+                    "Internal Error",
+                    "Exception occured",
+                    e.getMessage()
+                );
+
+                // return
+                return false;
+            }
+
+            // return
+            return true;
         }
-
-        return true;
     }
 
     /**
@@ -372,9 +427,6 @@ class MainStage extends Stage
         {
             this.hide();
         }
-
-        // center the stage
-        StageUtility.centerStageOnScreen(this);
     }
 }
 
