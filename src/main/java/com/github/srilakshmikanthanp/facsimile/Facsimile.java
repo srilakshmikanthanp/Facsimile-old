@@ -5,139 +5,23 @@
 
 package com.github.srilakshmikanthanp.facsimile;
 
+
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 
 import javafx.application.*;
-import javafx.geometry.Insets;
-import javafx.scene.*;
 import javafx.stage.*;
-import javafx.scene.layout.*;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Alert.*;
 
 import org.jnativehook.NativeHookException;
 
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.dialog.*;
+import com.github.srilakshmikanthanp.facsimile.panes.*;
 import com.github.srilakshmikanthanp.facsimile.system.*;
-import com.github.srilakshmikanthanp.facsimile.utility.*;
-
-
-/**
- * Top Bar of the application.
- */
-class TopPane extends BorderPane 
-{
-    // map data for app to be used
-    private Mapping mapping;
-
-    /**
-     * Changes the shortcut
-     */
-    private void changeShortCut()
-    {
-
-    }
-
-    /**
-     * Changes the password
-     */
-    private void changePassword()
-    {
-
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param mapping map data
-     */
-    public TopPane(Mapping mapping)
-    {
-        // save map data
-        this.mapping = mapping;
-
-        // create buttons
-        var shortCut = new Button("Shortcut");
-        var password = new Button("Password");
-        
-        // add buttons
-        this.setLeft(shortCut);
-        this.setRight(password);
-
-        // add listeners
-        shortCut.setOnAction((evt) -> {
-            this.changeShortCut();
-        });
-
-        password.setOnAction((evt) -> {
-            this.changePassword();
-        });
-    }
-}
-
-
-/**
- * Mib Part of the application.
- */
-class MidPane extends BorderPane 
-{
-    /**
-     * Constructor.
-     * 
-     * @param mapping map data
-     */
-    public MidPane(Mapping mapping) 
-    {
-    }
-}
-
-
-/**
- * Bottom Part of the application.
- */
-class BotPane extends BorderPane 
-{
-    // map data for app to be used
-    private Mapping mapping;
-
-    /**
-     * Adds the key value pair
-     */
-    private void addKeyValue()
-    {
-
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param mapping map data
-     */
-    public BotPane(Mapping mapping) 
-    {
-        // save map data
-        this.mapping = mapping;
-
-        // create buttons
-        var plus = new Button("+");
-
-        // set size
-        plus.setMaxWidth(Double.MAX_VALUE);
-        plus.setMaxHeight(Double.MAX_VALUE);
-
-        // add buttons
-        this.setCenter(plus);
-
-        // add listeners
-        plus.setOnAction((evt) -> {
-            this.addKeyValue();
-        });
-    }
-}
-
 
 /**
  * Main Stage for the Facsimile.
@@ -145,54 +29,58 @@ class BotPane extends BorderPane
 class MainStage extends Stage
 {
     // location to store data on production
+    @SuppressWarnings("unused")
     private static final String PRD_LOC = System.getProperty(
         "user.home"
     );
 
     // location to store data on development
+    @SuppressWarnings("unused")
     private static final String DEV_LOC = "./target";
 
     // dimension of application
-    private static final int Width = 350, Height = 400;
+    private static final double Width = 350, Height = 400;
 
     // mapping data for app
     private Mapping mapping;
 
     /**
-     * Gets the password from user
-     * 
-     * @param title title
-     * @return password
+     * Shows the try again prompt.
      */
-    private String getPassword(String title)
+    private boolean showTryAgain()
     {
-        // create dialog
-        var dialog = new PasswordDialog(title);
+        // create alert
+        var alert = new Alert(AlertType.INFORMATION);
 
-        // show dialog
-        var res = dialog.showAndWait();
+        // init the alert
+        alert.setTitle("Invalid Password");
+        alert.setHeaderText("Password is not correct");
+        alert.setContentText("Are you want to try again ?");
+
+        // show alert
+        var res = alert.showAndWait();
 
         // if not valid
         if(!res.isPresent())
         {
-            return null;
+            return false;
         }
 
-        // return password
-        return res.get();
+        // return result
+        return res.get() == ButtonType.OK;
     }
 
     /**
      * Shows the alert.
      */
-    private boolean showAlert(AlertType type, String title, String header, String content)
+    private boolean showError(String content)
     {
         // create alert
-        var alert = new Alert(type);
+        var alert = new Alert(AlertType.ERROR);
 
         // init the alert
-        alert.setTitle(title);
-        alert.setHeaderText(header);
+        alert.setTitle("Internal Error");
+        alert.setHeaderText("Exception occured");
         alert.setContentText(content);
 
         // show alert
@@ -216,59 +104,48 @@ class MainStage extends Stage
      */
     private boolean loadPassword(CryptoEn cryptoEn)
     {
-        // loop until password is correct
-        while(true)
+        while(!cryptoEn.isKeyExists())
         {
-            // get password
-            String password = this.getPassword("Enter Password");
+            // create dialog
+            var dialog = new Password(null,
+                Password.GINPUT_PASSWORD
+            );
 
-            // check if valid
-            if(password == null)
+            // show dialog
+            dialog.showAndWait();
+
+            // if not valid
+            if(!dialog.isOkay())
             {
                 return false;
             }
+
+            // get password
+            var password = dialog.getActPassword();
 
             // load password
-            try
+            try 
             {
                 cryptoEn.loadExtistingKey(password);
-            }
-            catch(IOException e)
+            } 
+            catch (IOException e) 
             {
-                // create allert
-                var res = this.showAlert(
-                    AlertType.INFORMATION,
-                    "Invalid Password",
-                    "Password is not correct",
-                    "Are you want to try again ?"
-                );
-
-                // if try again
-                if(res == true)
+                if(!this.showTryAgain() == true) // if try not again
                 {
-                    continue;
+                    return false;
                 }
-
-                // return
-                return false;
-            }
-            catch(GeneralSecurityException e)
+            } 
+            catch (GeneralSecurityException e) 
             {
                 // create allert
-                this.showAlert(
-                    AlertType.ERROR,
-                    "Internal Error",
-                    "Exception occured",
-                    e.getMessage()
-                );
+                this.showError(e.getMessage());
 
                 // return
                 return false;
             }
-
-            // return
-            return true;
         }
+
+        return false;
     }
 
     /**
@@ -279,63 +156,49 @@ class MainStage extends Stage
      */
     private boolean makePassword(CryptoEn cryptoEn)
     {
-        while(true)
+        while(!cryptoEn.isKeyExists())
         {
-            // get new password
-            var newPassword = this.getPassword("Enter New Password");
+            // create dialog
+            var dialog = new Password(null, 
+                Password.CREATE_PASSWORD
+            );
 
-            // get confirm password
-            var conPassword = this.getPassword("Confirm Password");
+            // show dialog
+            dialog.showAndWait();
 
-            // check if valid
-            if(newPassword == null || conPassword == null)
+            // if not valid
+            if(!dialog.isOkay())
             {
                 return false;
             }
 
-            // check if passwords match 
-            if(!newPassword.equals(conPassword))
-            {
-                // create allert
-                var res = this.showAlert(
-                    AlertType.INFORMATION,
-                    "Passwords do not match",
-                    "Passwords do not match",
-                    "Are you want to try again ?"
-                );
-
-                // if try again
-                if(res == true)
-                {
-                    continue;
-                }
-
-                // return
-                return false;
-            }
+            // get password
+            var password = dialog.getActPassword();
 
             // load password
-            try
+            try 
             {
-                cryptoEn.createNewKey(newPassword);
-            }
-            catch(IOException | GeneralSecurityException e)
+                cryptoEn.createNewKey(password);
+            } 
+            catch (IOException e) 
             {
                 // create allert
-                this.showAlert(
-                    AlertType.ERROR,
-                    "Internal Error",
-                    "Exception occured",
-                    e.getMessage()
-                );
+                this.showError(e.getMessage());
+
+                // return
+                return false;
+            } 
+            catch (GeneralSecurityException e) 
+            {
+                // create allert
+                this.showError(e.getMessage());
 
                 // return
                 return false;
             }
-
-            // return
-            return true;
         }
+
+        return true;
     }
 
     /**
@@ -379,20 +242,12 @@ class MainStage extends Stage
             Paths.get(DEV_LOC, ".facsimile")
         );
 
-        // create main pane
-        var mainPane = new BorderPane();
-
-        // init main pane
-        mainPane.setTop(new TopPane(mapping));
-        mainPane.setCenter(new MidPane(mapping));
-        mainPane.setBottom(new BotPane(mapping));
-
-        // set insets
-        mainPane.setPadding(new Insets(10));
+        // main pane
+        var pane = new MainPane();
 
         // set scene
         this.setScene(
-            new Scene(mainPane, Width, Height)
+            new Scene(pane, Width, Height)
         );
 
         // set top
