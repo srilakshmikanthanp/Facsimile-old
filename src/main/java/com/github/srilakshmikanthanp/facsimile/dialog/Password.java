@@ -24,7 +24,7 @@ public class Password extends Stage
     public static final int CHANGE_PASSWORD = 3;
 
     // width of the stage
-    private static final double width = 400;
+    private static final double width = 370;
 
     // height of the stage
     private static final double height = 350;
@@ -37,6 +37,37 @@ public class Password extends Stage
 
     // password new
     private String actPassword = null;
+
+    /**
+     * Create the Top Bar with cut button
+     * 
+     * @return Top Bar
+     */
+    private Node getTopBar() 
+    {
+        // define vars
+        var clbl = new Label("☓");
+        var cbtn = new Button();
+        var span = new StackPane(clbl, cbtn);
+        var hbox = new HBox(span);
+
+        // init button
+        cbtn.setOpacity(0);
+        cbtn.setOnAction((evt) -> {
+            this.isOk = false;
+            this.oldPassword = null;
+            this.actPassword = null;
+            this.hide();
+        });
+
+        // init hbox
+        hbox.setSpacing(10);
+        hbox.setAlignment(Pos.CENTER_RIGHT);
+        hbox.setPadding(new Insets(10, 10, 10, 10));
+
+        // done
+        return hbox;
+    }
 
     /**
      * Create the password Label to display
@@ -115,10 +146,10 @@ public class Password extends Stage
      * 
      * @return Button okay button
      */
-    private Button getCancelButton()
+    private Button getOkayButton()
     {
         // okay button
-        var button = new Button("Cancel");
+        var button = new Button("Okay");
         button.setStyle("-fx-font-size: 15px;");
         button.setPrefHeight(50);
         button.setPrefWidth(100);
@@ -138,19 +169,18 @@ public class Password extends Stage
         // defile vars
         var passLabel = this.getPasswordLabel();
         var passField = this.getPasswordField("Password");
-        var cutButton = this.getCancelButton();
+        var okyButton = this.getOkayButton();
 
         // initileze the Field
         passField.setOnKeyPressed((evt) -> {
             if(evt.getCode() == KeyCode.ENTER) {
-                this.doneActPassword(passField.getText());
+                okyButton.requestFocus();
             }
         });
 
         // initilize the button
-        cutButton.setOnAction((evt) -> {
-            this.isOk = false;
-            this.hide();
+        okyButton.setOnAction((evt) -> {
+            this.doneActPassword(passField.getText());
         });
 
         // initilize the pane
@@ -165,7 +195,7 @@ public class Password extends Stage
         pane.getChildren().addAll(
             passLabel,
             passField,
-            cutButton
+            okyButton
         );
 
         // done
@@ -183,7 +213,7 @@ public class Password extends Stage
         var passLabel = this.getPasswordLabel();
         var npasField = this.getPasswordField("New Password");
         var cpasField = this.getPasswordField("Confirm Password");
-        var cutButton = this.getCancelButton();
+        var okyButton = this.getOkayButton();
 
         // initileze the new password field
         npasField.setOnKeyPressed((evt) -> {
@@ -195,22 +225,21 @@ public class Password extends Stage
         // initilize the confirm password field
         cpasField.setOnKeyPressed((evt) -> {
             if(evt.getCode() == KeyCode.ENTER) {
-                var newpass = npasField.getText();
-                var conpass = cpasField.getText();
-
-                if(newpass.equals(conpass) && newpass.length() > 0) {
-                    this.doneActPassword(npasField.getText());
-                } else {
-                    passLabel.setTextFill(Color.RED);
-                    npasField.requestFocus();
-                }
+                okyButton.requestFocus();
             }
         });
 
         // initilize the button
-        cutButton.setOnAction((evt) -> {
-            this.isOk = false;
-            this.hide();
+        okyButton.setOnAction((evt) -> {
+            var newpass = npasField.getText();
+            var conpass = cpasField.getText();
+
+            if(newpass.equals(conpass) && newpass.length() > 0) {
+                this.doneActPassword(npasField.getText());
+            } else {
+                passLabel.setTextFill(Color.RED);
+                npasField.requestFocus();
+            }
         });
 
         // initilize the pane
@@ -226,7 +255,7 @@ public class Password extends Stage
             passLabel,
             npasField,
             cpasField,
-            cutButton
+            okyButton
         );
 
         return pane;
@@ -244,18 +273,12 @@ public class Password extends Stage
         var opasField = this.getPasswordField("Old Password");
         var npasField = this.getPasswordField("New Password");
         var cpasField = this.getPasswordField("Confirm Password");
-        var cutButton = this.getCancelButton();
+        var okyButton = this.getOkayButton();
 
         // initileze the Old PAssword Field
         opasField.setOnKeyPressed((evt) -> {
             if(evt.getCode() == KeyCode.ENTER) {
-                if(opasField.getText().length() > 0) {
-                    this.doneOldPassword(opasField.getText());
-                    npasField.requestFocus();
-                } else {
-                    passLabel.setTextFill(Color.RED);
-                    opasField.requestFocus();
-                }
+                npasField.requestFocus();
             }
         });
 
@@ -269,22 +292,29 @@ public class Password extends Stage
         // initilize the confirm password field
         cpasField.setOnKeyPressed((evt) -> {
             if(evt.getCode() == KeyCode.ENTER) {
-                var newpass = npasField.getText();
-                var conpass = cpasField.getText();
-
-                if(newpass.equals(conpass) && newpass.length() > 0) {
-                    this.doneActPassword(npasField.getText());
-                } else {
-                    passLabel.setTextFill(Color.RED);
-                    npasField.requestFocus();
-                }
+                okyButton.requestFocus();
             }
         });
 
         // initilize the button
-        cutButton.setOnAction((evt) -> {
-            this.isOk = false;
-            this.hide();
+        okyButton.setOnAction((evt) -> {
+            var opass = opasField.getText();
+            var npass = npasField.getText();
+            var cpass = cpasField.getText();
+
+            if(opass.length() == 0) {
+                passLabel.setTextFill(Color.RED);
+                opasField.requestFocus();
+                return;
+            }
+            
+            if(npass.equals(cpass) && npass.length() > 0) {
+                this.doneOldPassword(opasField.getText());
+                this.doneActPassword(npasField.getText());
+            } else {
+                passLabel.setTextFill(Color.RED);
+                npasField.requestFocus();
+            }
         });
 
         // initilize the pane
@@ -301,7 +331,7 @@ public class Password extends Stage
             opasField,
             npasField,
             cpasField,
-            cutButton
+            okyButton
         );
 
         return pane;
@@ -339,18 +369,20 @@ public class Password extends Stage
         this.initOwner(owner);
         this.initStyle(StageStyle.UNDECORATED);
 
+        // define the pane
+        var pane = new BorderPane(this.getTypePane(type));
+
+        // init the pane
+        pane.setTop(this.getTopBar());
+
         // set the pane
-        this.setScene(
-            new Scene(
-                this.getTypePane(type), width, height
-            )
-        );
+        this.setScene(new Scene(pane));
 
         // center the stage
         this.setOnShown((evt) -> {
-            var screenBounds = Screen.getPrimary().getVisualBounds();
-            this.setX(screenBounds.getWidth() / 2 - width / 2);
-            this.setY(screenBounds.getHeight() / 2 - height / 2);
+            this.setMinWidth(width);
+            this.setMinHeight(height);
+            this.centerOnScreen();
         });
     }
 

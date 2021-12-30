@@ -39,7 +39,7 @@ class MainStage extends Stage
     private static final String DEV_LOC = "./target";
 
     // dimension of application
-    private static final double Width = 350, Height = 400;
+    private static final double Width = 400, Height = 450;
 
     // mapping data for app
     private Mapping mapping;
@@ -130,7 +130,7 @@ class MainStage extends Stage
             } 
             catch (IOException e) 
             {
-                if(!this.showTryAgain() == true) // if try not again
+                if(!this.showTryAgain()) // if try not again
                 {
                     return false;
                 }
@@ -145,7 +145,7 @@ class MainStage extends Stage
             }
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -243,7 +243,7 @@ class MainStage extends Stage
         );
 
         // main pane
-        var pane = new MainPane();
+        var pane = new MainPane(mapping);
 
         // set scene
         this.setScene(
@@ -252,6 +252,11 @@ class MainStage extends Stage
 
         // set top
         this.setAlwaysOnTop(true);
+
+        // center the stage
+        this.setOnShown((evt) -> {
+            this.centerOnScreen();
+        });
     }
 
     /**
