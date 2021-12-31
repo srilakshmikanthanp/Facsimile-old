@@ -102,7 +102,7 @@
             <execution>
               <id>default-cli</id>
               <configuration>
-                <mainClass>com.github.srilakshmikanthanp.quicknote.QuickNote</mainClass>
+                <mainClass>facsimile/com.github.srilakshmikanthanp.facsimile.Facsimile</mainClass>
               </configuration>
             </execution>
           </executions>
