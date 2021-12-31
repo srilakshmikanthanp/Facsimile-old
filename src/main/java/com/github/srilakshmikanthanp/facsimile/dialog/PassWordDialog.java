@@ -1,6 +1,9 @@
 package com.github.srilakshmikanthanp.facsimile.dialog;
 
 import javafx.stage.*;
+
+import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
+
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
@@ -367,7 +370,7 @@ public class PassWordDialog extends Stage
     {
         // init the stage
         this.initOwner(owner);
-        this.initStyle(StageStyle.UNDECORATED);
+        this.initStyle(StageStyle.TRANSPARENT);
         this.initModality(Modality.APPLICATION_MODAL);
 
         // define the pane
@@ -381,9 +384,14 @@ public class PassWordDialog extends Stage
 
         // center the stage
         this.setOnShown((evt) -> {
+            // set min max dimensions
             this.setMinWidth(width);
             this.setMinHeight(height);
-            this.centerOnScreen();
+
+            // center the stage
+            Utilityfunc.centerTo(
+                owner, this
+            );
         });
     }
 

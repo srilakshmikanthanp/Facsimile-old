@@ -164,7 +164,7 @@ public class ShortCutDialog extends Stage
     {
         // init the stage
         this.initOwner(owner);
-        this.initStyle(StageStyle.UNDECORATED);
+        this.initStyle(StageStyle.TRANSPARENT);
         this.initModality(Modality.APPLICATION_MODAL);
 
         // define the pane
@@ -180,9 +180,14 @@ public class ShortCutDialog extends Stage
 
         // center the stage
         this.setOnShown((evt) -> {
+            // set min max dimensions
             this.setMinWidth(width);
             this.setMinHeight(height);
-            this.centerOnScreen();
+
+            // cetner the stage
+            Utilityfunc.centerTo(
+                owner, this
+            );
         });
     }
 

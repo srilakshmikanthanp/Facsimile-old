@@ -1,12 +1,11 @@
 package com.github.srilakshmikanthanp.facsimile.panes;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.dialog.*;
@@ -19,33 +18,6 @@ public class TopPane extends BorderPane
 {
     // Mapping data
     private Mapping mapping;
-
-    /**
-     * Shows the alert.
-     */
-    private boolean showError(String content)
-    {
-        // create alert
-        var alert = new Alert(AlertType.ERROR);
-
-        // init the alert
-        alert.setTitle("Internal Error");
-        alert.setHeaderText("Exception occured");
-        alert.setContentText(content);
-
-        // show alert
-        var res =alert.showAndWait();
-
-        // if not valid
-        if(!res.isPresent())
-        {
-            return false;
-        }
-
-        // return result
-        return res.get() == ButtonType.OK;
-    }
-
 
     /**
      * Change the ShortCut
@@ -107,7 +79,7 @@ public class TopPane extends BorderPane
         } 
         catch (IOException | GeneralSecurityException e) 
         {
-            this.showError(e.getMessage());
+            Utilityfunc.showError(e.getMessage());
             return;
         }
     }

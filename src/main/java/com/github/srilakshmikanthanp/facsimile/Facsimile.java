@@ -22,6 +22,7 @@ import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.dialog.*;
 import com.github.srilakshmikanthanp.facsimile.panes.*;
 import com.github.srilakshmikanthanp.facsimile.system.*;
+import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
 
 /**
  * Main Stage for the Facsimile.
@@ -40,6 +41,9 @@ class MainStage extends Stage
 
     // dimension of application
     private static final double Width = 400, Height = 450;
+
+    // Primary Stage
+    private Stage pStage;
 
     // mapping data for app
     private Mapping mapping;
@@ -227,12 +231,33 @@ class MainStage extends Stage
     }
 
     /**
+     * Is Child stage is showing
+     * 
+     * @return true if child stage is showing
+     */
+    private boolean isChildStageisShowing()
+    {
+        for(var window : Window.getWindows()) 
+        {
+            if(window.isShowing() && window != this && window != pStage) 
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Constructor
      * 
      * @param pStage Primary Stage
      */
     public MainStage(Stage pStage)
     {
+        // save pstage
+        this.pStage = pStage;
+
         // init stage
         this.initOwner(pStage);
         this.initStyle(StageStyle.UNDECORATED);
@@ -255,7 +280,15 @@ class MainStage extends Stage
 
         // center the stage
         this.setOnShown((evt) -> {
-            this.centerOnScreen();
+            Utilityfunc.centerToScreen(this);
+            this.requestFocus();
+        });
+
+        // hide on lost focus from Application
+        this.focusedProperty().addListener((obs, old, focused) -> {
+            if(!focused && !this.isChildStageisShowing()) {
+                this.hide();
+            }
         });
     }
 
@@ -309,8 +342,8 @@ public class Facsimile extends Application
     {
         // init primary stage
         pStage.initStyle(StageStyle.UTILITY);
-        pStage.setHeight(0.0);
-        pStage.setWidth(0.0);
+        pStage.setMaxHeight(0.0);
+        pStage.setMaxWidth(0.0);
         pStage.setOpacity(0.0);
         pStage.show();
 
@@ -359,6 +392,11 @@ public class Facsimile extends Application
         sysTray.removeFromTray();
     }
 
+    /**
+     * Main method to start the application
+     * 
+     * @param args cmd args
+     */
     public static void main(String[] args) 
     {
         launch(args);
