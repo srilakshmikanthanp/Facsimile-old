@@ -365,7 +365,7 @@ public class Facsimile extends Application
         } 
         catch (NativeHookException e) 
         {
-            // TODO show error
+            Utilityfunc.showError(e);
         }
 
         // add to system tray
@@ -385,7 +385,7 @@ public class Facsimile extends Application
         } 
         catch (NativeHookException e) 
         {
-            // TODO show error
+            Utilityfunc.showError(e);
         }
 
         // remove from tray

@@ -7,10 +7,8 @@
   <groupId>com.github.srilakshmikanthanp.facsimile</groupId>
   <artifactId>facsimile</artifactId>
   <version>1.0.0</version>
-
   <name>facsimile</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>https://github.com/srilakshmikanthanp/Facsimile</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

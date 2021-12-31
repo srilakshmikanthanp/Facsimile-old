@@ -79,7 +79,7 @@ public class TopPane extends BorderPane
         } 
         catch (IOException | GeneralSecurityException e) 
         {
-            Utilityfunc.showError(e.getMessage());
+            Utilityfunc.showError(e);
             return;
         }
     }

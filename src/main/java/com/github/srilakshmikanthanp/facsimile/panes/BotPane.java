@@ -51,7 +51,7 @@ public class BotPane extends BorderPane
         } 
         catch (IOException | GeneralSecurityException e) 
         {
-            Utilityfunc.showError(e.getMessage());
+            Utilityfunc.showError(e);
         }
     }
 

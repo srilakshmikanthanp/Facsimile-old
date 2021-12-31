@@ -122,7 +122,7 @@ public class Mapping
      * @throws GeneralSecurityException if failed to decrypt.
      */
     public String get(String key) 
-        throws GeneralSecurityException
+throws GeneralSecurityException
     {
         var value = this.data.get(key);
 
@@ -193,7 +193,9 @@ public class Mapping
     public String replace(String key, String value) 
         throws GeneralSecurityException, IOException
     {
-        var oldValue = this.data.replace(key, this.cryptoEn.encrypt(value));
+        var oldValue = this.data.replace(
+            key, this.cryptoEn.encrypt(value)
+        );
         this.saveData();
         return oldValue;
     }
@@ -204,7 +206,7 @@ public class Mapping
      * @return list key value pair
      * @throws GeneralSecurityException if decrtption fails
      */
-    ArrayList<Pair<String, String>> getData() 
+    public ArrayList<Pair<String, String>> getPairs() 
         throws GeneralSecurityException
     {
         ArrayList<Pair<String, String>> list = new ArrayList<>();
