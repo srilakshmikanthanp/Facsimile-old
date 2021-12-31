@@ -7,7 +7,6 @@ package com.github.srilakshmikanthanp.facsimile.system;
 
 import java.util.logging.*;
 import org.jnativehook.keyboard.*;
-import javafx.scene.input.KeyCode;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import com.github.srilakshmikanthanp.facsimile.utility.Preference;
@@ -121,7 +120,7 @@ public class ShortCut extends NativeKeyAdapter
      */
     @Override
     public void nativeKeyPressed(NativeKeyEvent e)
-    {
+    {;
         // define vars
         var modifiers = NativeKeyEvent.getModifiersText(
             e.getModifiers()
@@ -129,10 +128,10 @@ public class ShortCut extends NativeKeyAdapter
         var key = NativeKeyEvent.getKeyText(
             e.getKeyCode()
         );
-        var key_code = KeyCode.getKeyCode(key);
         
-        // to upper case
+        // to upper case;;
         modifiers = modifiers.toUpperCase();
+        key = key.toUpperCase();
 
         // check mask one contains
         if(!(modifiers.contains(mask_one)))
@@ -146,13 +145,7 @@ public class ShortCut extends NativeKeyAdapter
             return;
         }
 
-        // check key contains
-        if(key_code == null)
-        {
-            return;
-        }
-
-        if(!key_str.equals(key_code.getChar()))
+        if(!key_str.equals(key))
         {
             return;
         }

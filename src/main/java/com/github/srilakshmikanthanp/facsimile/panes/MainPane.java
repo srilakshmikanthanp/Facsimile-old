@@ -21,7 +21,6 @@ public class MainPane extends BorderPane
         this.setCenter(new MidPane(mapping));
         this.setBottom(new BotPane(mapping));
 
-
         // init the pane
         this.setPadding(new Insets(10));
     }

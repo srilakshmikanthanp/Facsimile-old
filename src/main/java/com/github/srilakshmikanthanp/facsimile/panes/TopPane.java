@@ -9,7 +9,8 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 import com.github.srilakshmikanthanp.facsimile.datum.*;
-import com.github.srilakshmikanthanp.facsimile.dialog.Password;
+import com.github.srilakshmikanthanp.facsimile.dialog.*;
+import com.github.srilakshmikanthanp.facsimile.utility.*;
 
 /**
  * Top Section of the Pane
@@ -51,7 +52,29 @@ public class TopPane extends BorderPane
      */
     private void ChangeShortCut()
     {
-        // TODO : Change the ShortCut
+        // create dialog
+        var dialog = new ShortCutDialog(
+            this.getScene().getWindow()
+        );
+
+        // show dialog
+        dialog.showAndWait();
+
+        // if not ok
+        if(!dialog.isOk())
+        {
+            return;
+        }
+
+        // get the data
+        var masksOne = dialog.getMaskOne();
+        var masksTwo = dialog.getMaskTwo();
+        var keyValue = dialog.getKey();
+
+        // set the ShortCut
+        Preference.setMaskOne(masksOne);
+        Preference.setMaskTwo(masksTwo);
+        Preference.setKeyValue(keyValue);
     }
 
     /**
@@ -60,9 +83,9 @@ public class TopPane extends BorderPane
     private void ChangePassword()
     {
         // create dialog
-        var dialog = new Password (
+        var dialog = new PassWordDialog (
             this.getScene().getWindow(),
-            Password.CHANGE_PASSWORD
+            PassWordDialog.CHANGE_PASSWORD
         );
 
         //show the doalog

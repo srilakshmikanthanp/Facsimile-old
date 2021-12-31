@@ -107,8 +107,8 @@ class MainStage extends Stage
         while(!cryptoEn.isKeyExists())
         {
             // create dialog
-            var dialog = new Password(null,
-                Password.GINPUT_PASSWORD
+            var dialog = new PassWordDialog(null,
+                PassWordDialog.GINPUT_PASSWORD
             );
 
             // show dialog
@@ -159,8 +159,8 @@ class MainStage extends Stage
         while(!cryptoEn.isKeyExists())
         {
             // create dialog
-            var dialog = new Password(null, 
-                Password.CREATE_PASSWORD
+            var dialog = new PassWordDialog(null, 
+                PassWordDialog.CREATE_PASSWORD
             );
 
             // show dialog

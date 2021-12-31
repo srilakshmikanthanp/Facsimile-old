@@ -12,7 +12,7 @@ import javafx.scene.input.KeyCode;
 /**
  * Passwords Dialog
  */
-public class Password extends Stage
+public class PassWordDialog extends Stage
 {
     // Get the password from user
     public static final int GINPUT_PASSWORD = 1;
@@ -363,11 +363,12 @@ public class Password extends Stage
      * @param type type of password 
      * to take
      */
-    public Password(Window owner, int type)
+    public PassWordDialog(Window owner, int type)
     {
         // init the stage
         this.initOwner(owner);
         this.initStyle(StageStyle.UNDECORATED);
+        this.initModality(Modality.APPLICATION_MODAL);
 
         // define the pane
         var pane = new BorderPane(this.getTypePane(type));
