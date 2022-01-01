@@ -20,6 +20,9 @@ module facsimile
     // from javafx
     requires javafx.controls;
 
+    // theme decetcor
+    requires com.jthemedetector;
+
     // give access to the facsimile package
     opens com.github.srilakshmikanthanp.facsimile to javafx.graphics;
 }

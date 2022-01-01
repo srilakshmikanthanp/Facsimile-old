@@ -192,6 +192,11 @@ public class ShortCutDialog extends Stage
             // to front
             this.toFront();
         });
+
+        // set theme
+        SysTheme.setSystemTheme(
+            this.getScene()
+        );
     }
 
     /**

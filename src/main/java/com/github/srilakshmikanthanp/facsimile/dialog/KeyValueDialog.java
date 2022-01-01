@@ -2,6 +2,7 @@ package com.github.srilakshmikanthanp.facsimile.dialog;
 
 import javafx.stage.*;
 
+import com.github.srilakshmikanthanp.facsimile.system.SysTheme;
 import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
 
 import javafx.geometry.*;
@@ -164,6 +165,11 @@ public class KeyValueDialog extends Stage
             // to front
             this.toFront();
         });
+
+        // set theme
+        SysTheme.setSystemTheme(
+            this.getScene()
+        );
     }
 
     /**

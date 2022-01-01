@@ -229,6 +229,11 @@ class MainStage extends Stage
             Utilityfunc.centerToScreen(this);
             this.requestFocus();
         });
+
+        // set theme
+        SysTheme.setSystemTheme(
+            this.getScene()
+        );
     }
 
     /**
