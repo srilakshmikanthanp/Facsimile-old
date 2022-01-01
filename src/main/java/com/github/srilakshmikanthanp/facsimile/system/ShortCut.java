@@ -8,7 +8,6 @@ package com.github.srilakshmikanthanp.facsimile.system;
 import java.util.logging.*;
 import org.jnativehook.keyboard.*;
 import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
 import com.github.srilakshmikanthanp.facsimile.utility.Preference;
 
 /**
@@ -91,28 +90,6 @@ public class ShortCut extends NativeKeyAdapter
     public Runnable getRunnable()
     {
         return runnable;
-    }
-
-    /**
-     * Register the Global Key Event
-     * 
-     * @throws NativeHookException if fails
-     */
-    public void register() throws NativeHookException
-    {
-        GlobalScreen.registerNativeHook();
-        GlobalScreen.addNativeKeyListener(this);
-    }
-
-    /**
-     * Unregister the Global Key Event
-     * 
-     * @throws NativeHookException if fails
-     */
-    public void unregister() throws NativeHookException
-    {
-        GlobalScreen.removeNativeKeyListener(this);
-        GlobalScreen.unregisterNativeHook();
     }
 
     /**

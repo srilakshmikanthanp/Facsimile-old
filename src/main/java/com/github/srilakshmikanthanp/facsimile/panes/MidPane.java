@@ -1,12 +1,16 @@
 package com.github.srilakshmikanthanp.facsimile.panes;
 
 
+import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 import javafx.scene.layout.*;
+import javafx.stage.Window;
 import javafx.util.Pair;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -29,15 +33,15 @@ public class MidPane extends BorderPane
     /**
      * Update the mapping data too user
      */
-    public void updateMapping()
+    private void updateListView()
     {
         // define vars for map
         ArrayList<Pair<String, String>> pairs;
 
-        // get mapping data
+        // get mapping data from map
         try
         {
-            pairs = this.mapping.getPairs();
+            pairs = mapping.getPairs();
         }
         catch(GeneralSecurityException e)
         {
@@ -58,71 +62,148 @@ public class MidPane extends BorderPane
     }
 
     /**
-     * Copies the value of key to clipboard
+     * Gets the Selected Value from map
      * 
-     * @param key key to copy
+     * @return selected value
      */
-    private void copyClipAndHide()
+    private String getSelectedValue()
     {
-        // defne
-        String valueOftheKey = null;
+        var model = listView.getSelectionModel();
+        var key = model.getSelectedItem();
+        String value = null;
 
-        // get
+        // get value from map
         try
         {
-            valueOftheKey = mapping.get(
-                listView.getSelectionModel()
-                .getSelectedItem()
-            );
+            value = mapping.get(key);
         }
         catch(GeneralSecurityException e)
         {
             Utilityfunc.showError(e);
+        }
+
+        // Done
+        return value;
+    }
+
+    /**
+     * Copy the selected item to clip board
+     */
+    private void copyToClipboard()
+    {
+        var value = this.getSelectedValue();
+
+        // check if value is null
+        if(value == null)
+        {
             return;
         }
 
-        // copy
-        var sysBoard = Clipboard.getSystemClipboard();
+        // create clipboard content
         var content = new ClipboardContent();
-        content.putString(valueOftheKey);
+        content.putString(value);
+
+        // copy to clipboard
+        var sysBoard = Clipboard.getSystemClipboard();
         sysBoard.setContent(content);
     }
 
     /**
-     * Constructor for MidPane
+     * Delete the selected item from map
+     */
+    private void deleteSelected()
+    {
+        // define vars for map
+        var model = listView.getSelectionModel();
+        var key = model.getSelectedItem();
+
+        // check if key is null
+        if(key == null)
+        {
+            return;
+        }
+
+        // delete from map
+        try
+        {
+            mapping.remove(key);
+        }
+        catch(IOException | GeneralSecurityException e)
+        {
+            Utilityfunc.showError(e);
+        }
+
+        // update map
+        this.updateListView();
+    }
+
+    /**
+     * Action Listener for the list view
+     */
+    private void listViewKeyEvent(KeyCode code)
+    {
+        // check if key is delete
+        if(code == KeyCode.DELETE)
+        {
+            this.deleteSelected();
+            return;
+        }
+        
+        // check if key is delete
+        if(code == KeyCode.ENTER)
+        {
+            this.copyToClipboard();
+            this.getScene().getWindow().hide();
+            return;
+        }
+    }
+
+    /**
+     * Constructor for the middle pane
      * 
-     * @param mapping map data
+     * @param mapping mapping
      */
     public MidPane(Mapping mapping)
     {
         // save map
         this.mapping = mapping;
 
-        // initlize the pane
+        // set the list view
         this.setCenter(listView);
         this.setPadding(new Insets(15));
 
-        // add key event
-        this.listView.setOnKeyPressed((evt) -> {
-            if(evt.getCode() == KeyCode.ENTER) {
-                this.copyClipAndHide();
-            } else if(evt.getCode() == KeyCode.DELETE) {
-             //   this.deleteKey();
-            }
+        // listeners to list view
+        listView.setOnKeyPressed(evt -> {
+            this.listViewKeyEvent(
+                evt.getCode()
+            );
         });
 
-        // addlistener to map
+        // add listener to map
         this.mapping.addChangeListener(() -> {
-            this.updateMapping();
+            this.updateListView();
         });
 
-        // Initial add
-        this.sceneProperty().addListener((sobs, soldVal, scene) -> {
-            scene.windowProperty().addListener((wobs, woldval, window) -> {
-                window.setOnShowing((evt) -> {
-                    this.updateMapping();
-                });
+        // Window Listener for pane
+        ChangeListener<Window> winLis = 
+        ( obs, oldWin, newWin ) -> {
+            newWin.setOnShowing((evt) -> {
+                this.updateListView();
+                listView.requestFocus();
             });
-        });
+        };
+        
+        // Scene Listener
+        ChangeListener<Scene> sceneLis = 
+        ( obs, oldScene, newScene ) -> {
+            newScene.windowProperty().addListener(
+                winLis
+            );
+        };
+
+        // add listener to scene
+        this.sceneProperty().addListener(
+            sceneLis
+        );
     }
 }

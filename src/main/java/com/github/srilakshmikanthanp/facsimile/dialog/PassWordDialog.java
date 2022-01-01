@@ -392,6 +392,9 @@ public class PassWordDialog extends Stage
             Utilityfunc.centerTo(
                 owner, this
             );
+
+            // to front
+            this.toFront();
         });
     }
 

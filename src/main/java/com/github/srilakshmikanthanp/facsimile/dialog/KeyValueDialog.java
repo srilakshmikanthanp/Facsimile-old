@@ -9,6 +9,7 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 
 /**
  * A Stage that displays a option to add key-value pair.
@@ -87,9 +88,21 @@ public class KeyValueDialog extends Stage
             ContentDisplay.TOP
         );
 
-        // init fields
+        // init KeyField
         keyField.setPromptText("Key");
+        keyField.setOnKeyPressed((evt) -> {
+            if(evt.getCode() == KeyCode.ENTER) {
+                valueField.requestFocus();
+            }
+        });
+
+        // init ValueField
         valueField.setPromptText("Value");
+        valueField.setOnKeyPressed((evt) -> {
+            if(evt.getCode() == KeyCode.ENTER) {
+                btn.requestFocus();
+            }
+        });
 
         // init button
         btn.setOnAction((evt) -> {
@@ -147,6 +160,9 @@ public class KeyValueDialog extends Stage
             Utilityfunc.centerTo(
                 owner, this
             );
+            
+            // to front
+            this.toFront();
         });
     }
 

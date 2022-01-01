@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.*;
 
+import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
 import com.github.srilakshmikanthanp.facsimile.datum.*;
@@ -328,11 +329,43 @@ class MainStage extends Stage
  */
 public class Facsimile extends Application 
 {
+    // System Mouse listener
+    private SysMouse sysMouse = new SysMouse(null);
+
     // shortcut listener
     private ShortCut shortCut = new ShortCut(null);
 
     // add to system tray
     private SysTray sysTray;
+
+    // MainStage
+    private MainStage mainStage;
+
+    /**
+     * GLobal mouse pressed
+     */
+    private void globalMousePressed(int x, int y)
+    {
+        var stageX = mainStage.getX();
+        var stageY = mainStage.getY();
+        var rangeX = stageX + mainStage.getWidth();
+        var rangeY = stageY + mainStage.getHeight();
+
+        // if in range X
+        if(x > stageX && x < rangeX)
+        {
+            return;
+        }
+
+        // if in range Y
+        if(y > stageY && y < rangeY)
+        {
+            return;
+        }
+
+        // hide
+        Platform.runLater(mainStage::hide);
+    }
 
     /**
      * Method that called on start
@@ -348,28 +381,38 @@ public class Facsimile extends Application
         pStage.show();
 
         // define vars
-        var mainStage = new MainStage(pStage);
+        mainStage = new MainStage(pStage);
 
-        // Runnable instance to start
-        Runnable runnable = () -> Platform.runLater(() -> {
+        // Runnable instance to visibe or not shortcut
+        Runnable shortcutRun = () -> Platform.runLater(() -> {
             mainStage.setVisible(!mainStage.isShowing());
         });
 
-        // initilize
-        shortCut.setRunnable(runnable);
+        // set runnable for shortcut
+        shortCut.setRunnable(shortcutRun);
+
+        // set runnable for system mouse
+        sysMouse.setActionListener((evt) -> {
+            this.globalMousePressed(evt.getX(), evt.getY());
+        });
 
         // register the shortcut
-        try 
+        try
         {
-            shortCut.register();
-        } 
-        catch (NativeHookException e) 
+            GlobalScreen.registerNativeHook();
+        }
+        catch(NativeHookException e)
         {
             Utilityfunc.showError(e);
         }
 
+        // add listeners
+        GlobalScreen.addNativeMouseListener(sysMouse);
+        GlobalScreen.addNativeMouseMotionListener(sysMouse);
+        GlobalScreen.addNativeKeyListener(shortCut);
+
         // add to system tray
-        sysTray = SysTray.addToTray(runnable);
+        sysTray = SysTray.addToTray(shortcutRun);
     }
 
     /**
@@ -378,10 +421,10 @@ public class Facsimile extends Application
     @Override
     public void stop()
     {
-        // unregister the shortcut
+        // unregister the Global Listeners
         try 
         {
-            shortCut.unregister();
+            GlobalScreen.unregisterNativeHook();
         } 
         catch (NativeHookException e) 
         {

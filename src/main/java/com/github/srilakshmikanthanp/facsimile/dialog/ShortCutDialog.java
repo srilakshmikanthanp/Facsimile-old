@@ -188,6 +188,9 @@ public class ShortCutDialog extends Stage
             Utilityfunc.centerTo(
                 owner, this
             );
+
+            // to front
+            this.toFront();
         });
     }
 
