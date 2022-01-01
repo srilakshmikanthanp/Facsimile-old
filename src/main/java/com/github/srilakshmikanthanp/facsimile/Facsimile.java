@@ -15,6 +15,7 @@ import javafx.stage.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.*;
+import javafx.scene.shape.Rectangle;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -42,9 +43,6 @@ class MainStage extends Stage
 
     // dimension of application
     private static final double Width = 400, Height = 450;
-
-    // Primary Stage
-    private Stage pStage;
 
     // mapping data for app
     private Mapping mapping;
@@ -232,33 +230,12 @@ class MainStage extends Stage
     }
 
     /**
-     * Is Child stage is showing
-     * 
-     * @return true if child stage is showing
-     */
-    private boolean isChildStageisShowing()
-    {
-        for(var window : Window.getWindows()) 
-        {
-            if(window.isShowing() && window != this && window != pStage) 
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Constructor
      * 
      * @param pStage Primary Stage
      */
     public MainStage(Stage pStage)
     {
-        // save pstage
-        this.pStage = pStage;
-
         // init stage
         this.initOwner(pStage);
         this.initStyle(StageStyle.UNDECORATED);
@@ -283,13 +260,6 @@ class MainStage extends Stage
         this.setOnShown((evt) -> {
             Utilityfunc.centerToScreen(this);
             this.requestFocus();
-        });
-
-        // hide on lost focus from Application
-        this.focusedProperty().addListener((obs, old, focused) -> {
-            if(!focused && !this.isChildStageisShowing()) {
-                this.hide();
-            }
         });
     }
 
@@ -346,25 +316,24 @@ public class Facsimile extends Application
      */
     private void globalMousePressed(int x, int y)
     {
-        var stageX = mainStage.getX();
-        var stageY = mainStage.getY();
-        var rangeX = stageX + mainStage.getWidth();
-        var rangeY = stageY + mainStage.getHeight();
+        // Rectangle
+        var rect = new Rectangle (
+            mainStage.getX(),
+            mainStage.getY(),
+            mainStage.getWidth(),
+            mainStage.getHeight()
+        );
 
-        // if in range X
-        if(x > stageX && x < rangeX)
+        var sclX = Screen.getPrimary().getOutputScaleX();
+        var sclY = Screen.getPrimary().getOutputScaleY();
+        var posX = x / sclX;
+        var posY = y / sclY;
+
+        // if not in stage
+        if(!rect.contains(posX, posY))
         {
-            return;
+            Platform.runLater(mainStage::hide);
         }
-
-        // if in range Y
-        if(y > stageY && y < rangeY)
-        {
-            return;
-        }
-
-        // hide
-        Platform.runLater(mainStage::hide);
     }
 
     /**
@@ -393,7 +362,7 @@ public class Facsimile extends Application
 
         // set runnable for system mouse
         sysMouse.setActionListener((evt) -> {
-            this.globalMousePressed(evt.getX(), evt.getY());
+           this.globalMousePressed(evt.getX(), evt.getY());
         });
 
         // register the shortcut
