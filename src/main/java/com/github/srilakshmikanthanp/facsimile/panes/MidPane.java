@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
@@ -179,6 +180,13 @@ public class MidPane extends BorderPane
             );
         });
 
+        // On Key Pressed
+        listView.setOnMouseClicked((evt) -> {
+            if(evt.getButton() == MouseButton.PRIMARY) {
+                this.copyToClipboard();
+            }
+        });
+
         // add listener to map
         this.mapping.addChangeListener(() -> {
             this.updateListView();
@@ -189,7 +197,6 @@ public class MidPane extends BorderPane
         ( obs, oldWin, newWin ) -> {
             newWin.setOnShowing((evt) -> {
                 this.updateListView();
-                listView.requestFocus();
             });
         };
         
