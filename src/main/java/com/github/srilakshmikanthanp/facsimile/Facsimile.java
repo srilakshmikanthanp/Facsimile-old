@@ -74,32 +74,6 @@ class MainStage extends Stage
     }
 
     /**
-     * Shows the alert.
-     */
-    private boolean showError(String content)
-    {
-        // create alert
-        var alert = new Alert(AlertType.ERROR);
-
-        // init the alert
-        alert.setTitle("Internal Error");
-        alert.setHeaderText("Exception occured");
-        alert.setContentText(content);
-
-        // show alert
-        var res =alert.showAndWait();
-
-        // if not valid
-        if(!res.isPresent())
-        {
-            return false;
-        }
-
-        // return result
-        return res.get() == ButtonType.OK;
-    }
-
-    /**
      * Loads the password to crypto
      * 
      * @param cryptoEn crypto Engine
@@ -141,13 +115,14 @@ class MainStage extends Stage
             catch (GeneralSecurityException e) 
             {
                 // create allert
-                this.showError(e.getMessage());
+                Utilityfunc.showError(e);
 
                 // return
                 return false;
             }
         }
 
+        // done
         return true;
     }
 
@@ -183,24 +158,17 @@ class MainStage extends Stage
             {
                 cryptoEn.createNewKey(password);
             } 
-            catch (IOException e) 
+            catch (GeneralSecurityException | IOException e) 
             {
                 // create allert
-                this.showError(e.getMessage());
-
-                // return
-                return false;
-            } 
-            catch (GeneralSecurityException e) 
-            {
-                // create allert
-                this.showError(e.getMessage());
+                Utilityfunc.showError(e);
 
                 // return
                 return false;
             }
         }
 
+        // done
         return true;
     }
 
