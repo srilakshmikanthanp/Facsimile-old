@@ -41,6 +41,7 @@
       </ul>
     </li>
     <li><a href="#demo">Demo</a></li>
+    <li><a href="#security">Security</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -92,6 +93,12 @@ First Open
 After Open
 
 ![demo](/assets/images/AfterOpen.gif)
+
+## Security
+
+![security](/assets/images/shield.png)
+
+Facsimile Stores your Info as Encrypted means even you can't access your Info without your password !
 
 <!-- ROADMAP -->
 ## Roadmap
