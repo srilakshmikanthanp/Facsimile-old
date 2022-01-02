@@ -5,7 +5,6 @@
 
 package com.github.srilakshmikanthanp.facsimile;
 
-
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
@@ -34,17 +33,20 @@ import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
 /**
  * Main Stage for the Facsimile.
  */
-class MainStage extends Stage
-{
+class MainStage extends Stage {
     // location to store data on production
     @SuppressWarnings("unused")
     private static final String PRD_LOC = System.getProperty(
-        "user.home"
+            "user.home"
     );
 
     // location to store data on development
     @SuppressWarnings("unused")
     private static final String DEV_LOC = "./target";
+
+    // location to store data
+    @SuppressWarnings("unused")
+    private static final String LOC = PRD_LOC;
 
     // dimension of application
     private static final double Width = 400, Height = 450;
@@ -58,8 +60,7 @@ class MainStage extends Stage
     /**
      * Shows the try again prompt.
      */
-    private boolean showTryAgain()
-    {
+    private boolean showTryAgain() {
         // create alert
         var alert = new Alert(AlertType.INFORMATION);
 
@@ -72,8 +73,7 @@ class MainStage extends Stage
         var res = alert.showAndWait();
 
         // if not valid
-        if(!res.isPresent())
-        {
+        if (!res.isPresent()) {
             return false;
         }
 
@@ -87,17 +87,14 @@ class MainStage extends Stage
      * @param cryptoEn crypto Engine
      * @return status
      */
-    private boolean loadPassword(CryptoEn cryptoEn)
-    {
+    private boolean loadPassword(CryptoEn cryptoEn) {
         // if aldersy showing
-        if(dialog.isShowing())
-        {
+        if (dialog.isShowing()) {
             return false;
         }
 
         // main loop
-        while(!cryptoEn.isKeyExists())
-        {
+        while (!cryptoEn.isKeyExists()) {
             // init dialog
             dialog.setType(
                 PassWordDialog.GINPUT_PASSWORD
@@ -107,8 +104,7 @@ class MainStage extends Stage
             dialog.showAndWait();
 
             // if not valid
-            if(!dialog.isOkay())
-            {
+            if (!dialog.isOkay()) {
                 return false;
             }
 
@@ -116,19 +112,14 @@ class MainStage extends Stage
             var password = dialog.getActPassword();
 
             // load password
-            try 
-            {
+            try {
                 cryptoEn.loadExtistingKey(password);
-            } 
-            catch (IOException e) 
-            {
-                if(!this.showTryAgain()) // if try not again
+            } catch (IOException e) {
+                if (!this.showTryAgain()) // if try not again
                 {
                     return false;
                 }
-            } 
-            catch (GeneralSecurityException e) 
-            {
+            } catch (GeneralSecurityException e) {
                 // create allert
                 Utilityfunc.showError(e);
 
@@ -147,28 +138,24 @@ class MainStage extends Stage
      * @param cryptoEn engine
      * @return status
      */
-    private boolean makePassword(CryptoEn cryptoEn)
-    {
+    private boolean makePassword(CryptoEn cryptoEn) {
         // if aldersy showing
-        if(dialog.isShowing())
-        {
+        if (dialog.isShowing()) {
             return false;
         }
 
         // main loop
-        while(!cryptoEn.isKeyExists())
-        {
+        while (!cryptoEn.isKeyExists()) {
             // init dialog
             dialog.setType(
-                PassWordDialog.GINPUT_PASSWORD
+                PassWordDialog.CREATE_PASSWORD
             );
 
             // show dialog
             dialog.showAndWait();
 
             // if not valid
-            if(!dialog.isOkay())
-            {
+            if (!dialog.isOkay()) {
                 return false;
             }
 
@@ -176,15 +163,11 @@ class MainStage extends Stage
             var password = dialog.getActPassword();
 
             // load password
-            try 
-            {
+            try {
                 cryptoEn.createNewKey(password);
-            } 
-            catch (GeneralSecurityException | IOException e) 
-            {
+            } catch (GeneralSecurityException | IOException e) {
                 // create allert
                 Utilityfunc.showError(e);
-
                 // return
                 return false;
             }
@@ -195,26 +178,21 @@ class MainStage extends Stage
     }
 
     /**
-     * Make and test the Crypto Engine. 
+     * Make and test the Crypto Engine.
      */
-    private boolean CheckCrypto()
-    {
+    private boolean CheckCrypto() {
         // crypro
         CryptoEn cryptoEn = mapping.getCryptoEn();
 
         // check if the crypto is valid
-        if(cryptoEn.isKeyExists())
-        {
-           return true;
+        if (cryptoEn.isKeyExists()) {
+            return true;
         }
 
         // is key file exits
-        if(cryptoEn.isKeyFileExits())
-        {
+        if (cryptoEn.isKeyFileExits()) {
             return this.loadPassword(cryptoEn);
-        }
-        else
-        {
+        } else {
             return this.makePassword(cryptoEn);
         }
     }
@@ -224,15 +202,14 @@ class MainStage extends Stage
      * 
      * @param pStage Primary Stage
      */
-    public MainStage(Stage pStage)
-    {
+    public MainStage(Stage pStage) {
         // init stage
         this.initOwner(pStage);
         this.initStyle(StageStyle.TRANSPARENT);
 
         // create mapping
         this.mapping = new Mapping(
-            Paths.get(DEV_LOC, ".facsimile")
+            Paths.get(LOC, ".facsimile")
         );
 
         // main pane
@@ -286,27 +263,22 @@ class MainStage extends Stage
      * 
      * @param visible true for Visible or false for hide
      */
-    public void setVisible(boolean visible)
-    {
+    public void setVisible(boolean visible) {
         // define path
-        var dPath = Paths.get(DEV_LOC, ".facsimile");
+        var dPath = Paths.get(LOC, ".facsimile");
 
         // create dir
         dPath.toFile().mkdirs();
 
         // check the mapping
-        if(!this.CheckCrypto())
-        {
+        if (!this.CheckCrypto()) {
             return;
         }
 
         // set visible or not
-        if(visible)
-        {
+        if (visible) {
             this.show();
-        }
-        else
-        {
+        } else {
             this.hide();
         }
     }
@@ -315,8 +287,7 @@ class MainStage extends Stage
 /**
  * Main Application class
  */
-public class Facsimile extends Application 
-{
+public class Facsimile extends Application {
     // System Mouse listener
     private SysMouse sysMouse = new SysMouse(null);
 
@@ -332,10 +303,9 @@ public class Facsimile extends Application
     /**
      * GLobal mouse pressed
      */
-    private void globalMousePressed(int x, int y)
-    {
+    private void globalMousePressed(int x, int y) {
         // Rectangle
-        var rect = new Rectangle (
+        var rect = new Rectangle(
             mainStage.getX(),
             mainStage.getY(),
             mainStage.getWidth(),
@@ -348,8 +318,7 @@ public class Facsimile extends Application
         var posY = y / sclY;
 
         // if not in stage
-        if(!rect.contains(posX, posY))
-        {
+        if (!rect.contains(posX, posY)) {
             Platform.runLater(mainStage::hide);
         }
     }
@@ -358,8 +327,7 @@ public class Facsimile extends Application
      * Method that called on start
      */
     @Override
-    public void start(Stage pStage) 
-    {
+    public void start(Stage pStage) {
         // init primary stage
         pStage.initStyle(StageStyle.UTILITY);
         pStage.setMaxHeight(0.0);
@@ -380,16 +348,13 @@ public class Facsimile extends Application
 
         // set runnable for system mouse
         sysMouse.setActionListener((evt) -> {
-           this.globalMousePressed(evt.getX(), evt.getY());
+            this.globalMousePressed(evt.getX(), evt.getY());
         });
 
         // register the shortcut
-        try
-        {
+        try {
             GlobalScreen.registerNativeHook();
-        }
-        catch(NativeHookException e)
-        {
+        } catch (NativeHookException e) {
             Utilityfunc.showError(e);
         }
 
@@ -406,15 +371,11 @@ public class Facsimile extends Application
      * Method that called on stop
      */
     @Override
-    public void stop()
-    {
+    public void stop() {
         // unregister the Global Listeners
-        try 
-        {
+        try {
             GlobalScreen.unregisterNativeHook();
-        } 
-        catch (NativeHookException e) 
-        {
+        } catch (NativeHookException e) {
             Utilityfunc.showError(e);
         }
 
@@ -427,8 +388,9 @@ public class Facsimile extends Application
      * 
      * @param args cmd args
      */
-    public static void main(String[] args) 
-    {
-        launch(args);
+    public static void main(String[] args) {
+        if(!Utilityfunc.isApplicationRunning()) {
+            launch(args);
+        }
     }
 }

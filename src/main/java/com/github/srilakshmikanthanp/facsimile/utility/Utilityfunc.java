@@ -1,6 +1,7 @@
 package com.github.srilakshmikanthanp.facsimile.utility;
 
 import java.io.*;
+import java.net.ServerSocket;
 
 import javafx.stage.*;
 import javafx.scene.layout.*;
@@ -10,15 +11,13 @@ import javafx.scene.control.Alert.AlertType;
 /**
  * Some Utility Functions
  */
-public class Utilityfunc 
-{
+public class Utilityfunc {
     /**
      * Shows the alert.
      * 
      * @param ex Exception to show
      */
-    public static boolean showError(Exception ex)
-    {
+    public static boolean showError(Exception ex) {
         // create alert
         var alert = new Alert(AlertType.ERROR);
 
@@ -52,29 +51,26 @@ public class Utilityfunc
 
         // Set expandable Exception into the dialog pane.
         alert.getDialogPane().setExpandableContent(
-            expContent
-        );
+                expContent);
 
         // show alert
         var res = alert.showAndWait();
 
         // if not valid
-        if(!res.isPresent())
-        {
+        if (!res.isPresent()) {
             return false;
         }
 
         // return result
         return res.get() == ButtonType.OK;
     }
-    
+
     /**
      * Sets the stage to center of the screen.
      * 
      * @param stage The stage to be set.
      */
-    public static void centerToScreen(Window window)
-    {
+    public static void centerToScreen(Window window) {
         var bounds = Screen.getPrimary().getVisualBounds();
         var wX = (bounds.getWidth() - window.getWidth()) / 2;
         var wY = (bounds.getHeight() - window.getHeight()) / 2;
@@ -83,24 +79,50 @@ public class Utilityfunc
     }
 
     /**
-     * Sets stage center to the parent if parent is null 
+     * Sets stage center to the parent if parent is null
      * then to the screne.
      * 
      * @param parent The parent stage.
      * @param window The stage to be set.
      */
-    public static void centerTo(Window parent, Window window)
-    {
-        if(parent != null)
-        {
+    public static void centerTo(Window parent, Window window) {
+        if (parent != null && parent.isShowing()) {
             var advX = (parent.getWidth() - window.getWidth()) / 2;
             var advY = (parent.getHeight() - window.getHeight()) / 2;
             window.setX(parent.getX() + advX);
             window.setY(parent.getY() + advY);
-        }
-        else 
-        {
+        } else {
             centerToScreen(window);
+        }
+    }
+
+    /**
+     * Returns the status of application running
+     * 
+     * @return status
+     */
+    public static boolean isApplicationRunning() {
+        try {
+            // check if port is available
+            ServerSocket socket = new ServerSocket(57429);
+
+            // close the socket on stop
+            Runtime.getRuntime().addShutdownHook(
+                new Thread(() -> {
+                    try {
+                        socket.close();
+                    } catch (IOException e) {
+                    }
+                }, "SocketCloser")
+            );
+
+            // if port is available, not running
+            return false;
+        
+        } catch (IOException e) {
+
+            // if port is not available, running
+            return true;
         }
     }
 }

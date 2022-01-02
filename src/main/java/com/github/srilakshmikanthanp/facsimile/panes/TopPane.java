@@ -14,27 +14,23 @@ import com.github.srilakshmikanthanp.facsimile.utility.*;
 /**
  * Top Section of the Pane
  */
-public class TopPane extends BorderPane
-{
+public class TopPane extends BorderPane {
     // Mapping data
     private Mapping mapping;
 
     /**
      * Change the ShortCut
      */
-    private void ChangeShortCut()
-    {
+    private void ChangeShortCut() {
         // create dialog
         var dialog = new ShortCutDialog(
-            this.getScene().getWindow()
-        );
+                this.getScene().getWindow());
 
         // show dialog
         dialog.showAndWait();
 
         // if not ok
-        if(!dialog.isOk())
-        {
+        if (!dialog.isOk()) {
             return;
         }
 
@@ -52,10 +48,9 @@ public class TopPane extends BorderPane
     /**
      * Change the Password
      */
-    private void ChangePassword()
-    {
+    private void ChangePassword() {
         // create dialog
-        var dialog = new PassWordDialog (
+        var dialog = new PassWordDialog(
             this.getScene().getWindow()
         );
 
@@ -64,25 +59,21 @@ public class TopPane extends BorderPane
             PassWordDialog.CHANGE_PASSWORD
         );
 
-        //show the doalog
+        // show the doalog
         dialog.showAndWait();
 
         // if not valid
-        if(!dialog.isOkay())
-        {
+        if (!dialog.isOkay()) {
             return;
         }
 
         // try to change password
-        try 
-        {
+        try {
             mapping.getCryptoEn().changeKeyPassword(
-                dialog.getOldPassword(), 
+                dialog.getOldPassword(),
                 dialog.getActPassword()
             );
-        } 
-        catch (IOException | GeneralSecurityException e) 
-        {
+        } catch (IOException | GeneralSecurityException e) {
             Utilityfunc.showError(e);
             return;
         }
@@ -91,8 +82,7 @@ public class TopPane extends BorderPane
     /**
      * Get ShortCut Change Button
      */
-    private Pane getShortCutButton()
-    {
+    private Pane getShortCutButton() {
         // define button
         var button = new Button();
         var blabel = new Label();
@@ -105,8 +95,8 @@ public class TopPane extends BorderPane
         );
 
         // init the image
-        image.setFitHeight(20);
-        image.setFitWidth(20);
+        image.setFitHeight(30);
+        image.setFitWidth(30);
 
         // init button
         button.setOpacity(0.0);
@@ -126,8 +116,7 @@ public class TopPane extends BorderPane
     /**
      * Get Password Change Button
      */
-    private Pane getPasswordButton()
-    {
+    private Pane getPasswordButton() {
         // define button
         var button = new Button();
         var blabel = new Label();
@@ -140,8 +129,8 @@ public class TopPane extends BorderPane
         );
 
         // init the image
-        image.setFitHeight(20);
-        image.setFitWidth(20);
+        image.setFitHeight(30);
+        image.setFitWidth(30);
 
         // init button
         button.setOpacity(0.0);
@@ -164,8 +153,7 @@ public class TopPane extends BorderPane
      * 
      * @param mapping mapping
      */
-    public TopPane(Mapping mapping)
-    {
+    public TopPane(Mapping mapping) {
         // save map
         this.mapping = mapping;
 

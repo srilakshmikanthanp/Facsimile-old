@@ -1,6 +1,5 @@
 package com.github.srilakshmikanthanp.facsimile.panes;
 
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
@@ -16,16 +15,14 @@ import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
 /**
  * A pane that displays a option to add key-value pair.
  */
-public class BotPane extends BorderPane
-{
+public class BotPane extends BorderPane {
     // Mapping Data
     private Mapping mapping;
 
     /**
      * Add a key-value pair to the mapping.
      */
-    private void addKeyValuePair()
-    {
+    private void addKeyValuePair() {
         // create dialog
         var dialog = new KeyValueDialog(
             this.getScene().getWindow()
@@ -35,8 +32,7 @@ public class BotPane extends BorderPane
         dialog.showAndWait();
 
         // if not ok
-        if(!dialog.isOk())
-        {
+        if (!dialog.isOk()) {
             return;
         }
 
@@ -45,12 +41,9 @@ public class BotPane extends BorderPane
         var value = dialog.getValue();
 
         // add the key-value pair
-        try 
-        {
+        try {
             this.mapping.put(key, value);
-        } 
-        catch (IOException | GeneralSecurityException e) 
-        {
+        } catch (IOException | GeneralSecurityException e) {
             Utilityfunc.showError(e);
         }
     }
@@ -60,10 +53,9 @@ public class BotPane extends BorderPane
      * 
      * @return pane
      */
-    private Node getPlusButton()
-    {
+    private Node getPlusButton() {
         // define vars
-        var plsbtn  = new Button();
+        var plsbtn = new Button();
         var blabel = new Label();
 
         // init button
@@ -72,8 +64,8 @@ public class BotPane extends BorderPane
                 "/images/plus.png"
             ).toString()
         );
-        imagev.setFitWidth(20);
-        imagev.setFitHeight(20);
+        imagev.setFitWidth(30);
+        imagev.setFitHeight(30);
         blabel.setGraphic(imagev);
         plsbtn.setOpacity(0.0);
         plsbtn.setContentDisplay(
@@ -88,18 +80,17 @@ public class BotPane extends BorderPane
 
         // return
         return new StackPane(
-            blabel,
-            plsbtn
+                blabel,
+                plsbtn
         );
     }
- 
+
     /**
      * Constructs a new bot pane.
      * 
      * @param mapping map data
      */
-    public BotPane(Mapping mapping)
-    {
+    public BotPane(Mapping mapping) {
         // get the Mapping Pane
         this.mapping = mapping;
 

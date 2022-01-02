@@ -8,13 +8,11 @@ import org.jnativehook.mouse.NativeMouseWheelListener;
 /**
  * Class which handles the Global Mouse Event
  */
-public class SysMouse extends NativeMouseInputAdapter implements NativeMouseWheelListener
-{
+public class SysMouse extends NativeMouseInputAdapter implements NativeMouseWheelListener {
     /**
      * BAsic Mouse Listener
      */
-    public interface BasicMouseListener
-    {
+    public interface BasicMouseListener {
         void actionPerformed(NativeMouseEvent e);
     }
 
@@ -23,10 +21,10 @@ public class SysMouse extends NativeMouseInputAdapter implements NativeMouseWhee
 
     /**
      * Constructor
+     * 
      * @param runnable Runnable object
      */
-    public SysMouse(BasicMouseListener runnable)
-    {
+    public SysMouse(BasicMouseListener runnable) {
         this.runnable = runnable;
     }
 
@@ -35,8 +33,7 @@ public class SysMouse extends NativeMouseInputAdapter implements NativeMouseWhee
      * 
      * @param runnable Runnable object
      */
-    public void setActionListener(BasicMouseListener runnable)
-    {
+    public void setActionListener(BasicMouseListener runnable) {
         this.runnable = runnable;
     }
 
@@ -45,8 +42,7 @@ public class SysMouse extends NativeMouseInputAdapter implements NativeMouseWhee
      * 
      * @return Runnable object
      */
-    public BasicMouseListener getActionListener()
-    {
+    public BasicMouseListener getActionListener() {
         return this.runnable;
     }
 
@@ -56,10 +52,8 @@ public class SysMouse extends NativeMouseInputAdapter implements NativeMouseWhee
      * @param e Mouse event
      */
     @Override
-    public void nativeMousePressed(NativeMouseEvent evt) 
-    {
-        if(runnable != null)
-        {
+    public void nativeMousePressed(NativeMouseEvent evt) {
+        if (runnable != null) {
             runnable.actionPerformed(evt);
         }
     }
@@ -70,10 +64,8 @@ public class SysMouse extends NativeMouseInputAdapter implements NativeMouseWhee
      * @param e Mouse event
      */
     @Override
-    public void nativeMouseWheelMoved(NativeMouseWheelEvent evt) 
-    {
-        if(runnable != null)
-        {
+    public void nativeMouseWheelMoved(NativeMouseWheelEvent evt) {
+        if (runnable != null) {
             runnable.actionPerformed(evt);
         }
     }

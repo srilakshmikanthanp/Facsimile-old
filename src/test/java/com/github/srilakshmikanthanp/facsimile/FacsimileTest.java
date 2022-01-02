@@ -12,26 +12,22 @@ import org.junit.Test;
 import java.nio.file.Paths;
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 
-public class FacsimileTest
-{
+public class FacsimileTest {
     /**
      * Test function for the Datum PAckage
      * 
      * @throws GeneralSecurityException if error in security
-     * @throws IOException if error in io
+     * @throws IOException              if error in io
      */
     @Test
-    public void testDatum() throws GeneralSecurityException, IOException
-    {
+    public void testDatum() throws GeneralSecurityException, IOException {
         // delete file if exits
-        if(Paths.get("./target/crypto.key").toFile().exists())
-        {
+        if (Paths.get("./target/crypto.key").toFile().exists()) {
             Assert.assertTrue(Paths.get("./target/crypto.key").toFile().delete());
         }
 
         // delete file if exits
-        if(Paths.get("./target/datum.json").toFile().exists())
-        {
+        if (Paths.get("./target/datum.json").toFile().exists()) {
             Assert.assertTrue(Paths.get("./target/datum.json").toFile().delete());
         }
 

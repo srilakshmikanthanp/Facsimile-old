@@ -13,8 +13,7 @@ import com.github.srilakshmikanthanp.facsimile.utility.Preference;
 /**
  * Class which handles the Global Key Event
  */
-public class ShortCut extends NativeKeyAdapter
-{
+public class ShortCut extends NativeKeyAdapter {
     // ctrl
     public static final String CTRL = "CTRL";
 
@@ -39,8 +38,7 @@ public class ShortCut extends NativeKeyAdapter
     /**
      * Loads the detials from PReference
      */
-    private void loadFromPreference()
-    {
+    private void loadFromPreference() {
         this.mask_one = Preference.getMaskOne();
         this.mask_two = Preference.getMaskTwo();
         this.key_str = Preference.getKeyValue();
@@ -48,10 +46,10 @@ public class ShortCut extends NativeKeyAdapter
 
     /**
      * Constructor
+     * 
      * @param runnable Runnable object
      */
-    public ShortCut(Runnable runnable)
-    {
+    public ShortCut(Runnable runnable) {
         // save the runnable object
         this.runnable = runnable;
 
@@ -79,16 +77,14 @@ public class ShortCut extends NativeKeyAdapter
      * 
      * @param runnable Runnable object
      */
-    public void setRunnable(Runnable runnable)
-    {
+    public void setRunnable(Runnable runnable) {
         this.runnable = runnable;
     }
 
     /**
      * Returns the runnable object
      */
-    public Runnable getRunnable()
-    {
+    public Runnable getRunnable() {
         return runnable;
     }
 
@@ -96,8 +92,7 @@ public class ShortCut extends NativeKeyAdapter
      * Key Pressed Event
      */
     @Override
-    public void nativeKeyPressed(NativeKeyEvent e)
-    {;
+    public void nativeKeyPressed(NativeKeyEvent e) {
         // define vars
         var modifiers = NativeKeyEvent.getModifiersText(
             e.getModifiers()
@@ -105,31 +100,27 @@ public class ShortCut extends NativeKeyAdapter
         var key = NativeKeyEvent.getKeyText(
             e.getKeyCode()
         );
-        
+
         // to upper case;;
         modifiers = modifiers.toUpperCase();
         key = key.toUpperCase();
 
         // check mask one contains
-        if(!(modifiers.contains(mask_one)))
-        {
+        if (!(modifiers.contains(mask_one))) {
             return;
         }
 
         // check mask two contains
-        if(!(modifiers.contains(mask_two)))
-        {
+        if (!(modifiers.contains(mask_two))) {
             return;
         }
 
-        if(!key_str.equals(key))
-        {
+        if (!key_str.equals(key)) {
             return;
         }
 
         // run the runnable object
-        if(runnable == null)
-        {
+        if (runnable == null) {
             return;
         }
 
@@ -141,8 +132,7 @@ public class ShortCut extends NativeKeyAdapter
      * 
      * @return String[] keys
      */
-    public static String[] getKeys()
-    {
-        return new String[]{CTRL, ALT, SHIFT};
+    public static String[] getKeys() {
+        return new String[] { CTRL, ALT, SHIFT };
     }
 }

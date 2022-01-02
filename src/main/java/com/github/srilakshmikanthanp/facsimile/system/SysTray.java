@@ -8,12 +8,9 @@ import javafx.application.Platform;
 /**
  * System tary class
  */
-public class SysTray 
-{
+public class SysTray {
     // application Link
-    private static final String APP_LINK = (
-        "https://github.com/srilakshmikanthanp/Facsimile"
-    );
+    private static final String APP_LINK = ("https://github.com/srilakshmikanthanp/Facsimile");
 
     // is tray added
     private static SysTray instance = null;
@@ -32,14 +29,10 @@ public class SysTray
      * 
      * @param url url to open
      */
-    private void openWebPage(String url)
-    {
-        try 
-        {
+    private void openWebPage(String url) {
+        try {
             Desktop.getDesktop().browse(new URI(url));
-        } 
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -47,14 +40,13 @@ public class SysTray
     /**
      * Constructor
      */
-    private SysTray(Runnable runnable)
-    {
+    private SysTray(Runnable runnable) {
         // define vars
         var menu = new PopupMenu();
         var app = new MenuItem("FacSimile");
         var about = new MenuItem("About");
         var exit = new MenuItem("Exit");
-        
+
         // add menu item
         menu.add(app);
         menu.add(about);
@@ -63,7 +55,8 @@ public class SysTray
 
         // add listeners
         app.addActionListener((evt) -> {
-            if(runnable != null) runnable.run();
+            if (runnable != null)
+                runnable.run();
         });
 
         about.addActionListener((evt) -> {
@@ -79,12 +72,9 @@ public class SysTray
         icon.setImageAutoSize(true);
 
         // try to add icon
-        try 
-        {
+        try {
             tray.add(icon);
-        } 
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -92,10 +82,8 @@ public class SysTray
     /**
      * Adds Icon to tray
      */
-    public static SysTray addToTray(Runnable runnable)
-    {
-        if(instance == null)
-        {
+    public static SysTray addToTray(Runnable runnable) {
+        if (instance == null) {
             instance = new SysTray(runnable);
         }
 
@@ -105,8 +93,7 @@ public class SysTray
     /**
      * Removes the icon from system tray
      */
-    public void removeFromTray()
-    {
+    public void removeFromTray() {
         tray.remove(icon);
     }
 }

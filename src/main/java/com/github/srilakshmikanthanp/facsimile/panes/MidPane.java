@@ -1,6 +1,5 @@
 package com.github.srilakshmikanthanp.facsimile.panes;
 
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -23,8 +22,7 @@ import com.github.srilakshmikanthanp.facsimile.utility.*;
 /**
  * Application Middle Pane
  */
-public class MidPane extends BorderPane
-{
+public class MidPane extends BorderPane {
     // List of keys showed to user
     private ListView<String> listView = new ListView<>();
 
@@ -34,18 +32,14 @@ public class MidPane extends BorderPane
     /**
      * Update the mapping data too user
      */
-    private void updateListView()
-    {
+    private void updateListView() {
         // define vars for map
         ArrayList<Pair<String, String>> pairs;
 
         // get mapping data from map
-        try
-        {
+        try {
             pairs = mapping.getPairs();
-        }
-        catch(GeneralSecurityException e)
-        {
+        } catch (GeneralSecurityException e) {
             Utilityfunc.showError(e);
             return;
         }
@@ -54,11 +48,9 @@ public class MidPane extends BorderPane
         this.listView.getItems().clear();
 
         // add items to list
-        for(var pair : pairs)
-        {
+        for (var pair : pairs) {
             this.listView.getItems().add(
-                pair.getKey()
-            );
+                    pair.getKey());
         }
     }
 
@@ -67,19 +59,15 @@ public class MidPane extends BorderPane
      * 
      * @return selected value
      */
-    private String getSelectedValue()
-    {
+    private String getSelectedValue() {
         var model = listView.getSelectionModel();
         var key = model.getSelectedItem();
         String value = null;
 
         // get value from map
-        try
-        {
+        try {
             value = mapping.get(key);
-        }
-        catch(GeneralSecurityException e)
-        {
+        } catch (GeneralSecurityException e) {
             Utilityfunc.showError(e);
         }
 
@@ -90,13 +78,11 @@ public class MidPane extends BorderPane
     /**
      * Copy the selected item to clip board
      */
-    private void copyToClipboard()
-    {
+    private void copyToClipboard() {
         var value = this.getSelectedValue();
 
         // check if value is null
-        if(value == null)
-        {
+        if (value == null) {
             return;
         }
 
@@ -112,25 +98,20 @@ public class MidPane extends BorderPane
     /**
      * Delete the selected item from map
      */
-    private void deleteSelected()
-    {
+    private void deleteSelected() {
         // define vars for map
         var model = listView.getSelectionModel();
         var key = model.getSelectedItem();
 
         // check if key is null
-        if(key == null)
-        {
+        if (key == null) {
             return;
         }
 
         // delete from map
-        try
-        {
+        try {
             mapping.remove(key);
-        }
-        catch(IOException | GeneralSecurityException e)
-        {
+        } catch (IOException | GeneralSecurityException e) {
             Utilityfunc.showError(e);
         }
 
@@ -141,18 +122,15 @@ public class MidPane extends BorderPane
     /**
      * Action Listener for the list view
      */
-    private void listViewKeyEvent(KeyCode code)
-    {
+    private void listViewKeyEvent(KeyCode code) {
         // check if key is delete
-        if(code == KeyCode.DELETE)
-        {
+        if (code == KeyCode.DELETE) {
             this.deleteSelected();
             return;
         }
-        
+
         // check if key is delete
-        if(code == KeyCode.ENTER)
-        {
+        if (code == KeyCode.ENTER) {
             this.copyToClipboard();
             this.getScene().getWindow().hide();
             return;
@@ -164,8 +142,7 @@ public class MidPane extends BorderPane
      * 
      * @param mapping mapping
      */
-    public MidPane(Mapping mapping)
-    {
+    public MidPane(Mapping mapping) {
         // save map
         this.mapping = mapping;
 
@@ -182,7 +159,7 @@ public class MidPane extends BorderPane
 
         // On Key Pressed
         listView.setOnMouseClicked((evt) -> {
-            if(evt.getButton() == MouseButton.PRIMARY) {
+            if (evt.getButton() == MouseButton.PRIMARY) {
                 this.copyToClipboard();
             }
         });
@@ -194,23 +171,22 @@ public class MidPane extends BorderPane
 
         // Window Listener for pane
         ChangeListener<Window> winLis = 
-        ( obs, oldWin, newWin ) -> {
+        (obs, oldWin, newWin) -> {
             newWin.setOnShowing((evt) -> {
                 this.updateListView();
             });
         };
-        
+
         // Scene Listener
         ChangeListener<Scene> sceneLis = 
-        ( obs, oldScene, newScene ) -> {
+        (obs, oldScene, newScene) -> {
             newScene.windowProperty().addListener(
-                winLis
-            );
+                    winLis);
         };
 
         // add listener to scene
         this.sceneProperty().addListener(
-            sceneLis
+                sceneLis
         );
     }
 }

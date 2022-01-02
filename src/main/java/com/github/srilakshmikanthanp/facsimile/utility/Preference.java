@@ -5,22 +5,18 @@
 
 package com.github.srilakshmikanthanp.facsimile.utility;
 
-
 import java.util.Arrays;
 import java.util.prefs.*;
 import com.github.srilakshmikanthanp.facsimile.system.ShortCut;
 
-
 /**
  * This class is used to store and retrieve the preferences the application.
  */
-public class Preference 
-{
+public class Preference {
     /**
      * PReference node for the application.
      */
     private static Preferences prefs = Preferences.userNodeForPackage(Preference.class);
-
 
     // Preference Mask one
     public static String MASK_ONE_KEY = "MASK_ONE";
@@ -31,8 +27,7 @@ public class Preference
      * 
      * @return the mask one.
      */
-    public static String getMaskOne()
-    {
+    public static String getMaskOne() {
         return prefs.get(MASK_ONE_KEY, MASK_ONE_DEFAULT);
     }
 
@@ -41,14 +36,10 @@ public class Preference
      * 
      * @param maskOne the mask one.
      */
-    public static void setMaskOne(String maskOne)
-    {
-        if(Arrays.asList(ShortCut.getKeys()).contains(maskOne))
-        {
+    public static void setMaskOne(String maskOne) {
+        if (Arrays.asList(ShortCut.getKeys()).contains(maskOne)) {
             prefs.put(MASK_ONE_KEY, maskOne);
-        }
-        else
-        {
+        } else {
             throw new IllegalArgumentException("Invalid mask");
         }
     }
@@ -62,8 +53,7 @@ public class Preference
      * 
      * @return the mask one.
      */
-    public static String getMaskTwo()
-    {
+    public static String getMaskTwo() {
         return prefs.get(MASK_TWO_KEY, MASK_TWO_DEFAULT);
     }
 
@@ -72,14 +62,10 @@ public class Preference
      * 
      * @param maskTwo the mask one.
      */
-    public static void setMaskTwo(String maskTwo)
-    {
-        if(Arrays.asList(ShortCut.getKeys()).contains(maskTwo))
-        {
+    public static void setMaskTwo(String maskTwo) {
+        if (Arrays.asList(ShortCut.getKeys()).contains(maskTwo)) {
             prefs.put(MASK_ONE_KEY, maskTwo);
-        }
-        else
-        {
+        } else {
             throw new IllegalArgumentException("Invalid mask");
         }
     }
@@ -93,8 +79,7 @@ public class Preference
      * 
      * @return the key value.
      */
-    public static String getKeyValue()
-    {
+    public static String getKeyValue() {
         return prefs.get(KEY_VALUE_KEY, KEY_VALUE_DEFAULT);
     }
 
@@ -103,8 +88,7 @@ public class Preference
      * 
      * @param keyValue the key value.
      */
-    public static void setKeyValue(String keyValue)
-    {
+    public static void setKeyValue(String keyValue) {
         prefs.put(KEY_VALUE_KEY, keyValue);
     }
 
@@ -117,8 +101,7 @@ public class Preference
      * 
      * @param listener the preference change listener.
      */
-    public static void addPreferenceChangeListener(PreferenceChangeListener listener)
-    {
+    public static void addPreferenceChangeListener(PreferenceChangeListener listener) {
         prefs.addPreferenceChangeListener(listener);
     }
 }

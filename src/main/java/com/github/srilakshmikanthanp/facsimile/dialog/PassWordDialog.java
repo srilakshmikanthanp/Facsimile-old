@@ -18,8 +18,7 @@ import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
 /**
  * Passwords Dialog
  */
-public class PassWordDialog extends Stage
-{
+public class PassWordDialog extends Stage {
     // Get the password from user
     public static final int GINPUT_PASSWORD = 1;
 
@@ -52,8 +51,7 @@ public class PassWordDialog extends Stage
      * 
      * @return Top Bar
      */
-    private Node getTopBar() 
-    {
+    private Node getTopBar() {
         // define vars
         var clbl = new Label("☓");
         var cbtn = new Button();
@@ -83,8 +81,7 @@ public class PassWordDialog extends Stage
      * 
      * @return Label
      */
-    private Label getPasswordLabel()
-    {
+    private Label getPasswordLabel() {
         // label for password
         var label = new Label("Enter Password");
         label.setTextFill(Color.BLACK);
@@ -98,8 +95,8 @@ public class PassWordDialog extends Stage
         );
 
         // init label
-        image.setFitHeight(100);
-        image.setFitWidth(100);
+        image.setFitHeight(90);
+        image.setFitWidth(90);
         label.setGraphic(image);
         label.setContentDisplay(
             ContentDisplay.TOP
@@ -115,8 +112,7 @@ public class PassWordDialog extends Stage
      * @param next if has next password field
      * @return PasswordField field
      */
-    private PasswordField getPasswordField(String prompt)
-    {
+    private PasswordField getPasswordField(String prompt) {
         // password field
         var field = new PasswordField();
         field.setPromptText(prompt);
@@ -133,8 +129,7 @@ public class PassWordDialog extends Stage
      * 
      * @param pass old password
      */
-    private void doneOldPassword(String pass)
-    {
+    private void doneOldPassword(String pass) {
         this.oldPassword = pass;
     }
 
@@ -143,8 +138,7 @@ public class PassWordDialog extends Stage
      * 
      * @param pass new password
      */
-    private void doneActPassword(String pass)
-    {
+    private void doneActPassword(String pass) {
         this.actPassword = pass;
         this.isOk = true;
         this.hide();
@@ -155,8 +149,7 @@ public class PassWordDialog extends Stage
      * 
      * @return Button okay button
      */
-    private Button getOkayButton()
-    {
+    private Button getOkayButton() {
         // okay button
         var button = new Button("➜");
         button.setStyle("-fx-font-size: 15px;");
@@ -173,8 +166,7 @@ public class PassWordDialog extends Stage
      * 
      * @return Pane
      */
-    private Pane getGinputPane()
-    {
+    private Pane getGinputPane() {
         // defile vars
         var passLabel = this.getPasswordLabel();
         var passField = this.getPasswordField("Password");
@@ -182,7 +174,7 @@ public class PassWordDialog extends Stage
 
         // initileze the Field
         passField.setOnKeyPressed((evt) -> {
-            if(evt.getCode() == KeyCode.ENTER) {
+            if (evt.getCode() == KeyCode.ENTER) {
                 okyButton.requestFocus();
             }
         });
@@ -202,10 +194,9 @@ public class PassWordDialog extends Stage
 
         // add elements to the pane
         pane.getChildren().addAll(
-            passLabel,
-            passField,
-            okyButton
-        );
+                passLabel,
+                passField,
+                okyButton);
 
         // done
         return pane;
@@ -216,8 +207,7 @@ public class PassWordDialog extends Stage
      * 
      * @return Pane
      */
-    private Pane getCreatePane()
-    {
+    private Pane getCreatePane() {
         // defile vars
         var passLabel = this.getPasswordLabel();
         var npasField = this.getPasswordField("New Password");
@@ -226,14 +216,14 @@ public class PassWordDialog extends Stage
 
         // initileze the new password field
         npasField.setOnKeyPressed((evt) -> {
-            if(evt.getCode() == KeyCode.ENTER) {
+            if (evt.getCode() == KeyCode.ENTER) {
                 cpasField.requestFocus();
             }
         });
 
         // initilize the confirm password field
         cpasField.setOnKeyPressed((evt) -> {
-            if(evt.getCode() == KeyCode.ENTER) {
+            if (evt.getCode() == KeyCode.ENTER) {
                 okyButton.requestFocus();
             }
         });
@@ -243,7 +233,7 @@ public class PassWordDialog extends Stage
             var newpass = npasField.getText();
             var conpass = cpasField.getText();
 
-            if(newpass.equals(conpass) && newpass.length() > 0) {
+            if (newpass.equals(conpass) && newpass.length() > 0) {
                 this.doneActPassword(npasField.getText());
             } else {
                 passLabel.setTextFill(Color.RED);
@@ -261,10 +251,10 @@ public class PassWordDialog extends Stage
 
         // add elements to the pane
         pane.getChildren().addAll(
-            passLabel,
-            npasField,
-            cpasField,
-            okyButton
+                passLabel,
+                npasField,
+                cpasField,
+                okyButton
         );
 
         return pane;
@@ -275,8 +265,7 @@ public class PassWordDialog extends Stage
      * 
      * @return Pane
      */
-    private Pane getChangePane()
-    {
+    private Pane getChangePane() {
         // defile vars
         var passLabel = this.getPasswordLabel();
         var opasField = this.getPasswordField("Old Password");
@@ -286,21 +275,21 @@ public class PassWordDialog extends Stage
 
         // initileze the Old PAssword Field
         opasField.setOnKeyPressed((evt) -> {
-            if(evt.getCode() == KeyCode.ENTER) {
+            if (evt.getCode() == KeyCode.ENTER) {
                 npasField.requestFocus();
             }
         });
 
         // initilize the new password field
         npasField.setOnKeyPressed((evt) -> {
-            if(evt.getCode() == KeyCode.ENTER) {
+            if (evt.getCode() == KeyCode.ENTER) {
                 cpasField.requestFocus();
             }
         });
 
         // initilize the confirm password field
         cpasField.setOnKeyPressed((evt) -> {
-            if(evt.getCode() == KeyCode.ENTER) {
+            if (evt.getCode() == KeyCode.ENTER) {
                 okyButton.requestFocus();
             }
         });
@@ -311,20 +300,16 @@ public class PassWordDialog extends Stage
             var npass = npasField.getText();
             var cpass = cpasField.getText();
 
-            if(opass.length() == 0)
-            {
+            if (opass.length() == 0) {
                 passLabel.setTextFill(Color.RED);
                 opasField.requestFocus();
                 return;
             }
-            
-            if(npass.equals(cpass) && npass.length() > 0) 
-            {
+
+            if (npass.equals(cpass) && npass.length() > 0) {
                 this.doneOldPassword(opasField.getText());
                 this.doneActPassword(npasField.getText());
-            }
-            else 
-            {
+            } else {
                 passLabel.setTextFill(Color.RED);
                 npasField.requestFocus();
             }
@@ -336,15 +321,15 @@ public class PassWordDialog extends Stage
         // initilize the pane
         pane.setSpacing(10.0);
         pane.setAlignment(Pos.CENTER);
-        pane.setPadding(new Insets(10.0));
+        pane.setPadding(new Insets(20.0));
 
         // add elements to the pane
         pane.getChildren().addAll(
-            passLabel,
-            opasField,
-            npasField,
-            cpasField,
-            okyButton
+                passLabel,
+                opasField,
+                npasField,
+                cpasField,
+                okyButton
         );
 
         return pane;
@@ -355,10 +340,8 @@ public class PassWordDialog extends Stage
      * 
      * @param Pane pane for type
      */
-    private Pane getTypePane(int type)
-    {
-        switch(type)
-        {
+    private Pane getTypePane(int type) {
+        switch (type) {
             case GINPUT_PASSWORD:
                 return this.getGinputPane();
             case CREATE_PASSWORD:
@@ -375,8 +358,7 @@ public class PassWordDialog extends Stage
      *
      * @param owner the owner of the dialog
      */
-    public PassWordDialog(Window owner)
-    {
+    public PassWordDialog(Window owner) {
         // init the stage
         this.initOwner(owner);
         this.initStyle(StageStyle.TRANSPARENT);
@@ -384,7 +366,7 @@ public class PassWordDialog extends Stage
 
         // set on showing
         this.setOnShowing((evt) -> {
-            if(this.type == 0) {
+            if (this.type == 0) {
                 throw new RuntimeException("Type is not set");
             }
         });
@@ -396,22 +378,9 @@ public class PassWordDialog extends Stage
             this.setMinHeight(height);
 
             // center the stage or screen
-            if(owner == null)
-            {
-                Utilityfunc.centerToScreen(this);
-            }
-            else if(owner.isShowing()) 
-            {
-                Utilityfunc.centerTo(
-                    owner, this
-                );
-            } 
-            else 
-            {
-                Utilityfunc.centerTo(
-                    null, this
-                );
-            }
+            Utilityfunc.centerTo(
+                owner, this
+            );
 
             // to front
             this.toFront();
@@ -431,11 +400,9 @@ public class PassWordDialog extends Stage
      * 
      * @param type type of password
      */
-    public void setType(int type)
-    {
+    public void setType(int type) {
         // set the type
-        switch(type)
-        {
+        switch (type) {
             // check for validity
             case GINPUT_PASSWORD:
             case CREATE_PASSWORD:
@@ -459,7 +426,7 @@ public class PassWordDialog extends Stage
 
         // init the pane
         pane.setTop(this.getTopBar());
-        
+
         // stackpane
         var stackPane = new StackPane(
             new VBox(pane)
@@ -493,8 +460,7 @@ public class PassWordDialog extends Stage
      * 
      * @return status
      */
-    public boolean isOkay()
-    {
+    public boolean isOkay() {
         return this.isOk;
     }
 
@@ -503,8 +469,7 @@ public class PassWordDialog extends Stage
      * 
      * @return String old password
      */
-    public String getOldPassword()
-    {
+    public String getOldPassword() {
         return this.oldPassword;
     }
 
@@ -513,8 +478,7 @@ public class PassWordDialog extends Stage
      * 
      * @return String new password
      */
-    public String getActPassword()
-    {
+    public String getActPassword() {
         return this.actPassword;
     }
 }

@@ -20,8 +20,7 @@ import com.github.srilakshmikanthanp.facsimile.utility.*;
 /**
  * Class to set a shortcut key for dilog.
  */
-public class ShortCutDialog extends Stage
-{
+public class ShortCutDialog extends Stage {
     // width of the stage
     private static final double width = 370;
 
@@ -45,8 +44,7 @@ public class ShortCutDialog extends Stage
      * 
      * @return Top Bar
      */
-    private Node getTopBar() 
-    {
+    private Node getTopBar() {
         // define vars
         var clbl = new Label("☓");
         var cbtn = new Button();
@@ -77,8 +75,7 @@ public class ShortCutDialog extends Stage
      * 
      * @return Pane
      */
-    private Node getCenterPane() 
-    {
+    private Node getCenterPane() {
         // define vars
         var shLabel = new Label("Shortcut");
         var maskOne = new ChoiceBox<String>();
@@ -123,6 +120,7 @@ public class ShortCutDialog extends Stage
         ).collect(
             java.util.stream.Collectors.toList()
         );
+
         list.sort(
             (a, b) -> a.compareTo(b)
         );
@@ -135,6 +133,7 @@ public class ShortCutDialog extends Stage
         keyValue.setValue(
             Preference.getKeyValue()
         );
+
 
         // init the ok button
         okybutn.setOnAction((evt) -> {
@@ -164,8 +163,7 @@ public class ShortCutDialog extends Stage
      * 
      * @param owner owner window
      */
-    public ShortCutDialog(Window owner)
-    {
+    public ShortCutDialog(Window owner) {
         // init the stage
         this.initOwner(owner);
         this.initStyle(StageStyle.TRANSPARENT);
@@ -191,24 +189,9 @@ public class ShortCutDialog extends Stage
             this.setMinHeight(height);
 
             // center the stage or screen
-            if(owner == null)
-            {
-                Utilityfunc.centerToScreen(
-                    this
-                );
-            }
-            else if(owner.isShowing()) 
-            {
-                Utilityfunc.centerTo(
-                    owner, this
-                );
-            } 
-            else 
-            {
-                Utilityfunc.centerTo(
-                    null, this
-                );
-            }
+            Utilityfunc.centerTo(
+                owner, this
+            );
 
             // to front
             this.toFront();
@@ -256,8 +239,7 @@ public class ShortCutDialog extends Stage
      * 
      * @return state
      */
-    public boolean isOk()
-    {
+    public boolean isOk() {
         return isOk;
     }
 
@@ -266,8 +248,7 @@ public class ShortCutDialog extends Stage
      * 
      * @return Mask one value
      */
-    public String getMaskOne()
-    {
+    public String getMaskOne() {
         return maksOne;
     }
 
@@ -276,18 +257,16 @@ public class ShortCutDialog extends Stage
      * 
      * @return Mask two value
      */
-    public String getMaskTwo()
-    {
+    public String getMaskTwo() {
         return maksTwo;
-    }    
+    }
 
     /**
      * Get the Key
      * 
      * @return Key value
      */
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 }

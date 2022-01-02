@@ -5,7 +5,6 @@
 
 package com.github.srilakshmikanthanp.facsimile.datum;
 
-
 import java.io.*;
 import java.nio.file.*;
 import java.security.*;
@@ -14,15 +13,12 @@ import java.util.HashMap;
 import com.google.gson.Gson;
 import javafx.util.Pair;
 
-
 /**
  * Mapping of the datum key to the value objects.
  */
-public class Mapping
-{
+public class Mapping {
     // Mappint change Event Listener
-    public interface ChangeListener
-    {
+    public interface ChangeListener {
         void onChange(); // called on change
     }
 
@@ -44,10 +40,8 @@ public class Mapping
     /**
      * Notifies the change listeners.
      */
-    private void notifyChange()
-    {
-        for (var lis : this.cngLis)
-        {
+    private void notifyChange() {
+        for (var lis : this.cngLis) {
             lis.onChange();
         }
     }
@@ -57,8 +51,7 @@ public class Mapping
      * 
      * @throws IOException is an io error occurs
      */
-    private void saveData() throws IOException
-    {
+    private void saveData() throws IOException {
         Gson gson = new Gson();
         var json = gson.toJson(this.data);
         var path = baseDir.resolve(DATUM_FILE);
@@ -72,8 +65,7 @@ public class Mapping
      * @throws IOException if io error occurs
      */
     @SuppressWarnings("unchecked")
-    private void loadData() throws IOException
-    {
+    private void loadData() throws IOException {
         Gson gson = new Gson();
         var path = baseDir.resolve(DATUM_FILE);
         var json = Files.readString(path);
@@ -83,10 +75,9 @@ public class Mapping
     /**
      * Constructor of Mapping.
      * 
-     * @param baseDir the base directory of the datum. 
+     * @param baseDir the base directory of the datum.
      */
-    public Mapping(Path baseDir)
-    {
+    public Mapping(Path baseDir) {
         // save base dir
         this.baseDir = baseDir;
 
@@ -94,12 +85,9 @@ public class Mapping
         this.cryptoEn = new CryptoEn(baseDir);
 
         // load the data
-        try 
-        {
+        try {
             this.loadData();
-        } 
-        catch (IOException e) 
-        {
+        } catch (IOException e) {
             // no file exits or first time
         }
     }
@@ -109,8 +97,7 @@ public class Mapping
      * 
      * @return Crypto
      */
-    public CryptoEn getCryptoEn()
-    {
+    public CryptoEn getCryptoEn() {
         return this.cryptoEn;
     }
 
@@ -121,13 +108,11 @@ public class Mapping
      * @return the value of the key.
      * @throws GeneralSecurityException if failed to decrypt.
      */
-    public String get(String key) 
-throws GeneralSecurityException
-    {
+    public String get(String key)
+            throws GeneralSecurityException {
         var value = this.data.get(key);
 
-        if(value == null)
-        {
+        if (value == null) {
             return null;
         }
 
@@ -137,21 +122,19 @@ throws GeneralSecurityException
     /**
      * Set the value of the key.
      * 
-     * @param key the key.
+     * @param key   the key.
      * @param value the value of the key.
      * @return the value of the key.
      * @throws GeneralSecurityException if failed to encrypt or decrypt.
-     * @throws IOException if io error occurs while saving
+     * @throws IOException              if io error occurs while saving
      */
-    public String put(String key, String value) 
-        throws GeneralSecurityException, IOException
-    {
+    public String put(String key, String value)
+            throws GeneralSecurityException, IOException {
         var oldValue = this.data.put(key, this.cryptoEn.encrypt(value));
-        
+
         this.saveData();
-        
-        if(oldValue == null)
-        {
+
+        if (oldValue == null) {
             return null;
         }
 
@@ -164,17 +147,15 @@ throws GeneralSecurityException
      * @param key kay to remove
      * @return old value
      * @throws GeneralSecurityException if failed to encrypt or decrypt.
-     * @throws IOException if io error occurs while saving
+     * @throws IOException              if io error occurs while saving
      */
-    public String remove(String key) 
-        throws GeneralSecurityException, IOException
-    {
+    public String remove(String key)
+            throws GeneralSecurityException, IOException {
         var oldValue = this.data.remove(key);
 
         this.saveData();
-        
-        if(oldValue == null)
-        {
+
+        if (oldValue == null) {
             return null;
         }
 
@@ -184,15 +165,14 @@ throws GeneralSecurityException
     /**
      * replace the kay value pair
      * 
-     * @param key Key to replace
+     * @param key   Key to replace
      * @param value new value
      * @return oldvalue
      * @throws GeneralSecurityException if failed to encrypt or decrypt.
-     * @throws IOException if io error occurs while saving
+     * @throws IOException              if io error occurs while saving
      */
-    public String replace(String key, String value) 
-        throws GeneralSecurityException, IOException
-    {
+    public String replace(String key, String value)
+            throws GeneralSecurityException, IOException {
         var oldValue = this.data.replace(
             key, this.cryptoEn.encrypt(value)
         );
@@ -206,16 +186,17 @@ throws GeneralSecurityException
      * @return list key value pair
      * @throws GeneralSecurityException if decrtption fails
      */
-    public ArrayList<Pair<String, String>> getPairs() 
-        throws GeneralSecurityException
-    {
+    public ArrayList<Pair<String, String>> getPairs()
+            throws GeneralSecurityException {
         ArrayList<Pair<String, String>> list = new ArrayList<>();
 
-        for(String key: this.data.keySet())
-        {
-            list.add(new Pair<>(
-                key, this.cryptoEn.decrypt(this.data.get(key))
-            ));
+        for (String key : this.data.keySet()) {
+            list.add(new Pair<>(key, 
+                    this.cryptoEn.decrypt(
+                        this.data.get(key)
+                    )
+                )
+            );
         }
 
         return list;
@@ -226,8 +207,7 @@ throws GeneralSecurityException
      * 
      * @param listener listener to add
      */
-    public void addChangeListener(ChangeListener listener)
-    {
+    public void addChangeListener(ChangeListener listener) {
         this.cngLis.add(listener);
     }
 
@@ -236,8 +216,7 @@ throws GeneralSecurityException
      * 
      * @param listener listener to remove
      */
-    public void removeChangeListener(ChangeListener listener)
-    {
+    public void removeChangeListener(ChangeListener listener) {
         this.cngLis.remove(listener);
     }
 }

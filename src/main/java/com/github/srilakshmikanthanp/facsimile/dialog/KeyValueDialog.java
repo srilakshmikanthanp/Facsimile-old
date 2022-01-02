@@ -18,8 +18,7 @@ import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
 /**
  * A Stage that displays a option to add key-value pair.
  */
-public class KeyValueDialog extends Stage
-{
+public class KeyValueDialog extends Stage {
     // width of the stage
     private static final double width = 370;
 
@@ -40,8 +39,7 @@ public class KeyValueDialog extends Stage
      * 
      * @return Top Bar
      */
-    private Node getTopBar()
-    {
+    private Node getTopBar() {
         // define vars
         var clbl = new Label("☓");
         var cbtn = new Button();
@@ -71,8 +69,7 @@ public class KeyValueDialog extends Stage
      * 
      * @return content
      */
-    private Node getContent()
-    {
+    private Node getContent() {
         // define vars
         var label = new Label("Key Value");
         var keyField = new TextField();
@@ -89,13 +86,12 @@ public class KeyValueDialog extends Stage
         image.setFitHeight(100);
         label.setGraphic(image);
         label.setContentDisplay(
-            ContentDisplay.TOP
-        );
+                ContentDisplay.TOP);
 
         // init KeyField
         keyField.setPromptText("Key");
         keyField.setOnKeyPressed((evt) -> {
-            if(evt.getCode() == KeyCode.ENTER) {
+            if (evt.getCode() == KeyCode.ENTER) {
                 valueField.requestFocus();
             }
         });
@@ -103,7 +99,7 @@ public class KeyValueDialog extends Stage
         // init ValueField
         valueField.setPromptText("Value");
         valueField.setOnKeyPressed((evt) -> {
-            if(evt.getCode() == KeyCode.ENTER) {
+            if (evt.getCode() == KeyCode.ENTER) {
                 btn.requestFocus();
             }
         });
@@ -111,7 +107,7 @@ public class KeyValueDialog extends Stage
         // init button
         btn.setOnAction((evt) -> {
             // check if key is empty
-            if(!keyField.getText().isEmpty()) {
+            if (!keyField.getText().isEmpty()) {
                 this.key = keyField.getText();
                 this.value = valueField.getText();
                 this.isOk = true;
@@ -123,7 +119,7 @@ public class KeyValueDialog extends Stage
 
         // init vbox
         var vbox = new VBox(
-            label, keyField, valueField, btn
+                label, keyField, valueField, btn
         );
         vbox.setSpacing(10);
         vbox.setAlignment(Pos.CENTER);
@@ -136,8 +132,7 @@ public class KeyValueDialog extends Stage
     /**
      * Constructor.
      */
-    public KeyValueDialog(Window owner)
-    {
+    public KeyValueDialog(Window owner) {
         // init the stage
         this.initOwner(owner);
         this.initStyle(StageStyle.TRANSPARENT);
@@ -164,22 +159,9 @@ public class KeyValueDialog extends Stage
             this.setMinHeight(height);
 
             // center the stage or screen
-            if(owner == null)
-            {
-                Utilityfunc.centerToScreen(this);
-            }
-            else if(owner.isShowing()) 
-            {
-                Utilityfunc.centerTo(
-                    owner, this
-                );
-            } 
-            else 
-            {
-                Utilityfunc.centerTo(
-                    null, this
-                );
-            }
+            Utilityfunc.centerTo(
+                owner, this
+            );
 
             // to front
             this.toFront();
@@ -227,8 +209,7 @@ public class KeyValueDialog extends Stage
      * 
      * @return true if ok
      */
-    public boolean isOk()
-    {
+    public boolean isOk() {
         return this.isOk;
     }
 
@@ -237,8 +218,7 @@ public class KeyValueDialog extends Stage
      * 
      * @return key
      */
-    public String getKey()
-    {
+    public String getKey() {
         return this.key;
     }
 
@@ -247,8 +227,7 @@ public class KeyValueDialog extends Stage
      * 
      * @return value
      */
-    public String getValue()
-    {
+    public String getValue() {
         return this.value;
     }
 }

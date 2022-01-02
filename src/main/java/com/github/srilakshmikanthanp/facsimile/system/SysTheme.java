@@ -14,14 +14,13 @@ import com.jthemedetecor.OsThemeDetector;
 /**
  * Class Helps to detect the OS theme.
  */
-public class SysTheme
-{
+public class SysTheme {
     /**
      * Sets the Scene to Dark Theme
+     * 
      * @param scene scene to set
      */
-    private static void setDarkTheme(Scene scene)
-    {
+    private static void setDarkTheme(Scene scene) {
         // Resource
         var resource = SysTheme.class.getResource(
             "/styles/Dark.css"
@@ -43,10 +42,10 @@ public class SysTheme
 
     /**
      * Sets the Scene to Light Theme
+     * 
      * @param scene scene to set
      */
-    private static void setLightTheme(Scene scene)
-    {
+    private static void setLightTheme(Scene scene) {
         // Resource
         var resource = SysTheme.class.getResource(
             "/styles/LIGHT.css"
@@ -68,10 +67,10 @@ public class SysTheme
 
     /**
      * Sets the Scene to System Theme
+     * 
      * @param scene scene to set
      */
-    public static void setSystemTheme(Scene scene)
-    {
+    public static void setSystemTheme(Scene scene) {
         // System theme detector
         final var detector = OsThemeDetector.getDetector();
 
