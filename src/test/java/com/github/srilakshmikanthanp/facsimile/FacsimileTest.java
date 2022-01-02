@@ -68,7 +68,7 @@ public class FacsimileTest
         Mapping dupmapData = new Mapping(Paths.get("./target/"));
 
         // assert to not existitance of file and Key
-        Assert.assertTrue(dupmapData.getCryptoEn().isKeyExists());
+        Assert.assertTrue(!dupmapData.getCryptoEn().isKeyExists());
 
         // create Key
         dupmapData.getCryptoEn().loadExtistingKey("ABCDEF");

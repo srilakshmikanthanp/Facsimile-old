@@ -23,6 +23,9 @@ module facsimile
     // theme decetcor
     requires com.jthemedetector;
 
+    // jmetro
+    requires org.jfxtras.styles.jmetro;
+
     // give access to the facsimile package
     opens com.github.srilakshmikanthanp.facsimile to javafx.graphics;
 }

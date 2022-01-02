@@ -6,6 +6,8 @@
 package com.github.srilakshmikanthanp.facsimile.system;
 
 import javafx.scene.Scene;
+import jfxtras.styles.jmetro.JMetro;
+import jfxtras.styles.jmetro.Style;
 import java.util.function.Consumer;
 import com.jthemedetecor.OsThemeDetector;
 
@@ -24,7 +26,15 @@ public class SysTheme
         var resource = SysTheme.class.getResource(
             "/styles/Dark.css"
         );
+        // jmetro
+        JMetro jMetro = new JMetro(
+            Style.DARK
+        );
 
+        // with jmetro
+        jMetro.setScene(
+            scene
+        );
         // Set the scene to dark theme
         scene.getStylesheets().add(
             resource.toExternalForm()
@@ -39,9 +49,17 @@ public class SysTheme
     {
         // Resource
         var resource = SysTheme.class.getResource(
-            "/styles/Light.css"
+            "/styles/LIGHT.css"
+        );
+        // jmetro
+        JMetro jMetro = new JMetro(
+            Style.LIGHT
         );
 
+        // with jmetro
+        jMetro.setScene(
+            scene
+        );
         // Set the scene to light theme
         scene.getStylesheets().add(
             resource.toExternalForm()
@@ -67,8 +85,12 @@ public class SysTheme
         };
 
         // initialize the theme
-        process.accept(detector.isDark());
+        process.accept(
+            detector.isDark()
+        );
         // set the listener
-        detector.registerListener(process);
+        detector.registerListener(
+            process
+        );
     }
 }

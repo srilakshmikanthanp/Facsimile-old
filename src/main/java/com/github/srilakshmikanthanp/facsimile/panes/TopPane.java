@@ -87,10 +87,11 @@ public class TopPane extends BorderPane
     /**
      * Get ShortCut Change Button
      */
-    private Button getShortCutButton()
+    private Pane getShortCutButton()
     {
         // define button
         var button = new Button();
+        var blabel = new Label();
 
         // image view
         var image = new ImageView(
@@ -104,7 +105,8 @@ public class TopPane extends BorderPane
         image.setFitWidth(20);
 
         // init button
-        button.setGraphic(image);
+        button.setOpacity(0.0);
+        blabel.setGraphic(image);
 
         // set the action
         button.setOnAction(evt -> {
@@ -112,16 +114,19 @@ public class TopPane extends BorderPane
         });
 
         // done
-        return button;
+        return new StackPane(
+            blabel, button
+        );
     }
 
     /**
      * Get Password Change Button
      */
-    private Button getPasswordButton()
+    private Pane getPasswordButton()
     {
         // define button
         var button = new Button();
+        var blabel = new Label();
 
         // image view
         var image = new ImageView(
@@ -135,7 +140,8 @@ public class TopPane extends BorderPane
         image.setFitWidth(20);
 
         // init button
-        button.setGraphic(image);
+        button.setOpacity(0.0);
+        blabel.setGraphic(image);
 
         // set the action
         button.setOnAction(evt -> {
@@ -143,7 +149,10 @@ public class TopPane extends BorderPane
         });
 
         // done
-        return button;
+        // done
+        return new StackPane(
+            blabel, button
+        );
     }
 
     /**
@@ -157,7 +166,11 @@ public class TopPane extends BorderPane
         this.mapping = mapping;
 
         // init tha pane
-        this.setLeft(this.getShortCutButton());
-        this.setRight(this.getPasswordButton());
+        this.setLeft(
+            this.getShortCutButton()
+        );
+        this.setRight(
+            this.getPasswordButton()
+        );
     }
 }

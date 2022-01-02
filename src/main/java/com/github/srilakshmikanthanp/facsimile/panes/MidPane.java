@@ -171,7 +171,7 @@ public class MidPane extends BorderPane
 
         // set the list view
         this.setCenter(listView);
-        this.setPadding(new Insets(15));
+        this.setPadding(new Insets(20));
 
         // listeners to list view
         listView.setOnKeyPressed(evt -> {

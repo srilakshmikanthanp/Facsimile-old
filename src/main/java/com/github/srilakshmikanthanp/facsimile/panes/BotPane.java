@@ -64,6 +64,7 @@ public class BotPane extends BorderPane
     {
         // define vars
         var plsbtn  = new Button();
+        var blabel = new Label();
 
         // init button
         var imagev = new ImageView(
@@ -73,7 +74,8 @@ public class BotPane extends BorderPane
         );
         imagev.setFitWidth(20);
         imagev.setFitHeight(20);
-        plsbtn.setGraphic(imagev);
+        blabel.setGraphic(imagev);
+        plsbtn.setOpacity(0.0);
         plsbtn.setContentDisplay(
             ContentDisplay.TOP
         );
@@ -85,7 +87,10 @@ public class BotPane extends BorderPane
         });
 
         // return
-        return plsbtn;
+        return new StackPane(
+            blabel,
+            plsbtn
+        );
     }
  
     /**
@@ -99,6 +104,8 @@ public class BotPane extends BorderPane
         this.mapping = mapping;
 
         // add the plus button
-        this.setCenter(this.getPlusButton());
+        this.setCenter(
+            this.getPlusButton()
+        );
     }
 }

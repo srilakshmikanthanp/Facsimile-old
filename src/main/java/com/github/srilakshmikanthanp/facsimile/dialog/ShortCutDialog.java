@@ -80,7 +80,7 @@ public class ShortCutDialog extends Stage
         var maskOne = new ChoiceBox<String>();
         var maskTwo = new ChoiceBox<String>();
         var keyValue = new ChoiceBox<String>();
-        var okybutn = new Button("Okay");
+        var okybutn = new Button("➜");
 
         // init the label
         var image = new ImageView(

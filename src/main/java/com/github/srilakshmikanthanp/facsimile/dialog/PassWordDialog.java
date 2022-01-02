@@ -153,7 +153,7 @@ public class PassWordDialog extends Stage
     private Button getOkayButton()
     {
         // okay button
-        var button = new Button("Okay");
+        var button = new Button("➜");
         button.setStyle("-fx-font-size: 15px;");
         button.setPrefHeight(50);
         button.setPrefWidth(100);
