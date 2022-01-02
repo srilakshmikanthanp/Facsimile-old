@@ -1,17 +1,19 @@
 package com.github.srilakshmikanthanp.facsimile.dialog;
 
 import javafx.stage.*;
-
-import com.github.srilakshmikanthanp.facsimile.system.SysTheme;
-import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
-
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+
+import jfxtras.styles.jmetro.JMetroStyleClass;
+
+import com.github.srilakshmikanthanp.facsimile.system.SysTheme;
+import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
 
 /**
  * Passwords Dialog
@@ -41,6 +43,9 @@ public class PassWordDialog extends Stage
 
     // password new
     private String actPassword = null;
+
+    // type of dialog
+    private int type = 0;
 
     /**
      * Create the Top Bar with cut button
@@ -306,16 +311,20 @@ public class PassWordDialog extends Stage
             var npass = npasField.getText();
             var cpass = cpasField.getText();
 
-            if(opass.length() == 0) {
+            if(opass.length() == 0)
+            {
                 passLabel.setTextFill(Color.RED);
                 opasField.requestFocus();
                 return;
             }
             
-            if(npass.equals(cpass) && npass.length() > 0) {
+            if(npass.equals(cpass) && npass.length() > 0) 
+            {
                 this.doneOldPassword(opasField.getText());
                 this.doneActPassword(npasField.getText());
-            } else {
+            }
+            else 
+            {
                 passLabel.setTextFill(Color.RED);
                 npasField.requestFocus();
             }
@@ -325,9 +334,9 @@ public class PassWordDialog extends Stage
         var pane = new VBox();
 
         // initilize the pane
-        pane.setSpacing(15.0);
+        pane.setSpacing(10.0);
         pane.setAlignment(Pos.CENTER);
-        pane.setPadding(new Insets(20.0));
+        pane.setPadding(new Insets(10.0));
 
         // add elements to the pane
         pane.getChildren().addAll(
@@ -363,44 +372,119 @@ public class PassWordDialog extends Stage
 
     /**
      * Constructor for password dialog
-     * 
-     * @param type type of password 
-     * to take
+     *
+     * @param owner the owner of the dialog
      */
-    public PassWordDialog(Window owner, int type)
+    public PassWordDialog(Window owner)
     {
         // init the stage
         this.initOwner(owner);
         this.initStyle(StageStyle.TRANSPARENT);
         this.initModality(Modality.APPLICATION_MODAL);
 
-        // define the pane
-        var pane = new BorderPane(this.getTypePane(type));
-
-        // init the pane
-        pane.setTop(this.getTopBar());
-
-        // set the pane
-        this.setScene(new Scene(pane));
+        // set on showing
+        this.setOnShowing((evt) -> {
+            if(this.type == 0) {
+                throw new RuntimeException("Type is not set");
+            }
+        });
 
         // center the stage
         this.setOnShown((evt) -> {
-            // set min max dimensions
+            // set the dimension
             this.setMinWidth(width);
             this.setMinHeight(height);
 
-            // center the stage
-            Utilityfunc.centerTo(
-                owner, this
-            );
+            // center the stage or screen
+            if(owner == null)
+            {
+                Utilityfunc.centerToScreen(this);
+            }
+            else if(owner.isShowing()) 
+            {
+                Utilityfunc.centerTo(
+                    owner, this
+                );
+            } 
+            else 
+            {
+                Utilityfunc.centerTo(
+                    null, this
+                );
+            }
 
             // to front
             this.toFront();
         });
-    
+
+        // icon
+        var iconStream = this.getClass().getResourceAsStream(
+            "/images/logo.png"
+        );
+        this.getIcons().addAll(
+            new Image(iconStream)
+        );
+    }
+
+    /**
+     * Sets the type of password
+     * 
+     * @param type type of password
+     */
+    public void setType(int type)
+    {
+        // set the type
+        switch(type)
+        {
+            // check for validity
+            case GINPUT_PASSWORD:
+            case CREATE_PASSWORD:
+            case CHANGE_PASSWORD:
+                this.type = type;
+                break;
+            // if not throw an error
+            default:
+                throw new RuntimeException("Invalid type");
+        }
+
+        // define the pane
+        var pane = new BorderPane(
+            this.getTypePane(type)
+        );
+
+        // init style
+        pane.getStyleClass().add(
+            "stage-main-pane"
+        );
+
+        // init the pane
+        pane.setTop(this.getTopBar());
+        
+        // stackpane
+        var stackPane = new StackPane(
+            new VBox(pane)
+        );
+        var scene = new Scene(
+            stackPane
+        );
+
+        // init pane
+        scene.setFill(Color.TRANSPARENT);
+        stackPane.getStyleClass().add(
+            "stage-bg-pane"
+        );
+
+        // set scene
+        this.setScene(scene);
+
         // set theme
         SysTheme.setSystemTheme(
             this.getScene()
+        );
+
+        // jmetro
+        pane.getStyleClass().add(
+            JMetroStyleClass.BACKGROUND
         );
     }
 

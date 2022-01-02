@@ -11,11 +11,16 @@ import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 
 import javafx.application.*;
+import javafx.geometry.Insets;
 import javafx.stage.*;
 import javafx.scene.Scene;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.*;
 import javafx.scene.shape.Rectangle;
+
+import jfxtras.styles.jmetro.JMetroStyleClass;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -43,6 +48,9 @@ class MainStage extends Stage
 
     // dimension of application
     private static final double Width = 400, Height = 450;
+
+    // PAssword Dialog
+    private PassWordDialog dialog = new PassWordDialog(this);
 
     // mapping data for app
     private Mapping mapping;
@@ -81,10 +89,17 @@ class MainStage extends Stage
      */
     private boolean loadPassword(CryptoEn cryptoEn)
     {
+        // if aldersy showing
+        if(dialog.isShowing())
+        {
+            return false;
+        }
+
+        // main loop
         while(!cryptoEn.isKeyExists())
         {
-            // create dialog
-            var dialog = new PassWordDialog(null,
+            // init dialog
+            dialog.setType(
                 PassWordDialog.GINPUT_PASSWORD
             );
 
@@ -134,11 +149,18 @@ class MainStage extends Stage
      */
     private boolean makePassword(CryptoEn cryptoEn)
     {
+        // if aldersy showing
+        if(dialog.isShowing())
+        {
+            return false;
+        }
+
+        // main loop
         while(!cryptoEn.isKeyExists())
         {
-            // create dialog
-            var dialog = new PassWordDialog(null, 
-                PassWordDialog.CREATE_PASSWORD
+            // init dialog
+            dialog.setType(
+                PassWordDialog.GINPUT_PASSWORD
             );
 
             // show dialog
@@ -206,7 +228,7 @@ class MainStage extends Stage
     {
         // init stage
         this.initOwner(pStage);
-        this.initStyle(StageStyle.UNDECORATED);
+        this.initStyle(StageStyle.TRANSPARENT);
 
         // create mapping
         this.mapping = new Mapping(
@@ -216,9 +238,9 @@ class MainStage extends Stage
         // main pane
         var pane = new MainPane(mapping);
 
-        // set scene
-        this.setScene(
-            new Scene(pane, Width, Height)
+        // init style
+        pane.getStyleClass().add(
+            "stage-main-pane"
         );
 
         // set top
@@ -230,9 +252,32 @@ class MainStage extends Stage
             this.requestFocus();
         });
 
+        // stackpane
+        var stackPane = new StackPane(
+            pane
+        );
+        var scene = new Scene(
+            stackPane, Width, Height
+        );
+
+        // init pane
+        stackPane.setPadding(new Insets(20));
+        scene.setFill(Color.TRANSPARENT);
+        stackPane.getStyleClass().add(
+            "stage-bg-pane"
+        );
+
+        // set scene
+        this.setScene(scene);
+
         // set theme
         SysTheme.setSystemTheme(
             this.getScene()
+        );
+
+        // jmetro style
+        pane.getStyleClass().add(
+            JMetroStyleClass.BACKGROUND
         );
     }
 

@@ -6,9 +6,13 @@ import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+
+import jfxtras.styles.jmetro.JMetroStyleClass;
 
 import com.github.srilakshmikanthanp.facsimile.system.*;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
@@ -142,7 +146,7 @@ public class ShortCutDialog extends Stage
         });
 
         // define the pane
-        var shrtpane = new HBox(maskOne, maskTwo, keyValue);
+        var shrtpane = new VBox(maskOne, maskTwo, keyValue);
         var mainpane = new VBox(shLabel, shrtpane, okybutn);
 
         // init the pane
@@ -172,11 +176,13 @@ public class ShortCutDialog extends Stage
             this.getCenterPane()
         );
 
+        // init style
+        pane.getStyleClass().add(
+            "stage-main-pane"
+        );
+
         // init the pane
         pane.setTop(this.getTopBar());
-
-        // set the pane
-        this.setScene(new Scene(pane));
 
         // center the stage
         this.setOnShown((evt) -> {
@@ -184,18 +190,64 @@ public class ShortCutDialog extends Stage
             this.setMinWidth(width);
             this.setMinHeight(height);
 
-            // cetner the stage
-            Utilityfunc.centerTo(
-                owner, this
-            );
+            // center the stage or screen
+            if(owner == null)
+            {
+                Utilityfunc.centerToScreen(
+                    this
+                );
+            }
+            else if(owner.isShowing()) 
+            {
+                Utilityfunc.centerTo(
+                    owner, this
+                );
+            } 
+            else 
+            {
+                Utilityfunc.centerTo(
+                    null, this
+                );
+            }
 
             // to front
             this.toFront();
         });
 
+        // stackpane
+        var stackPane = new StackPane(
+            pane
+        );
+        var scene = new Scene(
+            stackPane
+        );
+
+        // init pane
+        stackPane.setPadding(new Insets(20));
+        scene.setFill(Color.TRANSPARENT);
+        stackPane.getStyleClass().add(
+            "stage-bg-pane"
+        );
+
+        // set scene
+        this.setScene(scene);
+
         // set theme
         SysTheme.setSystemTheme(
             this.getScene()
+        );
+
+        // jmetro
+        pane.getStyleClass().add(
+            JMetroStyleClass.BACKGROUND
+        );
+
+        // icon
+        var iconStream = this.getClass().getResourceAsStream(
+            "/images/logo.png"
+        );
+        this.getIcons().addAll(
+            new Image(iconStream)
         );
     }
 

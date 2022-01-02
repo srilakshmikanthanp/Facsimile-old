@@ -1,0 +1,8 @@
+.stage-bg-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 20;
+}
+
+.stage-main-pane {
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);
+}

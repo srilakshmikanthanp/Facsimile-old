@@ -1,16 +1,19 @@
 package com.github.srilakshmikanthanp.facsimile.dialog;
 
 import javafx.stage.*;
-
-import com.github.srilakshmikanthanp.facsimile.system.SysTheme;
-import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
-
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+
+import jfxtras.styles.jmetro.JMetroStyleClass;
+
+import com.github.srilakshmikanthanp.facsimile.system.SysTheme;
+import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
 
 /**
  * A Stage that displays a option to add key-value pair.
@@ -145,11 +148,14 @@ public class KeyValueDialog extends Stage
             this.getContent()
         );
 
-        // init the pane
-        pane.setTop(this.getTopBar());
+        // init style
+        pane.getStyleClass().add(
+            "stage-main-pane"
+        );
 
-        // set the pane
-        this.setScene(new Scene(pane));
+        // init the pane
+        pane.setPadding(new Insets(10));
+        pane.setTop(this.getTopBar());
 
         // center the stage
         this.setOnShown((evt) -> {
@@ -157,18 +163,62 @@ public class KeyValueDialog extends Stage
             this.setMinWidth(width);
             this.setMinHeight(height);
 
-            // center the stage
-            Utilityfunc.centerTo(
-                owner, this
-            );
-            
+            // center the stage or screen
+            if(owner == null)
+            {
+                Utilityfunc.centerToScreen(this);
+            }
+            else if(owner.isShowing()) 
+            {
+                Utilityfunc.centerTo(
+                    owner, this
+                );
+            } 
+            else 
+            {
+                Utilityfunc.centerTo(
+                    null, this
+                );
+            }
+
             // to front
             this.toFront();
         });
 
+        // stackpane
+        var stackPane = new StackPane(
+            pane
+        );
+        var scene = new Scene(
+            stackPane
+        );
+
+        // init pane
+        stackPane.setPadding(new Insets(20));
+        scene.setFill(Color.TRANSPARENT);
+        stackPane.getStyleClass().add(
+            "stage-bg-pane"
+        );
+
+        // set scene
+        this.setScene(scene);
+
         // set theme
         SysTheme.setSystemTheme(
             this.getScene()
+        );
+
+        // jmetro
+        pane.getStyleClass().add(
+            JMetroStyleClass.BACKGROUND
+        );
+
+        // icon
+        var iconStream = this.getClass().getResourceAsStream(
+            "/images/logo.png"
+        );
+        this.getIcons().addAll(
+            new Image(iconStream)
         );
     }
 

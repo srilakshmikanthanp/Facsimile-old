@@ -56,7 +56,11 @@ public class TopPane extends BorderPane
     {
         // create dialog
         var dialog = new PassWordDialog (
-            this.getScene().getWindow(),
+            this.getScene().getWindow()
+        );
+
+        // set Type of dialog
+        dialog.setType(
             PassWordDialog.CHANGE_PASSWORD
         );
 
