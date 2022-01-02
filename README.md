@@ -84,19 +84,19 @@ Follow the instructions below to install QuickNote on different platforms.
 
 First Time
 
-![demo](/assets/images/FirstTime.gif)
+![demo](assets/images/FirstTime.gif)
 
 First Open
 
-![demo](/assets/images/FirstOpen.gif)
+![demo](assets/images/FirstOpen.gif)
 
 After Open
 
-![demo](/assets/images/AfterOpen.gif)
+![demo](assets/images/AfterOpen.gif)
 
 ## Security
 
-![security](/assets/images/shield.png)
+<img src="assets/images/shield.png" alt="security" width="200px" height="200px"></img>
 
 Facsimile Stores your Info as Encrypted means even you can't access your Info without your password !
 
