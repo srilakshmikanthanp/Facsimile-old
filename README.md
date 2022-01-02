@@ -15,7 +15,7 @@
   <h3 align="center">Facsimile</h3>
 
   <p align="center">
-    Take your note handy with quicknote !
+    An exact copy of Your Information !
     <br />
     <a href="https://github.com/srilakshmikanthanp/facsimile/issues">Report Bug</a>
     ·
