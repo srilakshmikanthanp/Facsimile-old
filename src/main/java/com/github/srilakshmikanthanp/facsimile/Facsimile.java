@@ -114,8 +114,7 @@ class MainStage extends Stage {
             try {
                 cryptoEn.loadExtistingKey(password);
             } catch (IOException e) {
-                if (!this.showTryAgain()) // if try not again
-                {
+                if (!this.showTryAgain()) { // if try not again
                     return false;
                 }
             } catch (GeneralSecurityException e) {
@@ -346,9 +345,9 @@ public class Facsimile extends Application {
         shortCut.setRunnable(shortcutRun);
 
         // set runnable for system mouse
-        sysMouse.setActionListener(
-            this::globalMouseAction
-        );
+        sysMouse.setActionListener((x, y) -> Platform.runLater(() -> {
+            globalMouseAction(x, y);
+        }));
 
         // register the shortcut
         try {
