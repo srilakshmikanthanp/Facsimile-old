@@ -1,31 +1,31 @@
 package com.github.srilakshmikanthanp.facsimile.system;
 
-import org.jnativehook.mouse.NativeMouseEvent;
-import org.jnativehook.mouse.NativeMouseInputAdapter;
-import org.jnativehook.mouse.NativeMouseWheelEvent;
-import org.jnativehook.mouse.NativeMouseWheelListener;
+import com.github.kwhat.jnativehook.mouse.NativeMouseEvent;
+import com.github.kwhat.jnativehook.mouse.NativeMouseListener;
+import com.github.kwhat.jnativehook.mouse.NativeMouseWheelEvent;
+import com.github.kwhat.jnativehook.mouse.NativeMouseWheelListener;
 
 /**
  * Class which handles the Global Mouse Event
  */
-public class SysMouse extends NativeMouseInputAdapter implements NativeMouseWheelListener {
+public class SysMouse implements NativeMouseListener, NativeMouseWheelListener {
     /**
      * BAsic Mouse Listener
      */
-    public interface BasicMouseListener {
-        void actionPerformed(NativeMouseEvent e);
+    public interface MousePositionListener {
+        void actionPerformed(int x, int y);
     }
 
     // Runabble action
-    private BasicMouseListener runnable;
+    private MousePositionListener action;
 
     /**
      * Constructor
      * 
      * @param runnable Runnable object
      */
-    public SysMouse(BasicMouseListener runnable) {
-        this.runnable = runnable;
+    public SysMouse(MousePositionListener runnable) {
+        this.action = runnable;
     }
 
     /**
@@ -33,8 +33,8 @@ public class SysMouse extends NativeMouseInputAdapter implements NativeMouseWhee
      * 
      * @param runnable Runnable object
      */
-    public void setActionListener(BasicMouseListener runnable) {
-        this.runnable = runnable;
+    public void setActionListener(MousePositionListener runnable) {
+        this.action = runnable;
     }
 
     /**
@@ -42,8 +42,8 @@ public class SysMouse extends NativeMouseInputAdapter implements NativeMouseWhee
      * 
      * @return Runnable object
      */
-    public BasicMouseListener getActionListener() {
-        return this.runnable;
+    public MousePositionListener getActionListener() {
+        return this.action;
     }
 
     /**
@@ -53,8 +53,8 @@ public class SysMouse extends NativeMouseInputAdapter implements NativeMouseWhee
      */
     @Override
     public void nativeMousePressed(NativeMouseEvent evt) {
-        if (runnable != null) {
-            runnable.actionPerformed(evt);
+        if (action != null) {
+            action.actionPerformed(evt.getX(), evt.getY());
         }
     }
 
@@ -65,8 +65,8 @@ public class SysMouse extends NativeMouseInputAdapter implements NativeMouseWhee
      */
     @Override
     public void nativeMouseWheelMoved(NativeMouseWheelEvent evt) {
-        if (runnable != null) {
-            runnable.actionPerformed(evt);
+        if (action != null) {
+            action.actionPerformed(evt.getX(), evt.getY());
         }
     }
 }

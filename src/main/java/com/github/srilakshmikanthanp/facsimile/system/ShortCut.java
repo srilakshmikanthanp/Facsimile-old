@@ -6,14 +6,15 @@
 package com.github.srilakshmikanthanp.facsimile.system;
 
 import java.util.logging.*;
-import org.jnativehook.keyboard.*;
-import org.jnativehook.GlobalScreen;
+import com.github.kwhat.jnativehook.GlobalScreen;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import com.github.srilakshmikanthanp.facsimile.utility.Preference;
 
 /**
  * Class which handles the Global Key Event
  */
-public class ShortCut extends NativeKeyAdapter {
+public class ShortCut implements NativeKeyListener {
     // ctrl
     public static final String CTRL = "CTRL";
 

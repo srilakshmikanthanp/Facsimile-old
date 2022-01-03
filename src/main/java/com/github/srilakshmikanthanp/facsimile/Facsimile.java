@@ -21,8 +21,7 @@ import javafx.scene.shape.Rectangle;
 
 import jfxtras.styles.jmetro.JMetroStyleClass;
 
-import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
+import com.github.kwhat.jnativehook.*;
 
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.dialog.*;
@@ -303,7 +302,7 @@ public class Facsimile extends Application {
     /**
      * GLobal mouse pressed
      */
-    private void globalMousePressed(int x, int y) {
+    private void globalMouseAction(int x, int y) {
         // Rectangle
         var rect = new Rectangle(
             mainStage.getX(),
@@ -347,9 +346,9 @@ public class Facsimile extends Application {
         shortCut.setRunnable(shortcutRun);
 
         // set runnable for system mouse
-        sysMouse.setActionListener((evt) -> {
-            this.globalMousePressed(evt.getX(), evt.getY());
-        });
+        sysMouse.setActionListener(
+            this::globalMouseAction
+        );
 
         // register the shortcut
         try {
@@ -359,9 +358,9 @@ public class Facsimile extends Application {
         }
 
         // add listeners
-        GlobalScreen.addNativeMouseListener(sysMouse);
-        GlobalScreen.addNativeMouseMotionListener(sysMouse);
         GlobalScreen.addNativeKeyListener(shortCut);
+        GlobalScreen.addNativeMouseListener(sysMouse);
+        GlobalScreen.addNativeMouseWheelListener(sysMouse);
 
         // add to system tray
         sysTray = SysTray.addToTray(shortcutRun);
