@@ -73,7 +73,7 @@ public class KeyValueDialog extends Stage {
         // define vars
         var label = new Label("Key Value");
         var keyField = new TextField();
-        var valueField = new TextField();
+        var valueField = new PasswordField();
         var btn = new Button("➜");
 
         // init label
