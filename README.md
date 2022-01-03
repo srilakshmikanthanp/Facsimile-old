@@ -36,7 +36,6 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisite">Prerequisite</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
@@ -67,17 +66,13 @@ Copy Your Most Used Text to Clipboard Easily with Facsimile!. It Helps You to St
 
 To install Facsimile, follow the instructions below.
 
-### Prerequisite
-
-The is no prerequisites for installing QuickNote.
-
 ### Installation
 
 Follow the instructions below to install QuickNote on different platforms.
 
 #### For Windows
 
-    Getting Ready Soon
+Getting Ready Soon
 
 <!-- USAGE EXAMPLES -->
 ## Demo
@@ -96,7 +91,7 @@ After Open
 
 ## Security
 
-<img src="assets/images/shield.png" alt="security" width="200px" height="200px"></img>
+<img src="assets/images/shield.png" alt="security" width="100px" height="100px"></img>
 
 Facsimile Stores your Info as Encrypted means even you can't access your Info without your password !
 
