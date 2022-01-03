@@ -40,7 +40,7 @@ public class MidPane extends BorderPane {
         try {
             pairs = mapping.getPairs();
         } catch (GeneralSecurityException e) {
-            Utilityfunc.showError(e);
+            Utilityfuncs.showError(e);
             return;
         }
 
@@ -68,7 +68,7 @@ public class MidPane extends BorderPane {
         try {
             value = mapping.get(key);
         } catch (GeneralSecurityException e) {
-            Utilityfunc.showError(e);
+            Utilityfuncs.showError(e);
         }
 
         // Done
@@ -112,7 +112,7 @@ public class MidPane extends BorderPane {
         try {
             mapping.remove(key);
         } catch (IOException | GeneralSecurityException e) {
-            Utilityfunc.showError(e);
+            Utilityfuncs.showError(e);
         }
 
         // update map

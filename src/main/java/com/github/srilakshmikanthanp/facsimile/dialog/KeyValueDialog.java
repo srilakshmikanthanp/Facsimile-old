@@ -12,8 +12,8 @@ import javafx.scene.input.KeyCode;
 
 import jfxtras.styles.jmetro.JMetroStyleClass;
 
-import com.github.srilakshmikanthanp.facsimile.system.SysTheme;
-import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
+import com.github.srilakshmikanthanp.facsimile.system.ThemeListener;
+import com.github.srilakshmikanthanp.facsimile.utility.Utilityfuncs;
 
 /**
  * A Stage that displays a option to add key-value pair.
@@ -159,7 +159,7 @@ public class KeyValueDialog extends Stage {
             this.setMinHeight(height);
 
             // center the stage or screen
-            Utilityfunc.centerTo(
+            Utilityfuncs.centerTo(
                 owner, this
             );
 
@@ -186,7 +186,7 @@ public class KeyValueDialog extends Stage {
         this.setScene(scene);
 
         // set theme
-        SysTheme.setSystemTheme(
+        ThemeListener.setSystemTheme(
             this.getScene()
         );
 

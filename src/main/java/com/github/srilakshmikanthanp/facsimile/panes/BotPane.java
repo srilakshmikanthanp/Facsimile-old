@@ -10,7 +10,7 @@ import javafx.scene.control.*;
 
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.dialog.*;
-import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
+import com.github.srilakshmikanthanp.facsimile.utility.Utilityfuncs;
 
 /**
  * A pane that displays a option to add key-value pair.
@@ -44,7 +44,7 @@ public class BotPane extends BorderPane {
         try {
             this.mapping.put(key, value);
         } catch (IOException | GeneralSecurityException e) {
-            Utilityfunc.showError(e);
+            Utilityfuncs.showError(e);
         }
     }
 

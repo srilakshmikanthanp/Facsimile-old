@@ -11,7 +11,7 @@ import javafx.scene.control.Alert.AlertType;
 /**
  * Some Utility Functions
  */
-public class Utilityfunc {
+public class Utilityfuncs {
     /**
      * Shows the alert.
      * 

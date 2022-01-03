@@ -98,7 +98,7 @@ public class ShortCutDialog extends Stage {
 
         // init the mask one
         maskOne.getItems().addAll(
-            ShortCut.getKeys()
+            KeyBoardListener.getKeys()
         );
         maskOne.setValue(
             Preference.getMaskOne()
@@ -106,7 +106,7 @@ public class ShortCutDialog extends Stage {
 
         // init the mask two
         maskTwo.getItems().addAll(
-            ShortCut.getKeys()
+            KeyBoardListener.getKeys()
         );
         maskTwo.setValue(
             Preference.getMaskTwo()
@@ -125,7 +125,7 @@ public class ShortCutDialog extends Stage {
             (a, b) -> a.compareTo(b)
         );
         list.removeAll(
-            Arrays.asList(ShortCut.getKeys())
+            Arrays.asList(KeyBoardListener.getKeys())
         );
         keyValue.getItems().addAll(
             list
@@ -189,7 +189,7 @@ public class ShortCutDialog extends Stage {
             this.setMinHeight(height);
 
             // center the stage or screen
-            Utilityfunc.centerTo(
+            Utilityfuncs.centerTo(
                 owner, this
             );
 
@@ -216,7 +216,7 @@ public class ShortCutDialog extends Stage {
         this.setScene(scene);
 
         // set theme
-        SysTheme.setSystemTheme(
+        ThemeListener.setSystemTheme(
             this.getScene()
         );
 

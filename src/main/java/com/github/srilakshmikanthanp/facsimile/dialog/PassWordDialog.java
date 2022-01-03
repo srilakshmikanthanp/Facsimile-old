@@ -12,8 +12,8 @@ import javafx.scene.input.KeyCode;
 
 import jfxtras.styles.jmetro.JMetroStyleClass;
 
-import com.github.srilakshmikanthanp.facsimile.system.SysTheme;
-import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
+import com.github.srilakshmikanthanp.facsimile.system.ThemeListener;
+import com.github.srilakshmikanthanp.facsimile.utility.Utilityfuncs;
 
 /**
  * Passwords Dialog
@@ -378,7 +378,7 @@ public class PassWordDialog extends Stage {
             this.setMinHeight(height);
 
             // center the stage or screen
-            Utilityfunc.centerTo(
+            Utilityfuncs.centerTo(
                 owner, this
             );
 
@@ -445,7 +445,7 @@ public class PassWordDialog extends Stage {
         this.setScene(scene);
 
         // set theme
-        SysTheme.setSystemTheme(
+        ThemeListener.setSystemTheme(
             this.getScene()
         );
 

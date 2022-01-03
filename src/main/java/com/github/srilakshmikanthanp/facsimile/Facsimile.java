@@ -27,7 +27,7 @@ import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.dialog.*;
 import com.github.srilakshmikanthanp.facsimile.panes.*;
 import com.github.srilakshmikanthanp.facsimile.system.*;
-import com.github.srilakshmikanthanp.facsimile.utility.Utilityfunc;
+import com.github.srilakshmikanthanp.facsimile.utility.Utilityfuncs;
 
 /**
  * Main Stage for the Facsimile.
@@ -120,7 +120,7 @@ class MainStage extends Stage {
                 }
             } catch (GeneralSecurityException e) {
                 // create allert
-                Utilityfunc.showError(e);
+                Utilityfuncs.showError(e);
 
                 // return
                 return false;
@@ -166,7 +166,7 @@ class MainStage extends Stage {
                 cryptoEn.createNewKey(password);
             } catch (GeneralSecurityException | IOException e) {
                 // create allert
-                Utilityfunc.showError(e);
+                Utilityfuncs.showError(e);
                 // return
                 return false;
             }
@@ -224,7 +224,7 @@ class MainStage extends Stage {
 
         // center the stage
         this.setOnShown((evt) -> {
-            Utilityfunc.centerToScreen(this);
+            Utilityfuncs.centerToScreen(this);
             this.requestFocus();
         });
 
@@ -247,7 +247,7 @@ class MainStage extends Stage {
         this.setScene(scene);
 
         // set theme
-        SysTheme.setSystemTheme(
+        ThemeListener.setSystemTheme(
             this.getScene()
         );
 
@@ -288,13 +288,13 @@ class MainStage extends Stage {
  */
 public class Facsimile extends Application {
     // System Mouse listener
-    private SysMouse sysMouse = new SysMouse(null);
+    private MouseListener sysMouse = new MouseListener(null);
 
     // shortcut listener
-    private ShortCut shortCut = new ShortCut(null);
+    private KeyBoardListener shortCut = new KeyBoardListener(null);
 
     // add to system tray
-    private SysTray sysTray;
+    private SystemTrayIcon sysTray;
 
     // MainStage
     private MainStage mainStage;
@@ -354,7 +354,7 @@ public class Facsimile extends Application {
         try {
             GlobalScreen.registerNativeHook();
         } catch (NativeHookException e) {
-            Utilityfunc.showError(e);
+            Utilityfuncs.showError(e);
         }
 
         // add listeners
@@ -363,7 +363,7 @@ public class Facsimile extends Application {
         GlobalScreen.addNativeMouseWheelListener(sysMouse);
 
         // add to system tray
-        sysTray = SysTray.addToTray(shortcutRun);
+        sysTray = SystemTrayIcon.addToTray(shortcutRun);
     }
 
     /**
@@ -375,7 +375,7 @@ public class Facsimile extends Application {
         try {
             GlobalScreen.unregisterNativeHook();
         } catch (NativeHookException e) {
-            Utilityfunc.showError(e);
+            Utilityfuncs.showError(e);
         }
 
         // remove from tray
@@ -388,7 +388,7 @@ public class Facsimile extends Application {
      * @param args cmd args
      */
     public static void main(String[] args) {
-        if(!Utilityfunc.isApplicationRunning()) {
+        if(!Utilityfuncs.isApplicationRunning()) {
             launch(args);
         }
     }

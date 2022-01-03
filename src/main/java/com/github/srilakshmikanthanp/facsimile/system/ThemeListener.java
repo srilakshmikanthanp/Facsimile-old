@@ -14,7 +14,7 @@ import com.jthemedetecor.OsThemeDetector;
 /**
  * Class Helps to detect the OS theme.
  */
-public class SysTheme {
+public class ThemeListener {
     /**
      * Sets the Scene to Dark Theme
      * 
@@ -22,7 +22,7 @@ public class SysTheme {
      */
     private static void setDarkTheme(Scene scene) {
         // Resource
-        var resource = SysTheme.class.getResource(
+        var resource = ThemeListener.class.getResource(
             "/styles/Dark.css"
         );
         // jmetro
@@ -47,7 +47,7 @@ public class SysTheme {
      */
     private static void setLightTheme(Scene scene) {
         // Resource
-        var resource = SysTheme.class.getResource(
+        var resource = ThemeListener.class.getResource(
             "/styles/LIGHT.css"
         );
         // jmetro

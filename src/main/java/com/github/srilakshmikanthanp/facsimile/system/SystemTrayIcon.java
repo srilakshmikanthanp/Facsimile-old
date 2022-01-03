@@ -8,12 +8,12 @@ import javafx.application.Platform;
 /**
  * System tary class
  */
-public class SysTray {
+public class SystemTrayIcon {
     // application Link
     private static final String APP_LINK = ("https://github.com/srilakshmikanthanp/Facsimile");
 
     // is tray added
-    private static SysTray instance = null;
+    private static SystemTrayIcon instance = null;
 
     // Tray instance
     private SystemTray tray = SystemTray.getSystemTray();
@@ -40,7 +40,7 @@ public class SysTray {
     /**
      * Constructor
      */
-    private SysTray(Runnable runnable) {
+    private SystemTrayIcon(Runnable runnable) {
         // define vars
         var menu = new PopupMenu();
         var app = new MenuItem("FacSimile");
@@ -82,9 +82,9 @@ public class SysTray {
     /**
      * Adds Icon to tray
      */
-    public static SysTray addToTray(Runnable runnable) {
+    public static SystemTrayIcon addToTray(Runnable runnable) {
         if (instance == null) {
-            instance = new SysTray(runnable);
+            instance = new SystemTrayIcon(runnable);
         }
 
         return instance;

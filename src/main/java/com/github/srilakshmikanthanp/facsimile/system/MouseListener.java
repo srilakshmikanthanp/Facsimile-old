@@ -8,7 +8,7 @@ import com.github.kwhat.jnativehook.mouse.NativeMouseWheelListener;
 /**
  * Class which handles the Global Mouse Event
  */
-public class SysMouse implements NativeMouseListener, NativeMouseWheelListener {
+public class MouseListener implements NativeMouseListener, NativeMouseWheelListener {
     /**
      * BAsic Mouse Listener
      */
@@ -24,7 +24,7 @@ public class SysMouse implements NativeMouseListener, NativeMouseWheelListener {
      * 
      * @param runnable Runnable object
      */
-    public SysMouse(MousePositionListener runnable) {
+    public MouseListener(MousePositionListener runnable) {
         this.action = runnable;
     }
 

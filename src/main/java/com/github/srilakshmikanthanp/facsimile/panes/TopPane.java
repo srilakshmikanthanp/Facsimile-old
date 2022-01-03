@@ -74,7 +74,7 @@ public class TopPane extends BorderPane {
                 dialog.getActPassword()
             );
         } catch (IOException | GeneralSecurityException e) {
-            Utilityfunc.showError(e);
+            Utilityfuncs.showError(e);
             return;
         }
     }
