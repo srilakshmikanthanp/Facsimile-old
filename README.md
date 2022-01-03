@@ -91,7 +91,7 @@ After Open
 
 ## Security
 
-<img src="assets/images/shield.png" alt="security" width="100px" height="100px"></img>
+<img src="assets/images/shield.png" alt="security" width="150px" height="150px"></img>
 
 Facsimile Stores your Info as Encrypted means even you can't access your Info without your password !
 
