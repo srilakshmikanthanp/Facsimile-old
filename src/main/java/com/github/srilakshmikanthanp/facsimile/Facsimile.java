@@ -25,7 +25,7 @@ import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.dialog.*;
 import com.github.srilakshmikanthanp.facsimile.panes.*;
 import com.github.srilakshmikanthanp.facsimile.system.*;
-import com.github.srilakshmikanthanp.facsimile.utility.Utilityfuncs;
+import com.github.srilakshmikanthanp.facsimile.utility.*;
 
 /**
  * Main Stage for the Facsimile.
