@@ -64,7 +64,7 @@ public class Preference {
      */
     public static void setMaskTwo(String maskTwo) {
         if (Arrays.asList(KeyBoardListener.getKeys()).contains(maskTwo)) {
-            prefs.put(MASK_ONE_KEY, maskTwo);
+            prefs.put(MASK_TWO_KEY, maskTwo);
         } else {
             throw new IllegalArgumentException("Invalid mask");
         }

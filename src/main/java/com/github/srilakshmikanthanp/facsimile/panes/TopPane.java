@@ -24,7 +24,8 @@ public class TopPane extends BorderPane {
     private void ChangeShortCut() {
         // create dialog
         var dialog = new ShortCutDialog(
-                this.getScene().getWindow());
+            this.getScene().getWindow()
+        );
 
         // show dialog
         dialog.showAndWait();
@@ -49,32 +50,47 @@ public class TopPane extends BorderPane {
      * Change the Password
      */
     private void ChangePassword() {
-        // create dialog
-        var dialog = new PassWordDialog(
-            this.getScene().getWindow()
-        );
+        // define values
+        var error    = false;
+        var title    = "Enter Password";
+        var cryptoEn = mapping.getCryptoEn();
 
-        // set Type of dialog
-        dialog.setType(
-            PassWordDialog.CHANGE_PASSWORD
-        );
-
-        // show the doalog
-        dialog.showAndWait();
-
-        // if not valid
-        if (!dialog.isOkay()) {
-            return;
-        }
-
-        // try to change password
-        try {
-            mapping.getCryptoEn().changeKeyPassword(
-                dialog.getOldPassword(),
-                dialog.getActPassword()
+        while(true) {
+            // create dialog
+            var dialog = new PassWordDialog(
+                this.getScene().getWindow()
             );
-        } catch (IOException | GeneralSecurityException e) {
-            Utilityfuncs.showError(e);
+
+            // set Type of dialog
+            dialog.setType(
+                PassWordDialog.CHANGE_PASSWORD,
+                title,
+                error
+            );
+
+            // show the doalog
+            dialog.showAndWait();
+
+            // if not valid
+            if (!dialog.isOkay()) {
+                return;
+            }
+
+            // try to change password
+            try {
+                cryptoEn.changeKeyPassword(
+                    dialog.getOldPassword(),
+                    dialog.getActPassword()
+                );
+            } catch (IOException e) {
+                error = true;
+                title = "Invalid Password";
+                continue;
+            } catch (GeneralSecurityException e) {
+                Utilityfuncs.showError(e);
+                return;
+            }
+
             return;
         }
     }

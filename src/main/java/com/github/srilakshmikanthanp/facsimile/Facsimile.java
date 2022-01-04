@@ -15,8 +15,6 @@ import javafx.stage.*;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.control.*;
-import javafx.scene.control.Alert.*;
 import javafx.scene.shape.Rectangle;
 
 import jfxtras.styles.jmetro.JMetroStyleClass;
@@ -57,36 +55,16 @@ class MainStage extends Stage {
     private Mapping mapping;
 
     /**
-     * Shows the try again prompt.
-     */
-    private boolean showTryAgain() {
-        // create alert
-        var alert = new Alert(AlertType.INFORMATION);
-
-        // init the alert
-        alert.setTitle("Invalid Password");
-        alert.setHeaderText("Password is not correct");
-        alert.setContentText("Are you want to try again ?");
-
-        // show alert
-        var res = alert.showAndWait();
-
-        // if not valid
-        if (!res.isPresent()) {
-            return false;
-        }
-
-        // return result
-        return res.get() == ButtonType.OK;
-    }
-
-    /**
      * Loads the password to crypto
      * 
      * @param cryptoEn crypto Engine
      * @return status
      */
     private boolean loadPassword(CryptoEn cryptoEn) {
+        // value to validate
+        var title = "Enter Password";
+        var error = false;
+
         // if aldersy showing
         if (dialog.isShowing()) {
             return false;
@@ -96,7 +74,9 @@ class MainStage extends Stage {
         while (!cryptoEn.isKeyExists()) {
             // init dialog
             dialog.setType(
-                PassWordDialog.GINPUT_PASSWORD
+                PassWordDialog.GINPUT_PASSWORD,
+                title,
+                error
             );
 
             // show dialog
@@ -114,9 +94,9 @@ class MainStage extends Stage {
             try {
                 cryptoEn.loadExtistingKey(password);
             } catch (IOException e) {
-                if (!this.showTryAgain()) { // if try not again
-                    return false;
-                }
+                error = true;
+                title = "Invalid Password";
+                continue;
             } catch (GeneralSecurityException e) {
                 // create allert
                 Utilityfuncs.showError(e);
@@ -137,6 +117,10 @@ class MainStage extends Stage {
      * @return status
      */
     private boolean makePassword(CryptoEn cryptoEn) {
+        // value to validate
+        var title = "Enter Password";
+        var error = false;
+
         // if aldersy showing
         if (dialog.isShowing()) {
             return false;
@@ -146,7 +130,9 @@ class MainStage extends Stage {
         while (!cryptoEn.isKeyExists()) {
             // init dialog
             dialog.setType(
-                PassWordDialog.CREATE_PASSWORD
+                PassWordDialog.CREATE_PASSWORD,
+                title,
+                error
             );
 
             // show dialog

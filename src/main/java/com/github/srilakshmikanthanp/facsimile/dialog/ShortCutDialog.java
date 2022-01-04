@@ -134,7 +134,6 @@ public class ShortCutDialog extends Stage {
             Preference.getKeyValue()
         );
 
-
         // init the ok button
         okybutn.setOnAction((evt) -> {
             this.maksOne = maskOne.getValue().toUpperCase();
@@ -145,12 +144,15 @@ public class ShortCutDialog extends Stage {
         });
 
         // define the pane
-        var shrtpane = new VBox(maskOne, maskTwo, keyValue);
+        var maskpane = new HBox(maskOne, maskTwo);
+        var shrtpane = new VBox(maskpane, keyValue);
         var mainpane = new VBox(shLabel, shrtpane, okybutn);
 
         // init the pane
+        maskpane.setSpacing(10);
         shrtpane.setSpacing(10);
         mainpane.setSpacing(25);
+        maskpane.setAlignment(Pos.CENTER);
         shrtpane.setAlignment(Pos.CENTER);
         mainpane.setAlignment(Pos.CENTER);
 
@@ -180,6 +182,7 @@ public class ShortCutDialog extends Stage {
         );
 
         // init the pane
+        pane.setPadding(new Insets(10));
         pane.setTop(this.getTopBar());
 
         // center the stage

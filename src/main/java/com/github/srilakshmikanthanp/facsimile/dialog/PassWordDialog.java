@@ -78,14 +78,13 @@ public class PassWordDialog extends Stage {
 
     /**
      * Create the password Label to display
+     * @param title
      * 
      * @return Label
      */
-    private Label getPasswordLabel() {
+    private Label getPasswordLabel(String title, boolean error) {
         // label for password
-        var label = new Label("Enter Password");
-        label.setTextFill(Color.BLACK);
-        label.setStyle("-fx-font-size: 20px;");
+        var label = new Label(title);
 
         // image view
         var image = new ImageView(
@@ -101,6 +100,16 @@ public class PassWordDialog extends Stage {
         label.setContentDisplay(
             ContentDisplay.TOP
         );
+
+        if(error) {
+            label.setStyle(
+                "-fx-font-size: 20px; -fx-text-fill: red;"
+            );
+        } else {
+            label.setStyle(
+                "-fx-font-size: 20px;"
+            );
+        }
 
         // done
         return label;
@@ -163,12 +172,14 @@ public class PassWordDialog extends Stage {
 
     /**
      * Constructs the input pane
+     * @param error
+     * @param title
      * 
      * @return Pane
      */
-    private Pane getGinputPane() {
+    private Pane getGinputPane(String title, boolean error) {
         // defile vars
-        var passLabel = this.getPasswordLabel();
+        var passLabel = this.getPasswordLabel(title, error);
         var passField = this.getPasswordField("Password");
         var okyButton = this.getOkayButton();
 
@@ -194,9 +205,10 @@ public class PassWordDialog extends Stage {
 
         // add elements to the pane
         pane.getChildren().addAll(
-                passLabel,
-                passField,
-                okyButton);
+            passLabel,
+            passField,
+            okyButton
+        );
 
         // done
         return pane;
@@ -204,12 +216,14 @@ public class PassWordDialog extends Stage {
 
     /**
      * Constructs the create pane
+     * @param error
+     * @param title
      * 
      * @return Pane
      */
-    private Pane getCreatePane() {
+    private Pane getCreatePane(String title, boolean error) {
         // defile vars
-        var passLabel = this.getPasswordLabel();
+        var passLabel = this.getPasswordLabel(title, error);
         var npasField = this.getPasswordField("New Password");
         var cpasField = this.getPasswordField("Confirm Password");
         var okyButton = this.getOkayButton();
@@ -251,10 +265,10 @@ public class PassWordDialog extends Stage {
 
         // add elements to the pane
         pane.getChildren().addAll(
-                passLabel,
-                npasField,
-                cpasField,
-                okyButton
+            passLabel,
+            npasField,
+            cpasField,
+            okyButton
         );
 
         return pane;
@@ -262,12 +276,14 @@ public class PassWordDialog extends Stage {
 
     /**
      * Constructs the change pane
+     * @param error
+     * @param title
      * 
      * @return Pane
      */
-    private Pane getChangePane() {
+    private Pane getChangePane(String title, boolean error) {
         // defile vars
-        var passLabel = this.getPasswordLabel();
+        var passLabel = this.getPasswordLabel(title, error);
         var opasField = this.getPasswordField("Old Password");
         var npasField = this.getPasswordField("New Password");
         var cpasField = this.getPasswordField("Confirm Password");
@@ -325,11 +341,11 @@ public class PassWordDialog extends Stage {
 
         // add elements to the pane
         pane.getChildren().addAll(
-                passLabel,
-                opasField,
-                npasField,
-                cpasField,
-                okyButton
+            passLabel,
+            opasField,
+            npasField,
+            cpasField,
+            okyButton
         );
 
         return pane;
@@ -337,17 +353,19 @@ public class PassWordDialog extends Stage {
 
     /**
      * Returns the pane for thr type
+     * @param error
+     * @param title
      * 
      * @param Pane pane for type
      */
-    private Pane getTypePane(int type) {
+    private Pane getTypePane(int type, String title, boolean error) {
         switch (type) {
             case GINPUT_PASSWORD:
-                return this.getGinputPane();
+                return this.getGinputPane(title, error);
             case CREATE_PASSWORD:
-                return this.getCreatePane();
+                return this.getCreatePane(title, error);
             case CHANGE_PASSWORD:
-                return this.getChangePane();
+                return this.getChangePane(title, error);
             default:
                 return null;
         }
@@ -400,7 +418,7 @@ public class PassWordDialog extends Stage {
      * 
      * @param type type of password
      */
-    public void setType(int type) {
+    public void setType(int type, String title, boolean error) {
         // set the type
         switch (type) {
             // check for validity
@@ -416,7 +434,7 @@ public class PassWordDialog extends Stage {
 
         // define the pane
         var pane = new BorderPane(
-            this.getTypePane(type)
+            this.getTypePane(type, title, error)
         );
 
         // init style
