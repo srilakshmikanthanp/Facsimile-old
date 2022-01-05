@@ -7,7 +7,7 @@ package com.github.srilakshmikanthanp.facsimile.utility;
 
 import java.util.Arrays;
 import java.util.prefs.*;
-import com.github.srilakshmikanthanp.facsimile.system.KeyBoardListener;
+import com.github.srilakshmikanthanp.facsimile.system.ShortCutListener;
 
 /**
  * This class is used to store and retrieve the preferences the application.
@@ -20,7 +20,7 @@ public class Preference {
 
     // Preference Mask one
     public static String MASK_ONE_KEY = "MASK_ONE";
-    public static String MASK_ONE_DEFAULT = KeyBoardListener.CTRL;
+    public static String MASK_ONE_DEFAULT = ShortCutListener.CTRL;
 
     /**
      * Get the mask one.
@@ -37,7 +37,7 @@ public class Preference {
      * @param maskOne the mask one.
      */
     public static void setMaskOne(String maskOne) {
-        if (Arrays.asList(KeyBoardListener.getKeys()).contains(maskOne)) {
+        if (Arrays.asList(ShortCutListener.getKeys()).contains(maskOne)) {
             prefs.put(MASK_ONE_KEY, maskOne);
         } else {
             throw new IllegalArgumentException("Invalid mask");
@@ -46,7 +46,7 @@ public class Preference {
 
     // Preference Mask Two
     public static String MASK_TWO_KEY = "MASK_TWO";
-    public static String MASK_TWO_DEFAULT = KeyBoardListener.SHIFT;
+    public static String MASK_TWO_DEFAULT = ShortCutListener.SHIFT;
 
     /**
      * Get the mask one.
@@ -63,7 +63,7 @@ public class Preference {
      * @param maskTwo the mask one.
      */
     public static void setMaskTwo(String maskTwo) {
-        if (Arrays.asList(KeyBoardListener.getKeys()).contains(maskTwo)) {
+        if (Arrays.asList(ShortCutListener.getKeys()).contains(maskTwo)) {
             prefs.put(MASK_TWO_KEY, maskTwo);
         } else {
             throw new IllegalArgumentException("Invalid mask");

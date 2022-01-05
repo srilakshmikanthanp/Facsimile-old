@@ -17,7 +17,7 @@ import java.security.KeyStore;
  */
 public class CryptoEn {
     // The Key File Name
-    private static final String KEY_FILE_NAME = "crypto.key";
+    private static final String KEY_FILE_NAME = "crypto.ks";
 
     // The algorithm used for encryption and decryption.
     private static final String ALGORITHM = "AES";

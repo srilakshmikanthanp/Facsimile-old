@@ -98,7 +98,7 @@ public class ShortCutDialog extends Stage {
 
         // init the mask one
         maskOne.getItems().addAll(
-            KeyBoardListener.getKeys()
+            ShortCutListener.getKeys()
         );
         maskOne.setValue(
             Preference.getMaskOne()
@@ -106,7 +106,7 @@ public class ShortCutDialog extends Stage {
 
         // init the mask two
         maskTwo.getItems().addAll(
-            KeyBoardListener.getKeys()
+            ShortCutListener.getKeys()
         );
         maskTwo.setValue(
             Preference.getMaskTwo()
@@ -125,7 +125,7 @@ public class ShortCutDialog extends Stage {
             (a, b) -> a.compareTo(b)
         );
         list.removeAll(
-            Arrays.asList(KeyBoardListener.getKeys())
+            Arrays.asList(ShortCutListener.getKeys())
         );
         keyValue.getItems().addAll(
             list

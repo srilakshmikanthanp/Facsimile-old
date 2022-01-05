@@ -209,7 +209,7 @@ class MainStage extends Stage {
 
         // center the stage
         this.setOnShown((evt) -> {
-            Utilityfuncs.centerToScreen(this);
+            this.centerOnScreen();
             this.requestFocus();
         });
 
@@ -275,8 +275,11 @@ public class Facsimile extends Application {
     // System Mouse listener
     private MouseListener sysMouse = new MouseListener(null);
 
+    // Escape Key Listener
+    private EscapeKeyListener escape = new EscapeKeyListener(null);
+
     // shortcut listener
-    private KeyBoardListener shortCut = new KeyBoardListener(null);
+    private ShortCutListener shortCut = new ShortCutListener(null);
 
     // add to system tray
     private SystemTrayIcon sysTray;
@@ -317,6 +320,7 @@ public class Facsimile extends Application {
         pStage.setMaxHeight(0.0);
         pStage.setMaxWidth(0.0);
         pStage.setOpacity(0.0);
+        pStage.setX(Double.MAX_VALUE);
         pStage.show();
 
         // define vars
@@ -329,6 +333,13 @@ public class Facsimile extends Application {
 
         // set runnable for shortcut
         shortCut.setRunnable(shortcutRun);
+
+        // escape listener
+        escape.setRunnable(() -> Platform.runLater(() -> {
+            if(mainStage.isShowing()) {
+                mainStage.hide();
+            }
+        }));
 
         // set runnable for system mouse
         sysMouse.setActionListener((x, y) -> Platform.runLater(() -> {
@@ -343,6 +354,7 @@ public class Facsimile extends Application {
         }
 
         // add listeners
+        GlobalScreen.addNativeKeyListener(escape);
         GlobalScreen.addNativeKeyListener(shortCut);
         GlobalScreen.addNativeMouseListener(sysMouse);
         GlobalScreen.addNativeMouseWheelListener(sysMouse);

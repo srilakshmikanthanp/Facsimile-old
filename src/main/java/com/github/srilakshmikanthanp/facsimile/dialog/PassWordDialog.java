@@ -28,6 +28,9 @@ public class PassWordDialog extends Stage {
     // change password from user
     public static final int CHANGE_PASSWORD = 3;
 
+    // Minimum password length
+    private static final int MIN_LENGTH = 6;
+
     // width of the stage
     private static final double width = 370;
 
@@ -247,7 +250,7 @@ public class PassWordDialog extends Stage {
             var newpass = npasField.getText();
             var conpass = cpasField.getText();
 
-            if (newpass.equals(conpass) && newpass.length() > 0) {
+            if (newpass.equals(conpass) && newpass.length() > MIN_LENGTH) {
                 this.doneActPassword(npasField.getText());
             } else {
                 passLabel.setTextFill(Color.RED);
@@ -322,7 +325,7 @@ public class PassWordDialog extends Stage {
                 return;
             }
 
-            if (npass.equals(cpass) && npass.length() > 0) {
+            if (npass.equals(cpass) && npass.length() > MIN_LENGTH) {
                 this.doneOldPassword(opasField.getText());
                 this.doneActPassword(npasField.getText());
             } else {

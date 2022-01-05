@@ -14,7 +14,7 @@ import com.github.srilakshmikanthanp.facsimile.utility.Preference;
 /**
  * Class which handles the Global Key Event
  */
-public class KeyBoardListener implements NativeKeyListener {
+public class ShortCutListener implements NativeKeyListener {
     // ctrl
     public static final String CTRL = "CTRL";
 
@@ -50,7 +50,7 @@ public class KeyBoardListener implements NativeKeyListener {
      * 
      * @param runnable Runnable object
      */
-    public KeyBoardListener(Runnable runnable) {
+    public ShortCutListener(Runnable runnable) {
         // save the runnable object
         this.runnable = runnable;
 

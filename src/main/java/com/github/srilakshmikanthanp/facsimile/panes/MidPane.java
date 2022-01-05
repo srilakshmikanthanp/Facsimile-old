@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import javafx.scene.layout.*;
 import javafx.stage.Window;
 import javafx.util.Pair;
-import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,6 +14,7 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.beans.value.ChangeListener;
 
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
@@ -138,6 +138,15 @@ public class MidPane extends BorderPane {
     }
 
     /**
+     * Select the First ListView
+     */
+    private void selectFirst()
+    {
+        var model = listView.getSelectionModel();
+        model.selectFirst();
+    }
+
+    /**
      * Constructor for the middle pane
      * 
      * @param mapping mapping
@@ -174,6 +183,8 @@ public class MidPane extends BorderPane {
         (obs, oldWin, newWin) -> {
             newWin.setOnShowing((evt) -> {
                 this.updateListView();
+                this.listView.requestFocus();
+                this.selectFirst();
             });
         };
 
@@ -181,12 +192,13 @@ public class MidPane extends BorderPane {
         ChangeListener<Scene> sceneLis = 
         (obs, oldScene, newScene) -> {
             newScene.windowProperty().addListener(
-                    winLis);
+                winLis
+            );
         };
 
         // add listener to scene
         this.sceneProperty().addListener(
-                sceneLis
+            sceneLis
         );
     }
 }
