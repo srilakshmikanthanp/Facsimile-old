@@ -361,14 +361,14 @@ public class CryptoMap extends HashMap<String, String> {
     /**
      * Add the change Listener
      */
-    public void addChangeListener(MapChangeListener listener) {
+    public void addMapChangeListener(MapChangeListener listener) {
         this.listeners.add(listener);
     }
 
     /**
      * Remove the change Listener
      */
-    public void removeChangeListener(MapChangeListener listener) {
+    public void removeMapChangeListener(MapChangeListener listener) {
         this.listeners.remove(listener);
     }
 }
