@@ -47,6 +47,15 @@ public abstract class AbstractDialog extends Stage {
     }
 
     /**
+     * Sets the Content of the dialog.
+     * 
+     * @param content
+     */
+    private void setContent() {
+        borderPane.setCenter(getContent());
+    }
+
+    /**
      * Set the Bottom pane
      */
     private void setBotPane() {
@@ -90,6 +99,23 @@ public abstract class AbstractDialog extends Stage {
     }
 
     /**
+     * get the Content pane
+     * 
+     * @return Node
+     */
+    protected abstract Node getContent();
+
+    /**
+     * Mthod that call on OK button click.
+     */
+    protected abstract void okayPressed();
+
+    /**
+     * Mthod that call on Cancel button click.
+     */
+    protected abstract void cutPressed();
+
+    /**
      * Constructor.
      */
     public AbstractDialog(Window owner) {
@@ -104,6 +130,7 @@ public abstract class AbstractDialog extends Stage {
 
         // set the panes
         this.setTopPane();
+        this.setContent();
         this.setBotPane();
 
         // set the scene
@@ -114,23 +141,4 @@ public abstract class AbstractDialog extends Stage {
             this.toFront();
         });
     }
-
-    /**
-     * Sets the Content of the dialog.
-     * 
-     * @param content
-     */
-    public void setContent(Node node) {
-        borderPane.setCenter(node);
-    }
-
-    /**
-     * Mthod that call on OK button click.
-     */
-    public abstract void okayPressed();
-    
-    /**
-     * Mthod that call on Cancel button click.
-     */
-    public abstract void cutPressed();
 }
