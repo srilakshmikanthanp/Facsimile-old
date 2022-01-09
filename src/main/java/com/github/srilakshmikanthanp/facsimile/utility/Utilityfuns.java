@@ -8,6 +8,8 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.*;
 
+import com.github.srilakshmikanthanp.facsimile.consts.*;
+
 /**
  * Some Utility Functions
  */
@@ -107,7 +109,7 @@ public class Utilityfuns {
     public static boolean isApplicationRunning() {
         try {
             // check if port is available
-            ServerSocket socket = new ServerSocket(57429);
+            ServerSocket socket = new ServerSocket(AppConsts.SOCKET_PORT);
 
             // close the socket on stop
             Runtime.getRuntime().addShutdownHook(

@@ -5,14 +5,12 @@ import java.net.URI;
 import javax.swing.ImageIcon;
 import javafx.application.Platform;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
+import com.github.srilakshmikanthanp.facsimile.consts.*;
 
 /**
  * System tray class
  */
 public class SystrayIcon {
-    // application Link
-    private static final String APP_LINK = "https://github.com/srilakshmikanthanp/Facsimile";
-
     // icon for tray
     private TrayIcon icon = new TrayIcon(
         new ImageIcon(getClass().getResource("/images/logo.png")).getImage(),
@@ -23,7 +21,7 @@ public class SystrayIcon {
     private SystemTray tray = SystemTray.getSystemTray();
 
     // Runnable for tray menu
-    private Runnable runnable;
+    private Runnable launcher;
 
     // is tray added
     private static SystrayIcon instance = null;
@@ -46,7 +44,7 @@ public class SystrayIcon {
      */
     private SystrayIcon(Runnable run) {
         // innit runnable
-        this.runnable = run;
+        this.launcher = run;
 
         // define vars
         var menu = new PopupMenu();
@@ -62,14 +60,14 @@ public class SystrayIcon {
 
         // app click listeners
         app.addActionListener((evt) -> {
-            if (runnable != null) {
-                runnable.run();
+            if (launcher != null) {
+                launcher.run();
             }
         });
 
         // about click listener
         about.addActionListener((evt) -> {
-            this.openWebPage(APP_LINK);
+            this.openWebPage(AppConsts.APP_LINK);
         });
 
         // exit click listener
@@ -79,8 +77,8 @@ public class SystrayIcon {
 
         // icon click listener
         icon.addActionListener((evt) -> {
-            if (runnable != null) {
-                runnable.run();
+            if (launcher != null) {
+                launcher.run();
             }
         });
 
@@ -97,22 +95,22 @@ public class SystrayIcon {
     }
 
     /**
-     * Adds Icon to tray
-     */
-    public static SystrayIcon addWithAction(Runnable runnable) {
-        if (instance == null) {
-            instance = new SystrayIcon(runnable);
-        } else {
-            instance.runnable = runnable;
-        }
-
-        return instance;
-    }
-
-    /**
      * Removes the icon from system tray
      */
     public void removeFromTray() {
         tray.remove(icon);
+    }
+
+    /**
+     * Adds Icon to tray
+     */
+    public static SystrayIcon addWithLauncher(Runnable launcher) {
+        if (instance == null) {
+            instance = new SystrayIcon(launcher);
+        } else {
+            instance.launcher = launcher;
+        }
+
+        return instance;
     }
 }

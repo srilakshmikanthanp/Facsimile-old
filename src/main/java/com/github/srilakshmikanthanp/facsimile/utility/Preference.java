@@ -7,6 +7,7 @@ package com.github.srilakshmikanthanp.facsimile.utility;
 
 import java.util.Arrays;
 import java.util.prefs.*;
+import com.github.srilakshmikanthanp.facsimile.consts.*;
 
 /**
  * This class is used to store and retrieve the preferences the application.
@@ -19,7 +20,7 @@ public class Preference {
 
     // Preference Mask one
     public static String MASK_ONE_KEY = "MASK_ONE";
-    public static String MASK_ONE_DEFAULT = "";
+    public static String MASK_ONE_DEFAULT = AppConsts.masks[0];
 
     /**
      * Get the mask one.
@@ -36,12 +37,16 @@ public class Preference {
      * @param maskOne the mask one.
      */
     public static void setMaskOne(String maskOne) {
-
+        if(Arrays.asList(AppConsts.masks).contains(maskOne)) {
+            prefs.put(MASK_ONE_KEY, maskOne);
+        } else {
+            throw new IllegalArgumentException("Invalid mask");
+        }
     }
 
     // Preference Mask Two
     public static String MASK_TWO_KEY = "MASK_TWO";
-    public static String MASK_TWO_DEFAULT = "";
+    public static String MASK_TWO_DEFAULT = AppConsts.masks[1];
 
     /**
      * Get the mask one.
@@ -58,7 +63,11 @@ public class Preference {
      * @param maskTwo the mask one.
      */
     public static void setMaskTwo(String maskTwo) {
-       
+        if(Arrays.asList(AppConsts.masks).contains(maskTwo)) {
+            prefs.put(MASK_TWO_KEY, maskTwo);
+        } else {
+            throw new IllegalArgumentException("Invalid mask");
+        }
     }
 
     // Preference Key value

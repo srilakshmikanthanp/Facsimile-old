@@ -10,6 +10,8 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 
+import com.github.srilakshmikanthanp.facsimile.consts.*;
+
 
 /**
  * PAssword Input Dialog.
@@ -46,12 +48,12 @@ public class InputShortCut extends AbstractDialog {
 
         // init the mask one
         maskOne.getItems().addAll(
-            // TODO: add the mask one
+            AppConsts.masks
         );
 
         // init the mask two
         maskTwo.getItems().addAll(
-            // TODO: add the mask two
+            AppConsts.masks
         );
 
         // init the keycode
@@ -66,7 +68,8 @@ public class InputShortCut extends AbstractDialog {
         // Sort the list
         list.sort((a, b) -> a.compareTo(b));
         
-        // TODO: remove the keycode
+        // remove the Masks
+        list.removeAll(Arrays.asList(AppConsts.masks));
 
         // add the keycode
         keycode.getItems().addAll(
@@ -130,5 +133,12 @@ public class InputShortCut extends AbstractDialog {
      */
     public String getMaskTwo() {
         return this.maskTwo.getValue();
+    }
+
+    /**
+     * Get the keycode.
+     */
+    public String getKeycode() {
+        return this.keycode.getValue();
     }
 }
