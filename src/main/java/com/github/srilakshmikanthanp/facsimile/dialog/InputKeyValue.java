@@ -11,7 +11,7 @@ import javafx.scene.control.*;
 /**
  * Key Value Input Dialog.
  */
-public class KeyValueInput extends AbstractDialog {
+public class InputKeyValue extends AbstractDialog {
     // Label for the Dialog
     private Label label = new Label("Key Value");
 
@@ -31,23 +31,17 @@ public class KeyValueInput extends AbstractDialog {
     protected Node getContent() {
         // init the Label
         var image = new ImageView(
-            getClass().getResource(
-                "/images/keyvalue.png"
-            ).toString()
+            getClass().getResource("/images/keyvalue.png").toString()
         );
         image.setFitWidth(100);
         image.setFitHeight(100);
         label.setGraphic(image);
-        label.setContentDisplay(
-            ContentDisplay.TOP
-        );
+        label.setContentDisplay(ContentDisplay.TOP);
 
         // init the key field
         keyFd.setPromptText("Key");
         keyFd.setOnKeyPressed((evt) -> {
-            var code = evt.getCode();
-            var enter = KeyCode.ENTER;
-            if (code == enter) {
+            if (evt.getCode() == KeyCode.ENTER) {
                 valFd.requestFocus();
             }
         });
@@ -55,24 +49,17 @@ public class KeyValueInput extends AbstractDialog {
         // init the value field
         valFd.setPromptText("Value");
         valFd.setOnKeyPressed((evt) -> {
-            var code = evt.getCode();
-            var enter = KeyCode.ENTER;
-            if (code == enter) {
+            if (evt.getCode() == KeyCode.ENTER) {
                 this.okayPressed();
             }
         });
 
         // define the vbox
-        var vbox = new VBox(
-            label,
-            keyFd,
-            valFd
-        );
+        var vbox = new VBox(label, keyFd, valFd);
 
         // init the vbox
-        vbox.setAlignment(
-            Pos.CENTER
-        );
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(10.0));
 
         // done
         return vbox;
@@ -83,11 +70,20 @@ public class KeyValueInput extends AbstractDialog {
      */
     @Override
     protected void okayPressed() {
-        // set the status
-        this.isOkay = true;
+        // check if key is not empty
+        if (!keyFd.getText().isEmpty()) {
+            // set the status
+            this.isOkay = true;
 
-        // close the dialog
-        this.hide();
+            // close the dialog
+            this.hide();
+        } else {
+            // set error
+            this.setError(true);
+
+            // focus
+            keyFd.requestFocus();
+        }
     }
 
     /**
@@ -107,8 +103,21 @@ public class KeyValueInput extends AbstractDialog {
      * 
      * @param owner owner
      */
-    public KeyValueInput(Window owner) {
+    public InputKeyValue(Window owner) {
         super(owner);
+    }
+
+    /**
+     * Set's the dialog Status as Error.
+     * 
+     * @param isError Status
+     */
+    public void setError(boolean isError) {
+        if (isError) {
+            this.label.setStyle("-fx-text-fill: red;");
+        } else {
+            this.label.setStyle("");
+        }
     }
 
     /**
