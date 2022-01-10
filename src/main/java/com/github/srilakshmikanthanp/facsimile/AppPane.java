@@ -66,7 +66,6 @@ class TopPane extends BorderPane {
 
         // while the user does't enter valid password
         while(!isOkay.getAsBoolean()) {
-            // try to change the password
             try {
                 var oldPass = dialog.getOldPassword();
                 var newPass = dialog.getNewPassword();

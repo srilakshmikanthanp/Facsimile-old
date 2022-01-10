@@ -151,7 +151,7 @@ public class MakePassword extends AbstractDialog {
      * 
      * @return Status
      */
-    public boolean getStatus() {
+    public boolean isOkay() {
         return this.isOkay;
     }
 

@@ -116,6 +116,11 @@ public abstract class AbstractDialog extends Stage {
     protected abstract void cutPressed();
 
     /**
+     * Get ths atatus of the Diaholg
+     */
+    protected abstract boolean isOkay();
+
+    /**
      * Constructor.
      */
     public AbstractDialog(Window owner) {
