@@ -140,6 +140,15 @@ public class AlterPassword extends AbstractDialog {
     }
 
     /**
+     * Sets the Label text of Dialog.
+     * 
+     * @param title string
+     */
+    public void setLabel(String title) {
+        this.label.setText(title);
+    }
+
+    /**
      * Set the minimum password length.
      * 
      * @return Password
@@ -153,7 +162,7 @@ public class AlterPassword extends AbstractDialog {
      * 
      * @return Status
      */
-    public boolean getStatus() {
+    public boolean isOkay() {
         return this.isOkay;
     }
 

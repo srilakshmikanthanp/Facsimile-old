@@ -55,6 +55,15 @@ public class Utilityfuns {
             expContent
         );
 
+        // show on center
+        alert.setOnShown((evt) -> {
+            var bounds = Screen.getPrimary().getVisualBounds();
+            var wX = (bounds.getWidth() - alert.getWidth()) / 2;
+            var wY = (bounds.getHeight() - alert.getHeight()) / 2;
+            alert.setX(bounds.getMinX() + wX);
+            alert.setY(bounds.getMinY() + wY);
+        });
+
         // show alert
         var res = alert.showAndWait();
 

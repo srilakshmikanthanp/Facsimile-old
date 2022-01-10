@@ -106,6 +106,15 @@ public class InputPassword extends AbstractDialog {
     }
 
     /**
+     * Sets the Label text of Dialog.
+     * 
+     * @param title string
+     */
+    public void setLabel(String title) {
+        this.label.setText(title);
+    }
+
+    /**
      * Set the minimum password length.
      * 
      * @return Password
@@ -119,16 +128,16 @@ public class InputPassword extends AbstractDialog {
      * 
      * @return Status
      */
-    public boolean getStatus() {
+    public boolean isOkay() {
         return this.isOkay;
     }
 
     /**
-     * Get the Confirm Password.
+     * Get the Password.
      * 
-     * @return Confirm Password
+     * @return Password
      */
-    public String getConPassword() {
+    public String getPassword() {
         return this.password.getText();
     }
 }
