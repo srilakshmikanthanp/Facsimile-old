@@ -14,7 +14,7 @@ import javafx.scene.image.ImageView;
  */
 public class Launcher extends Application {
     @Override
-    public void start(Stage arg0) throws Exception {
+    public void start(Stage pStage) throws Exception {
         // TODO Auto-generated method stub
     }
 }
