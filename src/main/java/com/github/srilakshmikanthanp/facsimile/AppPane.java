@@ -1,6 +1,7 @@
 package com.github.srilakshmikanthanp.facsimile;
 
 import java.io.IOException;
+import java.util.function.BooleanSupplier;
 import java.security.GeneralSecurityException;
 
 import javafx.geometry.*;
@@ -57,16 +58,14 @@ class TopPane extends BorderPane {
             this.getScene().getWindow()
         );
 
-        // loop while the user does't enter valid password
-        while(true) {
-            // show dialog to the user for input
+        // show dialog and status
+        BooleanSupplier isOkay = () -> {
             dialog.showAndWait();
+            return dialog.isOkay();
+        };
 
-            // if not ok or user presserd cancel
-            if (!dialog.isOkay()) {
-                return;
-            }
-
+        // while the user does't enter valid password
+        while(!isOkay.getAsBoolean()) {
             // try to change the password
             try {
                 var oldPass = dialog.getOldPassword();
