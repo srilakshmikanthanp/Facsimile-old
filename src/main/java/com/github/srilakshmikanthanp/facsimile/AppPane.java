@@ -9,10 +9,14 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.dialog.*;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
+
+import org.controlsfx.control.ToggleSwitch;
+
 
 /**
  * The top pane foe the application.
@@ -64,7 +68,7 @@ class TopPane extends BorderPane {
             return dialog.isOkay();
         };
 
-        // while the user does't enter valid password
+        // while the password is't valid
         while(!isOkay.getAsBoolean()) {
             try {
                 var oldPass = dialog.getOldPassword();
@@ -172,8 +176,75 @@ class TopPane extends BorderPane {
  * The top pane foe the application.
  */
 class MidPane extends BorderPane {
+    // List of keys showed to user
+    private ListView<String> listView = new ListView<>();
+
     // Crypto Hash Map
     private CryptoMap cryptoMap;
+
+    /**
+     * Map change Updater.
+     */
+    private void mapChangeUpdater(int type, Object key, Object val) {
+        // Clear the listView
+        listView.getItems().clear();
+
+        // set the items
+        cryptoMap.keySet().forEach((k) -> {
+            listView.getItems().add(k);
+        });
+    }
+
+    /**
+     * Copy the selected item to clipboard
+     */
+    private void copySelectedItem() {
+        // get the selected item
+        var model = listView.getSelectionModel();
+        var selectedItem = model.getSelectedItem();
+
+        // if no item selected
+        if (selectedItem == null) {
+            return;
+        }
+
+        // get the data
+        var data = cryptoMap.get(selectedItem);
+
+        // copy the data
+        Utilityfuns.copyToClipboard(data);
+        this.getScene().getWindow().hide();
+    }
+
+    /**
+     * Delete the selected item
+     */
+    private void deleteSelectedItem() {
+        // get the selected item
+        var model = listView.getSelectionModel();
+        var selectedItem = model.getSelectedItem();
+
+        // if no item selected
+        if (selectedItem == null) {
+            return;
+        }
+
+        // delete the item
+        cryptoMap.remove(selectedItem);
+    }
+
+    /**
+     * Key press Event Handler for ListView.
+     * 
+     * @param code KeyCode.
+     */
+    private void listViewKeyPress(KeyCode code) {
+        if(code == KeyCode.ENTER) {
+            this.copySelectedItem();
+        } else if(code == KeyCode.DELETE) {
+            this.deleteSelectedItem();
+        }
+    }
 
     /**
      * Constructor for the TopPane.
@@ -183,6 +254,33 @@ class MidPane extends BorderPane {
     public MidPane(CryptoMap map) {
         //  save crypto map
         this.cryptoMap = map;
+
+        // set the nodes
+        this.setCenter(listView);
+
+        // set the map updater
+        cryptoMap.addMapChangeListener(
+            this::mapChangeUpdater
+        );
+
+        // set the action
+        listView.setOnKeyPressed(evt -> {
+            this.listViewKeyPress(
+                evt.getCode()
+            );
+        });
+
+        // set the action
+        listView.setOnMouseClicked(evt -> {
+            if(evt.getClickCount() == 2) {
+                this.copySelectedItem();
+            }
+        });
+
+        // initial update
+        cryptoMap.keySet().forEach((k) -> {
+            listView.getItems().add(k);
+        });
     }
 }
 
@@ -194,6 +292,97 @@ class BotPane extends BorderPane {
     private CryptoMap cryptoMap;
 
     /**
+     * The theme was changed
+     * 
+     * @param isDark
+     */
+    private void themeChanged(boolean isDark) {
+        Preference.setDarkMode(isDark);
+    }
+
+    /**
+     * Adds the key value Pair
+     */
+    private void addKeyValuePair() {
+        // create dialog
+        var dialog = new InputKeyValue(
+            this.getScene().getWindow()
+        );
+
+        // show dialog
+        dialog.showAndWait();
+
+        // if not okay
+        if(!dialog.isOkay()) {
+            return;
+        }
+
+        // get the key and value
+        var key = dialog.getKey();
+        var value = dialog.getValue();
+
+        // add the key value pair
+        cryptoMap.put(key, value);
+    }
+
+    /**
+     * Get the theme Node
+     */
+    private Node getThemeNode() {
+        // create toggle
+        var toggle = new ToggleSwitch();
+
+        // set the theme
+        toggle.setSelected(
+            Preference.getDarkMode()
+        );
+
+        // add listener
+        toggle.selectedProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                this.themeChanged(newValue);
+            }
+        );
+
+        // done
+        return toggle;
+    }
+
+    /**
+     * Get the item adder
+     */
+    private Node getAdderNode() {
+        // define button
+        var button = new Button();
+        var blabel = new Label();
+
+        // image view
+        var image = new ImageView(
+            getClass().getResource(
+                "/images/plus.png"
+            ).toString()
+        );
+
+        // init the image
+        image.setFitHeight(30);
+        image.setFitWidth(30);
+
+        // init button
+        button.setOpacity(0.0);
+        blabel.setGraphic(image);
+
+        // set the action
+        button.setOnAction(evt -> {
+            this.addKeyValuePair();
+        });
+
+        // done
+        return new StackPane(
+            blabel, button
+        );
+    }
+
+    /**
      * Constructor for the TopPane.
      * 
      * @param map CryptoMap.
@@ -201,6 +390,10 @@ class BotPane extends BorderPane {
     public BotPane(CryptoMap map) {
         //  save crypto map
         this.cryptoMap = map;
+
+        // set the nodes
+        this.setLeft(this.getThemeNode());
+        this.setRight(this.getAdderNode());
     }
 }
 
@@ -218,7 +411,7 @@ public class AppPane extends BorderPane {
         //  create panes
         var topPane = new TopPane(map);
         var midPane = new MidPane(map);
-        var botPane = new BotPane(map);
+        var botPane = new MidPane(map);
 
         //  set the panes
         this.setTop(topPane);

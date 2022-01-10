@@ -34,7 +34,6 @@ public class CryptoMap extends HashMap<String, String> {
         // The type of Operation
         public static final int CHANGED = 0;
         public static final int REMOVED = 1;
-        public static final int CLEARED = 2;
 
         /**
          * The Method call on data change
@@ -233,11 +232,11 @@ public class CryptoMap extends HashMap<String, String> {
     /**
      * Method that clears the Map
      */
+    @Override
     public void clear() {
-        super.clear();
-        this.notifyListeners(
-            MapChangeListener.CLEARED, null, null
-        );
+        for(var key : this.keySet()) {
+            this.remove(key);
+        }
     }
 
     /**

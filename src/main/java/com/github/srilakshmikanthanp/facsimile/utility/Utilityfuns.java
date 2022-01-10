@@ -134,4 +134,7 @@ public class Utilityfuns {
             return true;
         }
     }
+
+    public static void copyToClipboard(String data) {
+    }
 }
