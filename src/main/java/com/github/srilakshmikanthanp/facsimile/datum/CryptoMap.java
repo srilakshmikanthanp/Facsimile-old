@@ -42,7 +42,7 @@ public class CryptoMap extends HashMap<String, String> {
          * @param value The Value
          * @param type The Type
          */
-        void onChange(int type, Object key, Object value);
+        void onChange(int type, String key, String oldVal, String newVal);
     }
 
     // Path to KeyStore file
@@ -99,9 +99,9 @@ public class CryptoMap extends HashMap<String, String> {
     /**
      * This method is used to notify the listeners.
      */
-    private void notifyListeners(int type, Object key, Object value) {
+    private void notifyListeners(int type, String key, String oldVal, String newVal) {
         for (MapChangeListener listener : listeners) {
-            listener.onChange(type, key, value);
+            listener.onChange(type, key, oldVal, newVal);
         }
     }
 
@@ -249,7 +249,7 @@ public class CryptoMap extends HashMap<String, String> {
     public String put(String key, String value) {
         var oldVal = super.put(key, value);
         this.notifyListeners(
-            MapChangeListener.CHANGED, key, value
+            MapChangeListener.CHANGED, key, oldVal, value
         );
         return oldVal;
     }
@@ -261,11 +261,8 @@ public class CryptoMap extends HashMap<String, String> {
      */
     @Override
     public void putAll(Map<? extends String, ? extends String> m) {
-        super.putAll(m);
-        for (var e : m.entrySet()) {
-            this.notifyListeners(
-                MapChangeListener.CHANGED, e.getKey(), e.getValue()
-            );
+        for(var entry : m.entrySet()) {
+            this.put(entry.getKey(), entry.getValue());
         }
     }
 
@@ -279,7 +276,7 @@ public class CryptoMap extends HashMap<String, String> {
         var oldVal = super.putIfAbsent(key, value);
         if (oldVal == null) {
             this.notifyListeners(
-                MapChangeListener.CHANGED, key, value
+                MapChangeListener.CHANGED, key, null, value
             );
         }
         return oldVal;
@@ -294,7 +291,7 @@ public class CryptoMap extends HashMap<String, String> {
     public String remove(Object key) {
         var oldVal = super.remove(key);
         this.notifyListeners(
-            MapChangeListener.REMOVED, key.toString(), oldVal
+            MapChangeListener.REMOVED, key.toString(), oldVal, null
         );
         return oldVal;
     }
@@ -310,7 +307,7 @@ public class CryptoMap extends HashMap<String, String> {
         var oldVal = super.remove(key, value);
         if (oldVal == true) {
             this.notifyListeners(
-                MapChangeListener.REMOVED, key, value
+                MapChangeListener.REMOVED, (String)key, (String)value, null
             );
         }
         return oldVal;
@@ -323,7 +320,7 @@ public class CryptoMap extends HashMap<String, String> {
     public String replace(String key, String value) {
         var oldVal = super.replace(key, value);
         this.notifyListeners(
-            MapChangeListener.CHANGED, key, value
+            MapChangeListener.CHANGED, key, oldVal, value
         );
         return oldVal;
     }
@@ -336,7 +333,7 @@ public class CryptoMap extends HashMap<String, String> {
         var oldVal = super.replace(key, oldValue, newValue);
         if (oldVal == true) {
             this.notifyListeners(
-                MapChangeListener.CHANGED, key, newValue
+                MapChangeListener.CHANGED, key, oldValue, newValue
             );
         }
         return oldVal;
@@ -347,9 +344,9 @@ public class CryptoMap extends HashMap<String, String> {
      */
     @Override
     public void replaceAll(BiFunction<? super String, ? super String, ? extends String> function) {
-        super.replaceAll(function);
-        for (var e : this.entrySet()) {
-            this.notifyListeners(MapChangeListener.CHANGED, e.getKey(), e.getValue());
+        for(var each : this.entrySet()) {
+            var newVal = function.apply(each.getKey(), each.getValue());
+            this.replace(each.getKey(), newVal);
         }
     }
 

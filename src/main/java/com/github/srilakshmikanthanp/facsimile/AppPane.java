@@ -11,11 +11,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
+import org.controlsfx.control.ToggleSwitch;
+
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.dialog.*;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
-
-import org.controlsfx.control.ToggleSwitch;
 
 
 /**
@@ -185,7 +185,16 @@ class MidPane extends BorderPane {
     /**
      * Map change Updater.
      */
-    private void mapChangeUpdater(int type, Object key, Object val) {
+    private void mapChangeUpdater(int type, String key, String oldVal, String newVal) {
+        // try to save to file
+        try {
+            this.cryptoMap.saveJson();
+        } catch (IOException | GeneralSecurityException e) {
+            this.cryptoMap.put(key, oldVal);
+            Utilityfuns.showError(e);
+            return;
+        }
+
         // Clear the listView
         listView.getItems().clear();
 
