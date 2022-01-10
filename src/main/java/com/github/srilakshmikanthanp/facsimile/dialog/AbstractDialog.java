@@ -51,8 +51,8 @@ public abstract class AbstractDialog extends Stage {
      * 
      * @param content
      */
-    private void setContent() {
-        borderPane.setCenter(getContent());
+    private void setMidPane(Node content) {
+        borderPane.setCenter(content);
     }
 
     /**
@@ -70,7 +70,7 @@ public abstract class AbstractDialog extends Stage {
 
         // init hbox
         hbox.setAlignment(
-            Pos.CENTER_RIGHT
+            Pos.CENTER
         );
 
         // set
@@ -97,13 +97,6 @@ public abstract class AbstractDialog extends Stage {
         // done
         return pane;
     }
-
-    /**
-     * get the Content pane
-     * 
-     * @return Node
-     */
-    protected abstract Node getContent();
 
     /**
      * Mthod that call on OK button click.
@@ -135,7 +128,6 @@ public abstract class AbstractDialog extends Stage {
 
         // set the panes
         this.setTopPane();
-        this.setContent();
         this.setBotPane();
 
         // set the scene
@@ -145,5 +137,14 @@ public abstract class AbstractDialog extends Stage {
         this.setOnShown((evt) -> {
             this.toFront();
         });
+    }
+
+    /**
+     * Set the content of the dialog.
+     * 
+     * @param content
+     */
+    public void setContent(Node content) {
+        this.setMidPane(content);
     }
 }

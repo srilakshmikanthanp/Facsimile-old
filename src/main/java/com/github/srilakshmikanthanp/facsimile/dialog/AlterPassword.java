@@ -34,11 +34,10 @@ public class AlterPassword extends AbstractDialog {
     /**
      * Get the Content pane.
      */
-    @Override
-    protected Node getContent() {
+    private Node getContent() {
         // initlize the label
         var image = new ImageView(
-            getClass().getResource("images/user.png").toString()
+            getClass().getResource("/images/user.png").toString()
         );
         label.setGraphic(image);
         label.setGraphicTextGap(10);
@@ -124,6 +123,7 @@ public class AlterPassword extends AbstractDialog {
      */
     public AlterPassword(Window owner) {
         super(owner);
+        this.setContent(getContent());
     }
 
     /**

@@ -69,7 +69,7 @@ class TopPane extends BorderPane {
         };
 
         // while the password is't valid
-        while(!isOkay.getAsBoolean()) {
+        while(isOkay.getAsBoolean()) {
             try {
                 var oldPass = dialog.getOldPassword();
                 var newPass = dialog.getNewPassword();
@@ -420,7 +420,7 @@ public class AppPane extends BorderPane {
         //  create panes
         var topPane = new TopPane(map);
         var midPane = new MidPane(map);
-        var botPane = new MidPane(map);
+        var botPane = new BotPane(map);
 
         //  set the panes
         this.setTop(topPane);

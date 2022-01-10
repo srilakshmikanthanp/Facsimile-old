@@ -27,8 +27,7 @@ public class InputKeyValue extends AbstractDialog {
     /**
      * Get the Content pane.
      */
-    @Override
-    protected Node getContent() {
+    private Node getContent() {
         // init the Label
         var image = new ImageView(
             getClass().getResource("/images/keyvalue.png").toString()
@@ -105,6 +104,7 @@ public class InputKeyValue extends AbstractDialog {
      */
     public InputKeyValue(Window owner) {
         super(owner);
+        this.setContent(getContent());
     }
 
     /**

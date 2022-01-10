@@ -5,12 +5,16 @@ import java.net.URI;
 import javax.swing.ImageIcon;
 import javafx.application.Platform;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
+import com.github.srilakshmikanthanp.facsimile.Facsimile;
 import com.github.srilakshmikanthanp.facsimile.consts.*;
 
 /**
  * System tray class
  */
-public class SystrayIcon {
+public class SystemTrayIcon {
+    // Singleton instance
+    private static SystemTrayIcon instance = null;
+
     // icon for tray
     private TrayIcon icon = new TrayIcon(
         new ImageIcon(getClass().getResource("/images/logo.png")).getImage(),
@@ -21,10 +25,7 @@ public class SystrayIcon {
     private SystemTray tray = SystemTray.getSystemTray();
 
     // Runnable for tray menu
-    private Runnable launcher;
-
-    // is tray added
-    private static SystrayIcon instance = null;
+    private Facsimile facsimile;
 
     /**
      * Open the url in browser
@@ -42,10 +43,7 @@ public class SystrayIcon {
     /**
      * Constructor
      */
-    private SystrayIcon(Runnable run) {
-        // innit runnable
-        this.launcher = run;
-
+    private SystemTrayIcon() {
         // define vars
         var menu = new PopupMenu();
         var app = new MenuItem("FacSimile");
@@ -60,8 +58,10 @@ public class SystrayIcon {
 
         // app click listeners
         app.addActionListener((evt) -> {
-            if (launcher != null) {
-                launcher.run();
+            if (facsimile != null) {
+                Platform.runLater(() -> {
+                    facsimile.setVisible(true);
+                });
             }
         });
 
@@ -77,8 +77,10 @@ public class SystrayIcon {
 
         // icon click listener
         icon.addActionListener((evt) -> {
-            if (launcher != null) {
-                launcher.run();
+            if (facsimile != null) {
+                Platform.runLater(() -> {
+                    facsimile.setVisible(true);
+                });
             }
         });
 
@@ -102,13 +104,20 @@ public class SystrayIcon {
     }
 
     /**
+     * Set the Facsimile instance
+     * 
+     * @param facsimile instance
+     */
+    public void setFacsimile(Facsimile facsimile) {
+        this.facsimile = facsimile;
+    }
+
+    /**
      * Adds Icon to tray
      */
-    public static SystrayIcon addWithLauncher(Runnable launcher) {
+    public static SystemTrayIcon getInstance() {
         if (instance == null) {
-            instance = new SystrayIcon(launcher);
-        } else {
-            instance.launcher = launcher;
+            instance = new SystemTrayIcon();
         }
 
         return instance;

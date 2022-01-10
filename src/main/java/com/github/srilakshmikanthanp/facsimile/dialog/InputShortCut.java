@@ -35,8 +35,7 @@ public class InputShortCut extends AbstractDialog {
     /**
      * Get the Content pane.
      */
-    @Override
-    protected Node getContent() {
+    private Node getContent() {
         // init the label
         var image = new ImageView(
             getClass().getResource("/images/shortcut.png").toString()
@@ -112,6 +111,7 @@ public class InputShortCut extends AbstractDialog {
      */
     public InputShortCut(Window owner) {
         super(owner);
+        this.setContent(getContent());
     }
 
     /**

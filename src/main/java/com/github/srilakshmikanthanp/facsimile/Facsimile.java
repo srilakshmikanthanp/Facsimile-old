@@ -42,6 +42,9 @@ public class Facsimile extends Stage {
     // Crypto Hash Mapping
     private final CryptoMap cryptoMap = new CryptoMap(Path.of(LOC));
 
+    // Facsimile instance
+    private static Facsimile instance;
+
     /**
      * Create password for user
      */
@@ -51,6 +54,9 @@ public class Facsimile extends Stage {
             mkPwdDialog.toFront();
             return false;
         }
+
+        // show dialog
+        mkPwdDialog.showAndWait();
 
         // if not okay
         if (!mkPwdDialog.isOkay()) {
@@ -89,7 +95,7 @@ public class Facsimile extends Stage {
         };
 
         // loop
-        while (!isOkay.getAsBoolean()) {
+        while (isOkay.getAsBoolean()) {
             try {
                 var pass = pwdDialog.getPassword();
                 cryptoMap.loadCrypto(pass);
@@ -128,12 +134,13 @@ public class Facsimile extends Stage {
      * 
      * @param pStage stage
      */
-    private void initPStage(Stage pStage) {
+    private void stageInit(Stage pStage) {
         pStage.initStyle(StageStyle.UTILITY);
         pStage.setMaxHeight(0);
         pStage.setMaxWidth(0);
         pStage.setOpacity(0);
         pStage.setX(Double.MAX_VALUE);
+        pStage.show();
     }
 
     /**
@@ -141,14 +148,7 @@ public class Facsimile extends Stage {
      * 
      * @param pStage Stage
      */
-    public Facsimile(Stage pStage) {
-        // init the pstage
-        this.initPStage(pStage);
-
-        // init the stage
-        this.initOwner(pStage);
-        this.initStyle(StageStyle.TRANSPARENT);
-
+    private Facsimile() {
         // app pane
         var pane = new AppPane(cryptoMap);
         pane.getStyleClass().add("main-pane");
@@ -172,6 +172,14 @@ public class Facsimile extends Stage {
      * Make the Stage Visible
      */
     public void setVisible(boolean visible) {
+        // if it is hide action
+        if(!visible && this.isShowing()) {
+            this.hide();
+            return;
+        } else if(!visible) {
+            return;
+        }
+
         // define path
         var dPath = Paths.get(LOC, ".facsimile");
 
@@ -184,10 +192,35 @@ public class Facsimile extends Stage {
         }
 
         // set visible or not
-        if (visible) {
+        if (visible && !this.isShowing()) {
             this.show();
-        } else {
-            this.hide();
         }
+    }
+
+    /**
+     * set the Primary Stage
+     * 
+     * @param pStage Stage
+     */
+    public void setPrimaryStage(Stage pStage) {
+        // init the pstage
+        this.stageInit(pStage);
+
+        // init the stage
+        this.initOwner(pStage);
+        this.initStyle(StageStyle.TRANSPARENT);
+    }
+
+    /**
+     * Get the Facsimile Instance
+     * 
+     * @return instance
+     */
+    public static Facsimile getInstance() {
+        if (instance == null) {
+            instance = new Facsimile();
+        }
+
+        return instance;
     }
 }
