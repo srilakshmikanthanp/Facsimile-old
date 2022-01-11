@@ -13,7 +13,7 @@ import javafx.scene.control.*;
  */
 public class InputKeyValue extends AbstractDialog {
     // Label for the Dialog
-    private Label label = new Label("Key Value");
+    private Label label = new Label("Add Key Value");
 
     // Key Field for prompt
     private TextField keyFd = new TextField();
@@ -30,7 +30,7 @@ public class InputKeyValue extends AbstractDialog {
     private Node getContent() {
         // init the Label
         var image = new ImageView(
-            getClass().getResource("/images/keyvalue.png").toString()
+            getClass().getResource("/images/plus.png").toString()
         );
         image.setFitWidth(100);
         image.setFitHeight(100);

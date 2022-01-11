@@ -9,6 +9,9 @@ import javafx.scene.image.ImageView;
 
 import com.github.srilakshmikanthanp.facsimile.utility.*;
 
+/**
+ * Dialog used to change theme.
+ */
 public class ChangeTheme extends AbstractDialog {
     // List of themes
     private ChoiceBox<String> theme = new ChoiceBox<>();
@@ -27,8 +30,8 @@ public class ChangeTheme extends AbstractDialog {
         var image = new ImageView(
             getClass().getResource("/images/theme.png").toString()
         );
-        image.setFitWidth(100);
-        image.setFitHeight(100);
+        image.setFitWidth(80);
+        image.setFitHeight(80);
         label.setGraphic(image);
         label.setContentDisplay(ContentDisplay.TOP);
 

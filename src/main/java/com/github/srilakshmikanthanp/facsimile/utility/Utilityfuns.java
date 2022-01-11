@@ -4,8 +4,13 @@ import java.io.*;
 import java.net.ServerSocket;
 
 import javafx.stage.*;
+import jfxtras.styles.jmetro.JMetro;
+import jfxtras.styles.jmetro.JMetroStyleClass;
+import jfxtras.styles.jmetro.Style;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.*;
 
@@ -129,7 +134,7 @@ public class Utilityfuns {
             );
 
             // if port is available, not running
-            return true;
+            return false;
         } catch (IOException e) {
             // if port is not available, running
             return true;
@@ -151,5 +156,45 @@ public class Utilityfuns {
 
         // set content
         clipboard.setContent(content);
+    }
+
+    /**
+     * Set the user theme
+     */
+    public static void setUserTheme(Scene scene) {
+        // initial theme
+        var style = Style.LIGHT;
+        var css = "/styles/Light.css";
+
+        // check theme
+        if(Preference.getTheme().equals(Preference.DARK)) {
+            style = Style.DARK;
+            css = "/styles/Dark.css";
+        }
+
+        // set theme
+        JMetro jMetro = new JMetro(style);
+
+        // set theme
+        jMetro.setScene(scene);
+
+        // set css
+        scene.getStylesheets().add(
+            Utilityfuns.class.getResource(css).toExternalForm()
+        );
+
+        // set jmetro
+        for(var par : scene.getRoot().getChildrenUnmodifiable()) {
+            if(par instanceof Parent) {
+                par.getStyleClass().add(
+                    JMetroStyleClass.BACKGROUND
+                );
+            }
+        }
+
+        // set jmetro
+        scene.getRoot().getStyleClass().add(
+            JMetroStyleClass.BACKGROUND
+        );
     }
 }

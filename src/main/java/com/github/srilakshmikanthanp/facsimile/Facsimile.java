@@ -6,6 +6,8 @@ import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.function.BooleanSupplier;
 
+import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.layout.*;
@@ -171,7 +173,7 @@ public class Facsimile extends Stage {
         var pane = new AppPane(cryptoMap);
         pane.getStyleClass().add("main-pane");
         var stkPane = new StackPane(pane);
-       // stkPane.setPadding(new Insets(10));
+        stkPane.setPadding(new Insets(10));
         stkPane.getStyleClass().add("container");
 
         // set ecene for stage
@@ -186,6 +188,18 @@ public class Facsimile extends Stage {
             this.setMinWidth(Stagewidth);
             Utilityfuns.centerToScreen(this);
         });
+
+        // init the theme
+        Preference.addPreferenceChangeListener((evt) -> {
+            if(evt.getKey() == Preference.THEME_KEY) {
+                Platform.runLater(() -> {
+                    Utilityfuns.setUserTheme(scene);
+                });
+            }
+        });
+
+        // set initial theme
+        Utilityfuns.setUserTheme(scene);
     }
 
     /**

@@ -101,8 +101,8 @@ class TopPane extends BorderPane {
        );
 
        // init the image
-       image.setFitHeight(30);
-       image.setFitWidth(30);
+       image.setFitHeight(20);
+       image.setFitWidth(20);
 
        // init button
        button.setOpacity(0.0);
@@ -137,8 +137,8 @@ class TopPane extends BorderPane {
        );
 
        // init the image
-       image.setFitHeight(30);
-       image.setFitWidth(30);
+       image.setFitHeight(20);
+       image.setFitWidth(20);
 
        // init button
        button.setOpacity(0.0);
@@ -311,7 +311,7 @@ class BotPane extends BorderPane {
         );
 
         // shoe the dialog
-        dialog.show();
+        dialog.showAndWait();
 
         // if not okay
         if(!dialog.isOkay()) {
@@ -366,8 +366,8 @@ class BotPane extends BorderPane {
         );
 
         // init the image
-        image.setFitHeight(30);
-        image.setFitWidth(30);
+        image.setFitHeight(20);
+        image.setFitWidth(20);
 
         // init button
         button.setOpacity(0.0);
@@ -400,8 +400,8 @@ class BotPane extends BorderPane {
         );
 
         // init the image
-        image.setFitHeight(30);
-        image.setFitWidth(30);
+        image.setFitHeight(20);
+        image.setFitWidth(20);
 
         // init button
         button.setOpacity(0.0);

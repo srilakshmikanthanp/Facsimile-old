@@ -42,6 +42,7 @@ public class MakePassword extends AbstractDialog {
         label.setContentDisplay(ContentDisplay.TOP);
 
         // initilize the new password field
+        newPassword.setPromptText("Enter New Password");
         newPassword.setOnKeyPressed((evt) -> {
             if (evt.getCode() == KeyCode.ENTER) {
                 conPassword.requestFocus();
@@ -49,6 +50,7 @@ public class MakePassword extends AbstractDialog {
         });
 
         // initilize the confirm password field
+        conPassword.setPromptText("Confirm New Password");
         conPassword.setOnKeyPressed((evt) -> {
             if (evt.getCode() == KeyCode.ENTER) {
                 this.okayPressed();

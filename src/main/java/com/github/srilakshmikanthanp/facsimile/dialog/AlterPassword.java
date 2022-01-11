@@ -46,6 +46,7 @@ public class AlterPassword extends AbstractDialog {
         label.setContentDisplay(ContentDisplay.TOP);
 
         // initileze the Old PAssword Field
+        oldPassword.setPromptText("Enter Old Password");
         oldPassword.setOnKeyPressed((evt) -> {
             if (evt.getCode() == KeyCode.ENTER) {
                 newPassword.requestFocus();
@@ -53,6 +54,7 @@ public class AlterPassword extends AbstractDialog {
         });
 
         // initilize the new password field
+        newPassword.setPromptText("Enter New Password");
         newPassword.setOnKeyPressed((evt) -> {
             if (evt.getCode() == KeyCode.ENTER) {
                 conPassword.requestFocus();
@@ -60,6 +62,7 @@ public class AlterPassword extends AbstractDialog {
         });
 
         // initilize the confirm password field
+        conPassword.setPromptText("Confirm New Password");
         conPassword.setOnKeyPressed((evt) -> {
             if (evt.getCode() == KeyCode.ENTER) {
                 this.okayPressed();

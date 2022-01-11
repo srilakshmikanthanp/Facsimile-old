@@ -39,6 +39,7 @@ public class InputPassword extends AbstractDialog {
         label.setContentDisplay(ContentDisplay.TOP);
 
         // initilize the confirm password field
+        password.setPromptText("Enter Password");
         password.setOnKeyPressed((evt) -> {
             if (evt.getCode() == KeyCode.ENTER) {
                 this.okayPressed();

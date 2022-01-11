@@ -1,8 +1,1 @@
-.stage-bg-pane {
-    -fx-background-color: transparent;
-    -fx-padding: 20;
-}
-
-.stage-main-pane {
-    -fx-effect: dropshadow(two-pass-box, rgba(0, 0, 0, 0.8), 40, 0, 0, 0);
-}
+@import url('Both.css');

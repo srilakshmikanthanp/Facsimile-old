@@ -19,16 +19,16 @@ import com.github.srilakshmikanthanp.facsimile.utility.Preference;
  */
 public class InputShortCut extends AbstractDialog {
     // Mask one of short cut
-    private ChoiceBox<String> maskOne = new ChoiceBox<>();
+    private ComboBox<String> maskOne = new ComboBox<>();
 
     // Mask two of short cut
-    private ChoiceBox<String> maskTwo = new ChoiceBox<>();
+    private ComboBox<String> maskTwo = new ComboBox<>();
 
     // Key code of short cut
-    private ChoiceBox<String> keycode = new ChoiceBox<>();
+    private ComboBox<String> keycode = new ComboBox<>();
 
     // label for theShort
-    private Label label = new Label("Shortcut");
+    private Label label = new Label("Change Shortcut");
 
     // status of the dialog
     private boolean isOkay = false;
@@ -90,6 +90,9 @@ public class InputShortCut extends AbstractDialog {
         keycode.setValue(
             Preference.getKeyValue()
         );
+
+        // set max row count
+        keycode.setVisibleRowCount(3);
 
         // define the vbox
         var vbox = new VBox(label, maskOne, maskTwo, keycode);

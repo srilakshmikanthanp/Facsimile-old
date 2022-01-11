@@ -1,22 +1,25 @@
 package com.github.srilakshmikanthanp.facsimile.dialog;
 
-import com.github.srilakshmikanthanp.facsimile.utility.Utilityfuns;
-
+import javafx.application.Platform;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+
+import com.github.srilakshmikanthanp.facsimile.utility.*;
 
 /**
  * Base dialog class.
  */
 public abstract class AbstractDialog extends Stage {
     // Min height of the dialog.
-    private static final double minStageHeight = 370.0;
+    protected static final double minStageHeight = 370.0;
 
     // Min width of the dialog.
-    private static final double minStageWidth = 350.0;
+    protected static final double minStageWidth = 350.0;
 
     // Border pane for the stage
     private BorderPane borderPane = new BorderPane();
@@ -90,11 +93,11 @@ public abstract class AbstractDialog extends Stage {
         var pane = new StackPane(borderPane);
 
         // init border pane
-        borderPane.setId("main-pane");
+        borderPane.getStyleClass().add("main-pane");
 
         // init pane
-        pane.setId("container");
         pane.setPadding(new Insets(10));
+        pane.getStyleClass().add("container");
 
         // done
         return pane;
@@ -129,7 +132,9 @@ public abstract class AbstractDialog extends Stage {
         this.setBotPane();
 
         // set the scene
-        this.setScene(new Scene(getStackPane()));
+        var scene = new Scene(getStackPane());
+        scene.setFill(Color.TRANSPARENT);
+        this.setScene(scene);
 
         // on shown
         this.setOnShown((evt) -> {
@@ -139,8 +144,27 @@ public abstract class AbstractDialog extends Stage {
             Utilityfuns.centerTo(owner, this);
         });
 
+        // set icon
+        this.getIcons().add(
+            new Image(getClass().getResource(
+                "/images/logo.png"
+            ).toString())
+        );
+
         // set padding
-        borderPane.setPadding(new Insets(5));
+        borderPane.setPadding(new Insets(15));
+
+        // init the theme
+        Preference.addPreferenceChangeListener((evt) -> {
+            if(evt.getKey() == Preference.THEME_KEY) {
+                Platform.runLater(() -> {
+                    Utilityfuns.setUserTheme(this.getScene());
+                });
+            }
+        });
+
+        // set initial theme
+        Utilityfuns.setUserTheme(this.getScene());
     }
 
     /**
@@ -149,6 +173,7 @@ public abstract class AbstractDialog extends Stage {
      * @param content
      */
     public void setContent(Node content) {
+        // set the content pane
         this.setMidPane(content);
     }
 }

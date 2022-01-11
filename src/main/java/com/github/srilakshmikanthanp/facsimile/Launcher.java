@@ -63,6 +63,10 @@ public class Launcher extends Application {
      * @param args
      */
     public static void main(String[] args) {
-        launch(args);
+        if(!Utilityfuns.isApplicationRunning()) {
+            launch(args);
+        }
+
+        System.exit(0);
     }
 }

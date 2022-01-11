@@ -17,5 +17,5 @@ public class AppConsts {
     /**
      * This port is use to identyfy the application run status;
      */
-    public static final int SOCKET_PORT = 57429;
+    public static final int SOCKET_PORT = 57439;
 }
