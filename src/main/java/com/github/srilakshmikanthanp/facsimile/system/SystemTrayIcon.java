@@ -4,25 +4,28 @@ import java.awt.*;
 import java.net.URI;
 import javax.swing.ImageIcon;
 import javafx.application.Platform;
+import com.github.srilakshmikanthanp.facsimile.utility.*;
+import com.github.srilakshmikanthanp.facsimile.Facsimile;
+import com.github.srilakshmikanthanp.facsimile.consts.*;
 
 /**
- * System tary class
+ * System tray class
  */
 public class SystemTrayIcon {
-    // application Link
-    private static final String APP_LINK = ("https://github.com/srilakshmikanthanp/Facsimile");
-
-    // is tray added
+    // Singleton instance
     private static SystemTrayIcon instance = null;
-
-    // Tray instance
-    private SystemTray tray = SystemTray.getSystemTray();
 
     // icon for tray
     private TrayIcon icon = new TrayIcon(
         new ImageIcon(getClass().getResource("/images/logo.png")).getImage(),
         "FacSimile"
     );
+
+    // Tray instance
+    private SystemTray tray = SystemTray.getSystemTray();
+
+    // Runnable for tray menu
+    private Facsimile facsimile;
 
     /**
      * Open the url in browser
@@ -40,7 +43,7 @@ public class SystemTrayIcon {
     /**
      * Constructor
      */
-    private SystemTrayIcon(Runnable runnable) {
+    private SystemTrayIcon() {
         // define vars
         var menu = new PopupMenu();
         var app = new MenuItem("FacSimile");
@@ -53,18 +56,32 @@ public class SystemTrayIcon {
         menu.addSeparator();
         menu.add(exit);
 
-        // add listeners
+        // app click listeners
         app.addActionListener((evt) -> {
-            if (runnable != null)
-                runnable.run();
+            if (facsimile != null) {
+                Platform.runLater(() -> {
+                    facsimile.setVisible(true);
+                });
+            }
         });
 
+        // about click listener
         about.addActionListener((evt) -> {
-            this.openWebPage(APP_LINK);
+            this.openWebPage(AppConsts.APP_LINK);
         });
 
+        // exit click listener
         exit.addActionListener((evt) -> {
             Platform.exit();
+        });
+
+        // icon click listener
+        icon.addActionListener((evt) -> {
+            if (facsimile != null) {
+                Platform.runLater(() -> {
+                    facsimile.setVisible(true);
+                });
+            }
         });
 
         // set pop up menu to icon
@@ -75,19 +92,17 @@ public class SystemTrayIcon {
         try {
             tray.add(icon);
         } catch (Exception e) {
-            e.printStackTrace();
+            Utilityfuns.showError(e);
         }
     }
 
     /**
-     * Adds Icon to tray
+     * Set the Facsimile instance
+     * 
+     * @param facsimile instance
      */
-    public static SystemTrayIcon addToTray(Runnable runnable) {
-        if (instance == null) {
-            instance = new SystemTrayIcon(runnable);
-        }
-
-        return instance;
+    public void setFacsimile(Facsimile facsimile) {
+        this.facsimile = facsimile;
     }
 
     /**
@@ -95,5 +110,16 @@ public class SystemTrayIcon {
      */
     public void removeFromTray() {
         tray.remove(icon);
+    }
+
+    /**
+     * Adds Icon to tray
+     */
+    public static SystemTrayIcon getInstance() {
+        if (instance == null) {
+            instance = new SystemTrayIcon();
+        }
+
+        return instance;
     }
 }

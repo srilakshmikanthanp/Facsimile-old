@@ -1,253 +1,219 @@
-// Copyright (c) 2021 Sri Lakshmi Kanthan P
-// 
-// This software is released under the MIT License.
-// https://opensource.org/licenses/MIT
-
 package com.github.srilakshmikanthanp.facsimile;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
+import java.util.function.BooleanSupplier;
 
-import javafx.application.*;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.scene.*;
 import javafx.stage.*;
-import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
-import jfxtras.styles.jmetro.JMetroStyleClass;
-
-import com.github.kwhat.jnativehook.*;
 
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.dialog.*;
-import com.github.srilakshmikanthanp.facsimile.panes.*;
-import com.github.srilakshmikanthanp.facsimile.system.*;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
 
 /**
- * Main Stage for the Facsimile.
+ * Main Stage for the Application.
  */
-class MainStage extends Stage {
+public class Facsimile extends Stage {
+    // dimension of application
+    private static final double Stagewidth = 400, Stageheight = 450;
+
     // location to store data on production
     @SuppressWarnings("unused")
-    private static final String PRD_LOC = System.getProperty(
-            "user.home"
-    );
+    private static final String PRD_LOC = System.getProperty("user.home");
 
     // location to store data on development
     @SuppressWarnings("unused")
     private static final String DEV_LOC = "./target";
 
     // location to store data
-    @SuppressWarnings("unused")
-    private static final String LOC = PRD_LOC;
+    private static final String LOC = DEV_LOC;
 
-    // dimension of application
-    private static final double Width = 400, Height = 450;
+    // password input dialog for auth
+    private static final InputPassword pwdDialog = new InputPassword(null);
 
-    // PAssword Dialog
-    private PassWordDialog dialog = new PassWordDialog(this);
+    // password create dialog for auth
+    private static final MakePassword mkPwdDialog = new MakePassword(null);
 
-    // mapping data for app
-    private Mapping mapping;
+    // Facsimile instance
+    private static Facsimile instance;
+
+    // Crypto Hash Mapping
+    private final CryptoMap cryptoMap = new CryptoMap(
+        Path.of(LOC, ".facsimile")
+    );
 
     /**
-     * Loads the password to crypto
-     * 
-     * @param cryptoEn crypto Engine
-     * @return status
+     * Create password for user
      */
-    private boolean loadPassword(CryptoEn cryptoEn) {
-        // value to validate
-        var title = "Enter Password";
-        var error = false;
-
-        // if aldersy showing
-        if (dialog.isShowing()) {
+    private boolean makePassword() {
+        // if aldredy showing
+        if (mkPwdDialog.isShowing()) {
+            mkPwdDialog.toFront();
             return false;
         }
 
-        // main loop
-        while (!cryptoEn.isKeyExists()) {
-            // init dialog
-            dialog.setType(
-                PassWordDialog.GINPUT_PASSWORD,
-                title,
-                error
-            );
+        // show dialog
+        mkPwdDialog.showAndWait();
 
-            // show dialog
-            dialog.showAndWait();
+        // if not okay
+        if (!mkPwdDialog.isOkay()) {
+            return false;
+        }
 
-            // if not valid
-            if (!dialog.isOkay()) {
-                return false;
-            }
+        // get the password
+        var pass = mkPwdDialog.getNewPassword();
 
-            // get password
-            var password = dialog.getActPassword();
+        // try to set password
+        try {
+            cryptoMap.makeCrypto(pass);
+        } catch (IOException | GeneralSecurityException e) {
+            Utilityfuns.showError(e);
+            return false;
+        }
 
-            // load password
+        // load data
+        try {
+            cryptoMap.loadJson();
+        } catch (IOException | GeneralSecurityException e) {
+            System.err.println(e.toString());
+        }
+
+        // sucess
+        return true;
+    }
+
+    /**
+     * Authenticate user
+     */
+    private boolean authPassword() {
+        // if aldredy showing
+        if (pwdDialog.isShowing()) {
+            pwdDialog.toFront();
+            return false;
+        }
+
+        // show dialog and status
+        BooleanSupplier isOkay = () -> {
+            pwdDialog.showAndWait();
+            return pwdDialog.isOkay();
+        };
+
+        // loop
+        while (isOkay.getAsBoolean()) {
             try {
-                cryptoEn.loadExtistingKey(password);
+                var pass = pwdDialog.getPassword();
+                cryptoMap.loadCrypto(pass);
+        
+                try {
+                    cryptoMap.loadJson();
+                } catch (IOException e) {
+                    System.err.println(e.toString());
+                } catch (GeneralSecurityException e) {
+                    System.err.println(e.toString());
+                }
+                
+                return true;
             } catch (IOException e) {
-                error = true;
-                title = "Invalid Password";
-                continue;
+                pwdDialog.setError(true);
+                pwdDialog.setLabel("Invalid Auth");
             } catch (GeneralSecurityException e) {
-                // create allert
-                Utilityfuncs.showError(e);
-
-                // return
+                Utilityfuns.showError(e);
                 return false;
             }
         }
 
-        // done
-        return true;
+        // sucess
+        return false;
     }
 
     /**
-     * Create the password and key
-     * 
-     * @param cryptoEn engine
-     * @return status
+     * Check for Authentication
      */
-    private boolean makePassword(CryptoEn cryptoEn) {
-        // value to validate
-        var title = "Enter Password";
-        var error = false;
-
-        // if aldersy showing
-        if (dialog.isShowing()) {
-            return false;
-        }
-
-        // main loop
-        while (!cryptoEn.isKeyExists()) {
-            // init dialog
-            dialog.setType(
-                PassWordDialog.CREATE_PASSWORD,
-                title,
-                error
-            );
-
-            // show dialog
-            dialog.showAndWait();
-
-            // if not valid
-            if (!dialog.isOkay()) {
-                return false;
-            }
-
-            // get password
-            var password = dialog.getActPassword();
-
-            // load password
-            try {
-                cryptoEn.createNewKey(password);
-            } catch (GeneralSecurityException | IOException e) {
-                // create allert
-                Utilityfuncs.showError(e);
-                // return
-                return false;
-            }
-        }
-
-        // done
-        return true;
-    }
-
-    /**
-     * Make and test the Crypto Engine.
-     */
-    private boolean CheckCrypto() {
-        // crypro
-        CryptoEn cryptoEn = mapping.getCryptoEn();
-
-        // check if the crypto is valid
-        if (cryptoEn.isKeyExists()) {
+    private boolean readyAuth() {
+        // If key exits then all set
+        if (cryptoMap.isSecrectKeyExits()) {
             return true;
         }
 
-        // is key file exits
-        if (cryptoEn.isKeyFileExits()) {
-            return this.loadPassword(cryptoEn);
+        if (cryptoMap.isKsFileExists()) {
+            return this.authPassword();
         } else {
-            return this.makePassword(cryptoEn);
+            return this.makePassword();
         }
     }
 
     /**
-     * Constructor
+     * Inits the Primary Stage
      * 
-     * @param pStage Primary Stage
+     * @param pStage stage
      */
-    public MainStage(Stage pStage) {
-        // init stage
-        this.initOwner(pStage);
-        this.initStyle(StageStyle.TRANSPARENT);
-
-        // create mapping
-        this.mapping = new Mapping(
-            Paths.get(LOC, ".facsimile")
-        );
-
-        // main pane
-        var pane = new MainPane(mapping);
-
-        // init style
-        pane.getStyleClass().add(
-            "stage-main-pane"
-        );
-
-        // set top
-        this.setAlwaysOnTop(true);
-
-        // center the stage
-        this.setOnShown((evt) -> {
-            this.centerOnScreen();
-            this.requestFocus();
-        });
-
-        // stackpane
-        var stackPane = new StackPane(
-            pane
-        );
-        var scene = new Scene(
-            stackPane, Width, Height
-        );
-
-        // init pane
-        stackPane.setPadding(new Insets(20));
-        scene.setFill(Color.TRANSPARENT);
-        stackPane.getStyleClass().add(
-            "stage-bg-pane"
-        );
-
-        // set scene
-        this.setScene(scene);
-
-        // set theme
-        ThemeListener.setSystemTheme(
-            this.getScene()
-        );
-
-        // jmetro style
-        pane.getStyleClass().add(
-            JMetroStyleClass.BACKGROUND
-        );
+    private void stageInit(Stage pStage) {
+        pStage.initStyle(StageStyle.UTILITY);
+        pStage.setMaxHeight(0);
+        pStage.setMaxWidth(0);
+        pStage.setOpacity(0);
+        pStage.setX(Double.MAX_VALUE);
+        pStage.show();
     }
 
     /**
-     * Sets visible or hide
+     * Constructor For Facsimile.
      * 
-     * @param visible true for Visible or false for hide
+     * @param pStage Stage
+     */
+    private Facsimile() {
+        // app pane
+        var pane = new AppPane(cryptoMap);
+        pane.getStyleClass().add("main-pane");
+        var stkPane = new StackPane(pane);
+        stkPane.setPadding(new Insets(10));
+        stkPane.getStyleClass().add("container");
+
+        // set ecene for stage
+        var scene = new Scene(stkPane);
+        scene.setFill(Color.TRANSPARENT);
+        this.setScene(scene);
+
+        // init the stage
+        this.setAlwaysOnTop(true);
+        this.setOnShown((evt) -> {
+            this.setHeight(Stageheight);
+            this.setMinWidth(Stagewidth);
+            Utilityfuns.centerToScreen(this);
+        });
+
+        // init the theme
+        Preference.addPreferenceChangeListener((evt) -> {
+            if(evt.getKey() == Preference.THEME_KEY) {
+                Platform.runLater(() -> {
+                    Utilityfuns.setUserTheme(scene);
+                });
+            }
+        });
+
+        // set initial theme
+        Utilityfuns.setUserTheme(scene);
+    }
+
+    /**
+     * Make the Stage Visible
      */
     public void setVisible(boolean visible) {
+        // if it is hide action
+        if(!visible && this.isShowing()) {
+            this.hide();
+            return;
+        } else if(!visible) {
+            return;
+        }
+
         // define path
         var dPath = Paths.get(LOC, ".facsimile");
 
@@ -255,138 +221,40 @@ class MainStage extends Stage {
         dPath.toFile().mkdirs();
 
         // check the mapping
-        if (!this.CheckCrypto()) {
+        if (!this.readyAuth()) {
             return;
         }
 
         // set visible or not
-        if (visible) {
+        if (visible && !this.isShowing()) {
             this.show();
-        } else {
-            this.hide();
-        }
-    }
-}
-
-/**
- * Main Application class
- */
-public class Facsimile extends Application {
-    // System Mouse listener
-    private MouseListener sysMouse = new MouseListener(null);
-
-    // Escape Key Listener
-    private EscapeKeyListener escape = new EscapeKeyListener(null);
-
-    // shortcut listener
-    private ShortCutListener shortCut = new ShortCutListener(null);
-
-    // add to system tray
-    private SystemTrayIcon sysTray;
-
-    // MainStage
-    private MainStage mainStage;
-
-    /**
-     * GLobal mouse pressed
-     */
-    private void globalMouseAction(int x, int y) {
-        // Rectangle
-        var rect = new Rectangle(
-            mainStage.getX(),
-            mainStage.getY(),
-            mainStage.getWidth(),
-            mainStage.getHeight()
-        );
-
-        var sclX = Screen.getPrimary().getOutputScaleX();
-        var sclY = Screen.getPrimary().getOutputScaleY();
-        var posX = x / sclX;
-        var posY = y / sclY;
-
-        // if not in stage
-        if (!rect.contains(posX, posY)) {
-            Platform.runLater(mainStage::hide);
         }
     }
 
     /**
-     * Method that called on start
-     */
-    @Override
-    public void start(Stage pStage) {
-        // init primary stage
-        pStage.initStyle(StageStyle.UTILITY);
-        pStage.setMaxHeight(0.0);
-        pStage.setMaxWidth(0.0);
-        pStage.setOpacity(0.0);
-        pStage.setX(Double.MAX_VALUE);
-        pStage.show();
-
-        // define vars
-        mainStage = new MainStage(pStage);
-
-        // Runnable instance to visibe or not shortcut
-        Runnable shortcutRun = () -> Platform.runLater(() -> {
-            mainStage.setVisible(!mainStage.isShowing());
-        });
-
-        // set runnable for shortcut
-        shortCut.setRunnable(shortcutRun);
-
-        // escape listener
-        escape.setRunnable(() -> Platform.runLater(() -> {
-            if(mainStage.isShowing()) {
-                mainStage.hide();
-            }
-        }));
-
-        // set runnable for system mouse
-        sysMouse.setActionListener((x, y) -> Platform.runLater(() -> {
-            globalMouseAction(x, y);
-        }));
-
-        // register the shortcut
-        try {
-            GlobalScreen.registerNativeHook();
-        } catch (NativeHookException e) {
-            Utilityfuncs.showError(e);
-        }
-
-        // add listeners
-        GlobalScreen.addNativeKeyListener(escape);
-        GlobalScreen.addNativeKeyListener(shortCut);
-        GlobalScreen.addNativeMouseListener(sysMouse);
-        GlobalScreen.addNativeMouseWheelListener(sysMouse);
-
-        // add to system tray
-        sysTray = SystemTrayIcon.addToTray(shortcutRun);
-    }
-
-    /**
-     * Method that called on stop
-     */
-    @Override
-    public void stop() {
-        // unregister the Global Listeners
-        try {
-            GlobalScreen.unregisterNativeHook();
-        } catch (NativeHookException e) {
-            Utilityfuncs.showError(e);
-        }
-
-        // remove from tray
-        sysTray.removeFromTray();
-    }
-
-    /**
-     * Main method to start the application
+     * set the Primary Stage
      * 
-     * @param args cmd args
+     * @param pStage Stage
      */
-    public static void main(String[] args) {
-        if(!Utilityfuncs.isApplicationRunning()) {
-            launch(args);
+    public void setPrimaryStage(Stage pStage) {
+        // init the pstage
+        this.stageInit(pStage);
+
+        // init the stage
+        this.initOwner(pStage);
+        this.initStyle(StageStyle.TRANSPARENT);
+    }
+
+    /**
+     * Get the Facsimile Instance
+     * 
+     * @return instance
+     */
+    public static Facsimile getInstance() {
+        if (instance == null) {
+            instance = new Facsimile();
         }
+
+        return instance;
     }
 }

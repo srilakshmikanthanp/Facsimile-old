@@ -16,13 +16,6 @@
     <maven.compiler.target>17</maven.compiler.target>
   </properties>
 
-	<repositories>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
-	</repositories>
-
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -45,11 +38,6 @@
       <artifactId>javafx-controls</artifactId>
       <version>13</version>
     </dependency>
-    <dependency>
-	    <groupId>com.github.Dansoftowner</groupId>
-	    <artifactId>jSystemThemeDetector</artifactId>
-	    <version>3.8</version>
-	  </dependency>
     <dependency>
       <groupId>org.jfxtras</groupId>
       <artifactId>jmetro</artifactId>
@@ -114,7 +102,32 @@
             <execution>
               <id>default-cli</id>
               <configuration>
-                <mainClass>facsimile/com.github.srilakshmikanthanp.facsimile.Facsimile</mainClass>
+                <mainClass>facsimile/com.github.srilakshmikanthanp.facsimile.Launcher</mainClass>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.panteleyev</groupId>
+          <artifactId>jpackage-maven-plugin</artifactId>
+          <version>1.4.0</version>
+          <configuration>
+            <name>Facsimile</name>
+            <destination>${project.build.directory}/jpackage</destination>
+            <runtimeImage>${project.build.directory}/image</runtimeImage>
+            <version>${projet.version}</version>
+            <vendor>srilakshmikanthanp</vendor>
+            <module>facsimile/com.github.srilakshmikanthanp.facsimile.Launcher</module>
+            <icon>assets/images/logo.ico</icon>
+            <licenseFile>LICENSE</licenseFile>
+          </configuration>
+          <executions>
+            <execution>
+              <id>win</id>
+              <configuration>
+                <winDirChooser>true</winDirChooser>
+                <winMenu>true</winMenu>
+                <winMenuGroup>Facsimile</winMenuGroup>
               </configuration>
             </execution>
           </executions>

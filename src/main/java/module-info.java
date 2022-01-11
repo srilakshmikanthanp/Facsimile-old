@@ -18,10 +18,7 @@ module facsimile {
     // from javafx
     requires javafx.controls;
 
-    // theme decetcor
-    requires com.jthemedetector;
-
-    // jmetro
+    // from jmetro
     requires org.jfxtras.styles.jmetro;
 
     // give access to the facsimile package
