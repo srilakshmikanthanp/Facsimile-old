@@ -6,10 +6,10 @@ import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.function.BooleanSupplier;
 
-import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.dialog.*;
@@ -171,11 +171,13 @@ public class Facsimile extends Stage {
         var pane = new AppPane(cryptoMap);
         pane.getStyleClass().add("main-pane");
         var stkPane = new StackPane(pane);
-        stkPane.setPadding(new Insets(10));
+       // stkPane.setPadding(new Insets(10));
         stkPane.getStyleClass().add("container");
 
         // set ecene for stage
-        this.setScene(new Scene(stkPane));
+        var scene = new Scene(stkPane);
+        scene.setFill(Color.TRANSPARENT);
+        this.setScene(scene);
 
         // init the stage
         this.setAlwaysOnTop(true);

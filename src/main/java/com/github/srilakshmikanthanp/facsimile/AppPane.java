@@ -11,8 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
-import org.controlsfx.control.ToggleSwitch;
-
 import com.github.srilakshmikanthanp.facsimile.datum.*;
 import com.github.srilakshmikanthanp.facsimile.dialog.*;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
@@ -290,6 +288,9 @@ class MidPane extends BorderPane {
         cryptoMap.keySet().forEach((k) -> {
             listView.getItems().add(k);
         });
+
+        // set padding
+        this.setPadding(new Insets(15));
     }
 }
 
@@ -302,11 +303,26 @@ class BotPane extends BorderPane {
 
     /**
      * The theme was changed
-     * 
-     * @param isDark
      */
-    private void themeChanged(boolean isDark) {
-        Preference.setDarkMode(isDark);
+    private void changeTheme() {
+        // create dialog
+        var dialog = new ChangeTheme(
+            this.getScene().getWindow()
+        );
+
+        // shoe the dialog
+        dialog.show();
+
+        // if not okay
+        if(!dialog.isOkay()) {
+            return;
+        }
+
+        // get the theme
+        var theme = dialog.getTheme();
+
+        // set the theme
+        Preference.setTheme(theme);
     }
 
     /**
@@ -338,23 +354,34 @@ class BotPane extends BorderPane {
      * Get the theme Node
      */
     private Node getThemeNode() {
-        // create toggle
-        var toggle = new ToggleSwitch();
+        // define button
+        var button = new Button();
+        var blabel = new Label();
 
-        // set the theme
-        toggle.setSelected(
-            Preference.getDarkMode()
+        // image view
+        var image = new ImageView(
+            getClass().getResource(
+                "/images/theme.png"
+            ).toString()
         );
 
-        // add listener
-        toggle.selectedProperty().addListener(
-            (observable, oldValue, newValue) -> {
-                this.themeChanged(newValue);
-            }
-        );
+        // init the image
+        image.setFitHeight(30);
+        image.setFitWidth(30);
+
+        // init button
+        button.setOpacity(0.0);
+        blabel.setGraphic(image);
+
+        // set the action
+        button.setOnAction(evt -> {
+            this.changeTheme();
+        });
 
         // done
-        return toggle;
+        return new StackPane(
+            blabel, button
+        );
     }
 
     /**
@@ -427,7 +454,7 @@ public class AppPane extends BorderPane {
         this.setCenter(midPane);
         this.setBottom(botPane);
 
-        //  init the pane
+        // init the pane
         this.setPadding(new Insets(10));
     }
 }

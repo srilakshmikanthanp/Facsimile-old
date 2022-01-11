@@ -93,16 +93,17 @@ public class Preference {
     }
 
     // preference for dark mode
-    public static String DARK_MODE_KEY = "DARK_MODE";
-    public static boolean DARK_MODE_DEFAULT = false;
+    public static String THEME_KEY = "THEME";
+    public static String LIGHT = "LIGHT";
+    public static String DARK = "DARK";
 
     /**
      * Get the dark mode.
      * 
      * @return the dark mode.
      */
-    public static boolean getDarkMode() {
-        return prefs.getBoolean(DARK_MODE_KEY, DARK_MODE_DEFAULT);
+    public static String getTheme() {
+        return prefs.get(THEME_KEY, LIGHT);
     }
 
     /**
@@ -110,8 +111,8 @@ public class Preference {
      * 
      * @param darkMode the dark mode.
      */
-    public static void setDarkMode(boolean darkMode) {
-        prefs.putBoolean(DARK_MODE_KEY, darkMode);
+    public static void setTheme(String darkMode) {
+        prefs.put(THEME_KEY, darkMode);
     }
 
     /**

@@ -18,9 +18,6 @@ module facsimile {
     // from javafx
     requires javafx.controls;
 
-    // from controlsfx
-    requires org.controlsfx.controls;
-
     // from jmetro
     requires org.jfxtras.styles.jmetro;
 
