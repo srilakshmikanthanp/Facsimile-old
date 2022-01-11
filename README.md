@@ -9,7 +9,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/srilakshmikanthanp/facsimile">
-    <img src="assets/images/logo.png" alt="Logo" width="80" height="80">
+    <img src="assets/images/Facsimile.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Facsimile</h3>
