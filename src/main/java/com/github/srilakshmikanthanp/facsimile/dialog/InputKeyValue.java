@@ -58,7 +58,8 @@ public class InputKeyValue extends AbstractDialog {
 
         // init the vbox
         vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(10.0));
+        vbox.setPadding(new Insets(15));
+        vbox.setSpacing(10.0);
 
         // done
         return vbox;

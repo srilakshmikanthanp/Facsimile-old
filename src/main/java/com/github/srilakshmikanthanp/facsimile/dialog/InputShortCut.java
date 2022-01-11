@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 
 import com.github.srilakshmikanthanp.facsimile.consts.*;
+import com.github.srilakshmikanthanp.facsimile.utility.Preference;
 
 
 /**
@@ -50,9 +51,19 @@ public class InputShortCut extends AbstractDialog {
             AppConsts.masks
         );
 
+        // set the value of mask one
+        maskOne.setValue(
+            Preference.getMaskOne()
+        );
+
         // init the mask two
         maskTwo.getItems().addAll(
             AppConsts.masks
+        );
+
+        // set the value of mask two
+        maskTwo.setValue(
+            Preference.getMaskTwo()
         );
 
         // init the keycode
@@ -75,11 +86,17 @@ public class InputShortCut extends AbstractDialog {
             list
         );
 
+        // set the value of keycode
+        keycode.setValue(
+            Preference.getKeyValue()
+        );
+
         // define the vbox
         var vbox = new VBox(label, maskOne, maskTwo, keycode);
 
         // init the vbox
         vbox.setSpacing(10);
+        vbox.setPadding(new Insets(20));
         vbox.setAlignment(Pos.CENTER);
 
         // done

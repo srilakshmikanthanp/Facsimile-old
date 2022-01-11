@@ -97,19 +97,19 @@ public class SystemTrayIcon {
     }
 
     /**
-     * Removes the icon from system tray
-     */
-    public void removeFromTray() {
-        tray.remove(icon);
-    }
-
-    /**
      * Set the Facsimile instance
      * 
      * @param facsimile instance
      */
     public void setFacsimile(Facsimile facsimile) {
         this.facsimile = facsimile;
+    }
+
+    /**
+     * Removes the icon from system tray
+     */
+    public void removeFromTray() {
+        tray.remove(icon);
     }
 
     /**

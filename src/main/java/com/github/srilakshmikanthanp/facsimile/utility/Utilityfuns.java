@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.ServerSocket;
 
 import javafx.stage.*;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.*;
@@ -135,6 +136,20 @@ public class Utilityfuns {
         }
     }
 
+    /**
+     * Copy the String to ClipBoard
+     * 
+     * @param data The data to be copied
+     */
     public static void copyToClipboard(String data) {
+        // create clipboard
+        var clipboard = Clipboard.getSystemClipboard();
+
+        // create content
+        var content = new ClipboardContent();
+        content.putString(data);
+
+        // set content
+        clipboard.setContent(content);
     }
 }

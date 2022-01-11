@@ -1,7 +1,8 @@
 package com.github.srilakshmikanthanp.facsimile;
 
-import javafx.application.*;
+
 import javafx.stage.*;
+import javafx.application.*;
 
 import com.github.kwhat.jnativehook.*;
 import com.github.srilakshmikanthanp.facsimile.system.*;

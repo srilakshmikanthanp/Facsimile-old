@@ -16,10 +16,12 @@ import java.util.HashMap;
 import java.util.function.BiFunction;
 
 import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
 import java.security.GeneralSecurityException;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 
@@ -49,7 +51,7 @@ public class CryptoMap extends HashMap<String, String> {
     private final static String KEY_STORE_FILE = "keyStore.ks";
 
     // Path to the Json file
-    private final static String DATA_JSON_FILE = "datum.json";
+    private final static String DATA_JSON_FILE = "datum.bin";
 
     // Algorithm to be used for encryption/decryption
     private final static String ALGORITHM = "AES";
@@ -111,7 +113,15 @@ public class CryptoMap extends HashMap<String, String> {
      * @param basePath Base path to store data
      */
     public CryptoMap(Path basePath) {
+        // save path
         this.basePath = basePath;
+
+        // init cipher
+        try {
+            cipher = Cipher.getInstance(ALGORITHM);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -373,7 +383,8 @@ public class CryptoMap extends HashMap<String, String> {
     public void loadJson() throws IOException, GeneralSecurityException {
         Gson gson = new Gson();
         var path = basePath.resolve(DATA_JSON_FILE);
-        var json = this.decrypt(Files.readString(path));
+        var data = Files.readAllBytes(path);
+        var json = this.decrypt(new String(data));
         this.putAll(gson.fromJson(json, HashMap.class));
     }
 

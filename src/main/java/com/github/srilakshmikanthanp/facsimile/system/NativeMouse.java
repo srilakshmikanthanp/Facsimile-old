@@ -56,7 +56,6 @@ public class NativeMouse implements NativeMouseInputListener {
     public void nativeMouseClicked(NativeMouseEvent evt) {
         Platform.runLater(() -> {
             this.mouseClicked(evt.getX(), evt.getY());
-            System.out.println("Mouse Clicked");
         });
     }
 

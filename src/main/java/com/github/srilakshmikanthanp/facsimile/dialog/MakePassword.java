@@ -35,6 +35,8 @@ public class MakePassword extends AbstractDialog {
         var image = new ImageView(
             getClass().getResource("/images/user.png").toString()
         );
+        image.setFitHeight(90);
+        image.setFitWidth(90);
         label.setGraphic(image);
         label.setGraphicTextGap(10);
         label.setContentDisplay(ContentDisplay.TOP);
@@ -60,6 +62,7 @@ public class MakePassword extends AbstractDialog {
 
         // init the VBox
         vbox.setSpacing(10);
+        vbox.setPadding(new Insets(20));
         vbox.setAlignment(Pos.CENTER);
 
         // done

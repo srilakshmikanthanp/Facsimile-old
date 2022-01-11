@@ -1,5 +1,7 @@
 package com.github.srilakshmikanthanp.facsimile.dialog;
 
+import com.github.srilakshmikanthanp.facsimile.utility.Utilityfuns;
+
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.stage.*;
@@ -11,10 +13,10 @@ import javafx.scene.control.*;
  */
 public abstract class AbstractDialog extends Stage {
     // Min height of the dialog.
-    private static final double minStageHeight = 350.0;
+    private static final double minStageHeight = 370.0;
 
     // Min width of the dialog.
-    private static final double minStageWidth = 370.0;
+    private static final double minStageWidth = 350.0;
 
     // Border pane for the stage
     private BorderPane borderPane = new BorderPane();
@@ -122,10 +124,6 @@ public abstract class AbstractDialog extends Stage {
         this.initStyle(StageStyle.TRANSPARENT);
         this.initModality(Modality.APPLICATION_MODAL);
 
-        // set the min width and height
-        this.setMinWidth(minStageWidth);
-        this.setMinHeight(minStageHeight);
-
         // set the panes
         this.setTopPane();
         this.setBotPane();
@@ -136,7 +134,13 @@ public abstract class AbstractDialog extends Stage {
         // on shown
         this.setOnShown((evt) -> {
             this.toFront();
+            this.setMinWidth(minStageWidth);
+            this.setMinHeight(minStageHeight);
+            Utilityfuns.centerTo(owner, this);
         });
+
+        // set padding
+        borderPane.setPadding(new Insets(5));
     }
 
     /**

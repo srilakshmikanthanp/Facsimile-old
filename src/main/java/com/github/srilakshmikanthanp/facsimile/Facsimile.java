@@ -39,11 +39,13 @@ public class Facsimile extends Stage {
     // password create dialog for auth
     private static final MakePassword mkPwdDialog = new MakePassword(null);
 
-    // Crypto Hash Mapping
-    private final CryptoMap cryptoMap = new CryptoMap(Path.of(LOC));
-
     // Facsimile instance
     private static Facsimile instance;
+
+    // Crypto Hash Mapping
+    private final CryptoMap cryptoMap = new CryptoMap(
+        Path.of(LOC, ".facsimile")
+    );
 
     /**
      * Create password for user
@@ -74,6 +76,13 @@ public class Facsimile extends Stage {
             return false;
         }
 
+        // load data
+        try {
+            cryptoMap.loadJson();
+        } catch (IOException | GeneralSecurityException e) {
+            System.err.println(e.toString());
+        }
+
         // sucess
         return true;
     }
@@ -99,6 +108,15 @@ public class Facsimile extends Stage {
             try {
                 var pass = pwdDialog.getPassword();
                 cryptoMap.loadCrypto(pass);
+        
+                try {
+                    cryptoMap.loadJson();
+                } catch (IOException e) {
+                    System.err.println(e.toString());
+                } catch (GeneralSecurityException e) {
+                    System.err.println(e.toString());
+                }
+                
                 return true;
             } catch (IOException e) {
                 pwdDialog.setError(true);
@@ -110,7 +128,7 @@ public class Facsimile extends Stage {
         }
 
         // sucess
-        return true;
+        return false;
     }
 
     /**
