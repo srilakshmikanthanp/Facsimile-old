@@ -33,7 +33,7 @@ public class Facsimile extends Stage {
     private static final String DEV_LOC = "./target";
 
     // location to store data
-    private static final String LOC = DEV_LOC;
+    private static final String LOC = PRD_LOC;
 
     // password input dialog for auth
     private static final InputPassword pwdDialog = new InputPassword(null);
@@ -76,13 +76,6 @@ public class Facsimile extends Stage {
         } catch (IOException | GeneralSecurityException e) {
             Utilityfuns.showError(e);
             return false;
-        }
-
-        // load data
-        try {
-            cryptoMap.loadJson();
-        } catch (IOException | GeneralSecurityException e) {
-            System.err.println(e.toString());
         }
 
         // sucess
@@ -185,7 +178,7 @@ public class Facsimile extends Stage {
         this.setAlwaysOnTop(true);
         this.setOnShown((evt) -> {
             this.setHeight(Stageheight);
-            this.setMinWidth(Stagewidth);
+            this.setWidth(Stagewidth);
             Utilityfuns.centerToScreen(this);
         });
 

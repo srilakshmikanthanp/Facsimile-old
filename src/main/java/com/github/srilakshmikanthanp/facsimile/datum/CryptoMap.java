@@ -48,10 +48,10 @@ public class CryptoMap extends HashMap<String, String> {
     }
 
     // Path to KeyStore file
-    private final static String KEY_STORE_FILE = "keyStore.ks";
+    private final static String KEY_STORE_FILE = "Keystote.jks";
 
     // Path to the Json file
-    private final static String DATA_JSON_FILE = "datum.bin";
+    private final static String DATA_JSON_FILE = "Keyvalue.enc";
 
     // Algorithm to be used for encryption/decryption
     private final static String ALGORITHM = "AES";
