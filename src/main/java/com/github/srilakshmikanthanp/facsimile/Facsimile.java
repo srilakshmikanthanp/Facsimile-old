@@ -116,7 +116,7 @@ public class Facsimile extends Stage {
                 } catch (IOException e) {
                     System.err.println(e.toString());
                 } catch (GeneralSecurityException e) {
-                    System.err.println(e.toString());
+                    Utilityfuns.showError(e);
                 }
                 
                 return true;

@@ -102,6 +102,7 @@
             <execution>
               <id>default-cli</id>
               <configuration>
+                <launcher>launcher</launcher>
                 <mainClass>facsimile/com.github.srilakshmikanthanp.facsimile.Launcher</mainClass>
               </configuration>
             </execution>
