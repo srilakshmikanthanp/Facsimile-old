@@ -78,17 +78,7 @@ Getting Ready Soon
 <!-- USAGE EXAMPLES -->
 ## Demo
 
-First Time
-
-![demo](assets/images/FirstTime.gif)
-
-First Open
-
-![demo](assets/images/FirstOpen.gif)
-
-After Open
-
-![demo](assets/images/AfterOpen.gif)
+![demo](assets/images/demo.png)
 
 ## Security
 
