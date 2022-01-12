@@ -69,12 +69,12 @@ To install Facsimile, follow the instructions below.
 
 ### Installation
 
-Follow the instructions below to install QuickNote on different platforms.
+Follow the instructions below to install Facsimile on different platforms.
 
 #### For Windows
 
-  1. Download the latest version of QuickNote from [Releses](https://github.com/srilakshmikanthanp/Facsimile/releases).
-  2. Double click on the downloaded file to install QuickNote.
+  1. Download the latest version of Facsimile from [Releses](https://github.com/srilakshmikanthanp/Facsimile/releases).
+  2. Double click on the downloaded file to install Facsimile.
   3. After installation, Add it to system [startup](https://support.microsoft.com/en-us/windows/add-an-app-to-run-automatically-at-startup-in-windows-10-150da165-dcd9-7230-517b-cf3c295d89dd).
 
 <!-- USAGE EXAMPLES -->
