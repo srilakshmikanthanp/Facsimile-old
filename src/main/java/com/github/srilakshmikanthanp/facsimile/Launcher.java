@@ -1,6 +1,5 @@
 package com.github.srilakshmikanthanp.facsimile;
 
-
 import javafx.stage.*;
 import javafx.application.*;
 
@@ -63,10 +62,12 @@ public class Launcher extends Application {
      * @param args
      */
     public static void main(String[] args) {
+        // Check if the app is not running
         if(!Utilityfuns.isApplicationRunning()) {
             launch(args);
         }
 
+        // Exit the app
         System.exit(0);
     }
 }

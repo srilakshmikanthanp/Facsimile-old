@@ -41,8 +41,8 @@ public class InputShortCut extends AbstractDialog {
         var image = new ImageView(
             getClass().getResource("/images/shortcut.png").toString()
         );
-        image.setFitHeight(100);
-        image.setFitWidth(100);
+        image.setFitHeight(80);
+        image.setFitWidth(80);
         label.setGraphic(image);
         label.setContentDisplay(ContentDisplay.TOP);
 

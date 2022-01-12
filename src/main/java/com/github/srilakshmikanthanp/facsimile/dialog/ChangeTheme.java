@@ -14,7 +14,7 @@ import com.github.srilakshmikanthanp.facsimile.utility.*;
  */
 public class ChangeTheme extends AbstractDialog {
     // List of themes
-    private ChoiceBox<String> theme = new ChoiceBox<>();
+    private ComboBox<String> theme = new ComboBox<>();
 
     // label for the dialog
     private Label label = new Label("Change Theme");

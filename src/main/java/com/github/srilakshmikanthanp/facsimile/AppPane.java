@@ -1,6 +1,7 @@
 package com.github.srilakshmikanthanp.facsimile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
 import java.security.GeneralSecurityException;
 
@@ -196,8 +197,14 @@ class MidPane extends BorderPane {
         // Clear the listView
         listView.getItems().clear();
 
+        // array list
+        var arrayList = new ArrayList<String>(cryptoMap.keySet());
+
+        // sort
+        arrayList.sort(String::compareTo);
+
         // set the items
-        cryptoMap.keySet().forEach((k) -> {
+        arrayList.forEach((k) -> {
             listView.getItems().add(k);
         });
     }
