@@ -3,7 +3,7 @@ package com.github.srilakshmikanthanp.facsimile.system;
 import javafx.application.Platform;
 
 import com.github.kwhat.jnativehook.keyboard.*;
-import com.github.srilakshmikanthanp.facsimile.*;
+import com.github.srilakshmikanthanp.facsimile.Facsimile;
 import com.github.srilakshmikanthanp.facsimile.utility.Preference;
 
 /**

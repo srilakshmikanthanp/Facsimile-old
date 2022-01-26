@@ -20,7 +20,7 @@ public class Preference {
 
     // Preference Mask one
     public static String MASK_ONE_KEY = "MASK_ONE";
-    public static String MASK_ONE_DEFAULT = AppConsts.masks[0];
+    public static String MASK_ONE_DEFAULT = AppConsts.masks[3];
 
     /**
      * Get the mask one.
@@ -46,7 +46,7 @@ public class Preference {
 
     // Preference Mask Two
     public static String MASK_TWO_KEY = "MASK_TWO";
-    public static String MASK_TWO_DEFAULT = AppConsts.masks[1];
+    public static String MASK_TWO_DEFAULT = AppConsts.masks[3];
 
     /**
      * Get the mask one.
@@ -72,7 +72,7 @@ public class Preference {
 
     // Preference Key value
     public static String KEY_VALUE_KEY = "KEY_VALUE";
-    public static String KEY_VALUE_DEFAULT = "SEMICOLON";
+    public static String KEY_VALUE_DEFAULT = AppConsts.keys[4];
 
     /**
      * Get the key value.

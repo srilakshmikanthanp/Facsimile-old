@@ -23,11 +23,10 @@ public class NativeMouse implements NativeMouseInputListener {
     private void mouseClicked(int x, int y) {
         // Rectangle
         var rect = new Rectangle(
-            facsimile.getX(),
-            facsimile.getY(),
-            facsimile.getWidth(),
-            facsimile.getHeight()
-        );
+                facsimile.getX(),
+                facsimile.getY(),
+                facsimile.getWidth(),
+                facsimile.getHeight());
 
         var sclX = Screen.getPrimary().getOutputScaleX();
         var sclY = Screen.getPrimary().getOutputScaleY();

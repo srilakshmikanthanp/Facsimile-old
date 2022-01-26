@@ -35,11 +35,13 @@ public class InputPassword extends AbstractDialog {
         image.setFitHeight(90);
         image.setFitWidth(90);
         label.setGraphic(image);
-        label.setGraphicTextGap(10);
+        label.setGraphicTextGap(20);
+        label.setStyle("-fx-font-size: 18px;");
         label.setContentDisplay(ContentDisplay.TOP);
 
         // initilize the confirm password field
         password.setPromptText("Enter Password");
+        password.setStyle("-fx-font-size: 15px;");
         password.setOnKeyPressed((evt) -> {
             if (evt.getCode() == KeyCode.ENTER) {
                 this.okayPressed();
@@ -50,8 +52,8 @@ public class InputPassword extends AbstractDialog {
         var vbox = new VBox(label, password);
 
         // init the VBox
-        vbox.setSpacing(10);
-        vbox.setPadding(new Insets(15));
+        vbox.setSpacing(20);
+        vbox.setPadding(new Insets(0, 10, 10, 10));
         vbox.setAlignment(Pos.CENTER);
 
         // done

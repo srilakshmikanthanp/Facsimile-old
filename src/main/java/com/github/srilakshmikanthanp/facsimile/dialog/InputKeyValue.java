@@ -35,6 +35,7 @@ public class InputKeyValue extends AbstractDialog {
         image.setFitWidth(100);
         image.setFitHeight(100);
         label.setGraphic(image);
+        label.setGraphicTextGap(10);
         label.setContentDisplay(ContentDisplay.TOP);
 
         // init the key field

@@ -6,7 +6,6 @@ import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.image.*;
-import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 
@@ -44,6 +43,7 @@ public class InputShortCut extends AbstractDialog {
         image.setFitHeight(80);
         image.setFitWidth(80);
         label.setGraphic(image);
+        label.setGraphicTextGap(20);
         label.setContentDisplay(ContentDisplay.TOP);
 
         // init the mask one
@@ -68,11 +68,7 @@ public class InputShortCut extends AbstractDialog {
 
         // init the keycode
         var list = Arrays.asList(
-            KeyCode.values()
-        ).stream().map(
-            (key) -> key.getName().toUpperCase()
-        ).collect(
-            java.util.stream.Collectors.toList()
+            AppConsts.keys
         );
 
         // Sort the list
@@ -98,7 +94,7 @@ public class InputShortCut extends AbstractDialog {
         var vbox = new VBox(label, maskOne, maskTwo, keycode);
 
         // init the vbox
-        vbox.setSpacing(10);
+        vbox.setSpacing(15);
         vbox.setPadding(new Insets(20));
         vbox.setAlignment(Pos.CENTER);
 

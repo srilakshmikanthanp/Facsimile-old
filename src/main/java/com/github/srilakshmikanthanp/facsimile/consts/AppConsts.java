@@ -12,7 +12,12 @@ public class AppConsts {
     /**
      * This is the Masks used with key.
      */
-    public static final String[] masks = {"CTRL", "ALT", "SHIFT"};
+    public static final String[] masks = {"CTRL", "ALT", "SHIFT", "META"};
+
+    /**
+     * This is the KeyCodes used with key.
+     */
+    public static final String[] keys = {"ESCAPE", "SEMICOLON", "COMMA", "PERIOD", "SLASH", "BACK_SLASH", "OPEN_BRACKET", "CLOSE_BRACKET"};
 
     /**
      * This port is use to identyfy the application run status;

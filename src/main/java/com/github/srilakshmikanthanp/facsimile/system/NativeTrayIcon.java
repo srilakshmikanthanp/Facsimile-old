@@ -11,15 +11,14 @@ import com.github.srilakshmikanthanp.facsimile.consts.*;
 /**
  * System tray class
  */
-public class SystemTrayIcon {
+public class NativeTrayIcon {
     // Singleton instance
-    private static SystemTrayIcon instance = null;
+    private static NativeTrayIcon instance = null;
 
     // icon for tray
     private TrayIcon icon = new TrayIcon(
-        new ImageIcon(getClass().getResource("/images/logo.png")).getImage(),
-        "FacSimile"
-    );
+            new ImageIcon(getClass().getResource("/images/logo.png")).getImage(),
+            "FacSimile");
 
     // Tray instance
     private SystemTray tray = SystemTray.getSystemTray();
@@ -43,7 +42,7 @@ public class SystemTrayIcon {
     /**
      * Constructor
      */
-    private SystemTrayIcon() {
+    private NativeTrayIcon() {
         // define vars
         var menu = new PopupMenu();
         var app = new MenuItem("FacSimile");
@@ -115,9 +114,9 @@ public class SystemTrayIcon {
     /**
      * Adds Icon to tray
      */
-    public static SystemTrayIcon getInstance() {
+    public static NativeTrayIcon getInstance() {
         if (instance == null) {
-            instance = new SystemTrayIcon();
+            instance = new NativeTrayIcon();
         }
 
         return instance;

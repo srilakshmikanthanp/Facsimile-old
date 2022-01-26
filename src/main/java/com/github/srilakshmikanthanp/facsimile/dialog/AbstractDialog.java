@@ -43,9 +43,7 @@ public abstract class AbstractDialog extends Stage {
         });
 
         // init hbox
-        hbox.setAlignment(
-            Pos.CENTER_RIGHT
-        );
+        hbox.setAlignment(Pos.CENTER_RIGHT);
 
         // set
         borderPane.setTop(hbox);
@@ -74,9 +72,7 @@ public abstract class AbstractDialog extends Stage {
         });
 
         // init hbox
-        hbox.setAlignment(
-            Pos.CENTER
-        );
+        hbox.setAlignment(Pos.CENTER);
 
         // set
         borderPane.setBottom(hbox);
@@ -104,19 +100,14 @@ public abstract class AbstractDialog extends Stage {
     }
 
     /**
-     * Mthod that call on OK button click.
+     * Set the content of the dialog.
+     * 
+     * @param content
      */
-    protected abstract void okayPressed();
-
-    /**
-     * Mthod that call on Cancel button click.
-     */
-    protected abstract void cutPressed();
-
-    /**
-     * Get ths atatus of the Diaholg
-     */
-    protected abstract boolean isOkay();
+    protected void setContent(Node content) {
+        // set the content pane
+        this.setMidPane(content);
+    }
 
     /**
      * Constructor.
@@ -145,11 +136,8 @@ public abstract class AbstractDialog extends Stage {
         });
 
         // set icon
-        this.getIcons().add(
-            new Image(getClass().getResource(
-                "/images/logo.png"
-            ).toString())
-        );
+        var resource = getClass().getResource("/images/logo.png");
+        this.getIcons().add(new Image(resource.toString()));
 
         // set padding
         borderPane.setPadding(new Insets(15));
@@ -168,12 +156,17 @@ public abstract class AbstractDialog extends Stage {
     }
 
     /**
-     * Set the content of the dialog.
-     * 
-     * @param content
+     * Mthod that call on OK button click.
      */
-    public void setContent(Node content) {
-        // set the content pane
-        this.setMidPane(content);
-    }
+    protected abstract void okayPressed();
+
+    /**
+     * Mthod that call on Cancel button click.
+     */
+    protected abstract void cutPressed();
+
+    /**
+     * Get ths atatus of the Diaholg
+     */
+    protected abstract boolean isOkay();
 }

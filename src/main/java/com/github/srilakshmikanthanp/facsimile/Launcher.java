@@ -20,7 +20,7 @@ public class Launcher extends Application {
         var facsimile = Facsimile.getInstance();
         var nkeyboard = NativeKeyboard.getInstance();
         var nMouseLis = NativeMouse.getInstance();
-        var sTrayicon = SystemTrayIcon.getInstance();
+        var sTrayicon = NativeTrayIcon.getInstance();
 
         // set stage
         facsimile.setPrimaryStage(pStage);
@@ -53,7 +53,7 @@ public class Launcher extends Application {
         }
 
         // remove from tray
-        SystemTrayIcon.getInstance().removeFromTray();
+        NativeTrayIcon.getInstance().removeFromTray();
     }
 
     /**
