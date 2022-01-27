@@ -2,8 +2,8 @@ package com.github.srilakshmikanthanp.facsimile;
 
 import javafx.stage.*;
 import javafx.application.*;
-
 import com.github.kwhat.jnativehook.*;
+import com.github.srilakshmikanthanp.facsimile.locator.*;
 import com.github.srilakshmikanthanp.facsimile.system.*;
 import com.github.srilakshmikanthanp.facsimile.utility.*;
 
@@ -62,6 +62,9 @@ public class Launcher extends Application {
      * @param args
      */
     public static void main(String[] args) {
+        //register the Locator
+        JLibLocator.setAaDefaultLocator();
+
         // Check if the app is not running
         if(!Utilityfuns.isApplicationRunning()) {
             launch(args);

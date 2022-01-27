@@ -5,7 +5,7 @@
 
 module facsimile {
     // from java
-    requires java.prefs;
+    requires  java.prefs;
     requires java.logging;
     requires java.desktop;
 
@@ -23,4 +23,7 @@ module facsimile {
 
     // give access to the facsimile package
     opens com.github.srilakshmikanthanp.facsimile to javafx.graphics;
+
+    // export
+    exports com.github.srilakshmikanthanp.facsimile.locator;
 }

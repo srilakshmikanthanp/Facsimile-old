@@ -10,3 +10,12 @@
 .label {
     -fx-font-size: 18px;
 }
+
+.list-view {
+    -fx-background-color: inherit;
+    -fx-border-width: 0px;
+}
+
+.list-view .list-cell {
+    -fx-alignment: center;
+}

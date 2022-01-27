@@ -297,6 +297,7 @@ class MidPane extends BorderPane {
         });
 
         // set padding
+        listView.setPadding(new Insets(0));
         this.setPadding(new Insets(15));
     }
 }

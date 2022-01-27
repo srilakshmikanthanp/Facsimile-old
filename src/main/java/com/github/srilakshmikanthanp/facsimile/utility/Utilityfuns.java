@@ -58,8 +58,7 @@ public class Utilityfuns {
 
         // Set expandable Exception into the dialog pane.
         alert.getDialogPane().setExpandableContent(
-            expContent
-        );
+                expContent);
 
         // show on center
         alert.setOnShown((evt) -> {
@@ -128,10 +127,12 @@ public class Utilityfuns {
 
             // close the socket on stop
             Runtime.getRuntime().addShutdownHook(
-                new Thread(() -> {
-                    try { socket.close();} catch (IOException e) {}
-                }, "SocketCloser")
-            );
+                    new Thread(() -> {
+                        try {
+                            socket.close();
+                        } catch (IOException e) {
+                        }
+                    }, "SocketCloser"));
 
             // if port is available, not running
             return false;
@@ -167,7 +168,7 @@ public class Utilityfuns {
         var css = "/styles/Light.css";
 
         // check theme
-        if(Preference.getTheme().equals(Preference.DARK)) {
+        if (Preference.getTheme().equals(Preference.DARK)) {
             style = Style.DARK;
             css = "/styles/Dark.css";
         }
@@ -180,21 +181,18 @@ public class Utilityfuns {
 
         // set css
         scene.getStylesheets().add(
-            Utilityfuns.class.getResource(css).toExternalForm()
-        );
+                Utilityfuns.class.getResource(css).toExternalForm());
 
         // set jmetro
-        for(var par : scene.getRoot().getChildrenUnmodifiable()) {
-            if(par instanceof Parent) {
+        for (var par : scene.getRoot().getChildrenUnmodifiable()) {
+            if (par instanceof Parent) {
                 par.getStyleClass().add(
-                    JMetroStyleClass.BACKGROUND
-                );
+                        JMetroStyleClass.BACKGROUND);
             }
         }
 
         // set jmetro
         scene.getRoot().getStyleClass().add(
-            JMetroStyleClass.BACKGROUND
-        );
+                JMetroStyleClass.BACKGROUND);
     }
 }
