@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import com.github.kwhat.jnativehook.NativeLibraryLocator;
+import com.github.kwhat.jnativehook.NativeSystem;
 
 /**
  * This class is used to locate the native libraries.
@@ -27,8 +28,8 @@ public class JLibLocator implements NativeLibraryLocator {
     @Override
     public Iterator<File> getLibraries() {
         var libs = new ArrayList<File>(1);
-        var os = SystemInfo.getFamily().toString().toLowerCase();
-        var arch = SystemInfo.getArchitecture().toString().toLowerCase();
+        var os = NativeSystem.getFamily().toString().toLowerCase();
+        var arch = NativeSystem.getArchitecture().toString().toLowerCase();
         var jhome = System.getProperty("java.home");
         var libName = System.mapLibraryName("JNativeHook");
         var lib = jhome + File.separator + os + File.separator + arch + File.separator + libName;
