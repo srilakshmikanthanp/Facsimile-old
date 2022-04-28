@@ -53,6 +53,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+⚠️ This respository has been Archived and Ported to electron and it is available [srilakshmikanthanp/Facsimile](https://github.com/srilakshmikanthanp/Facsimile)
+
 Copy Your Most Used Text to Clipboard Easily with Facsimile!. It Helps You to Store You Most Used Text as a Key, Value Pair and Copy it to Clipboard with a Shortcut.
 
 
